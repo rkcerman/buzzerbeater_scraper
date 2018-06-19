@@ -1,0 +1,495 @@
+match_id,qtr,clock,score,event_type,event101245701,1,11:57,0 — 0,JUMP_BALL,Jump ball won by A. Nerecionis (A).
+101245701,1,11:52,2 — 0,TOPKEY,F. Adamčík (A) fires from the top of the key with I. Doganhan (H) right in his face.  Scored.
+101245701,1,11:46,2 — 0,NOSHOOT_FOUL,Foul called on M. Ilić (A).
+101245701,1,11:40,2 — 0,BAD_PASS,The pass from J. Ingaramo (H) sailed out of bounds.
+101245701,1,11:27,4 — 0,WING,F. Adamčík (A) opens up the play with a pass to C. Rubio La Fuente (A). C. Rubio La Fuente (A) fires an off-balance jumper from the wing.  Scored.
+101245701,1,11:27,4 — 0,ASSIST,The shot was assisted by F. Adamčík (A).
+101245701,1,11:11,4 — 0,DRIVING_LAYUP,I. Doganhan (H) tries a driving layup, as Â. Frazão (A) rotates over and alters his shot.  Shot blocked.
+101245701,1,11:11,4 — 0,REBOUND,The defensive rebound is snapped up by F. Adamčík (A).
+101245701,1,10:58,4 — 0,STRAIGHT_ON_THREE,M. Ilić (A) forces up a three from the top of the arc, guarded closely by J. Ingaramo (H).  Shot missed.
+101245701,1,10:58,4 — 0,REBOUND,D. Abaloidze (H) grabs the defensive rebound.
+101245701,1,10:48,4 — 2,ELBOW,D. Abaloidze (H) attempts a jumper from the elbow over A. Nerecionis (A).  Scored.
+101245701,1,10:37,6 — 2,TOPKEY,Â. Frazão (A) pulls up at the top of the key and takes a shot, guarded closely by M. Repetti (H).  Scored.
+101245701,1,10:26,6 — 2,CORNER_THREE,T. Saunders (H) gets off a great pass to D. Abaloidze (H). D. Abaloidze (H) fires up a three-point shot from the corner.  Shot missed.
+101245701,1,10:26,6 — 2,REBOUND,A. Nerecionis (A) corrals the missed shot.
+101245701,1,10:10,6 — 2,WING_THREE,M. Ilić (A) attempts a three-point shot from the wing, guarded closely by J. Ingaramo (H).  Shot missed.
+101245701,1,10:10,6 — 2,REBOUND,T. Saunders (H) corrals the missed shot.
+101245701,1,9:49,6 — 2,WING,M. Repetti (H) tries to bank one in from the wing off of a nice pass from D. Abaloidze (H).  Shot missed.
+101245701,1,9:49,6 — 2,REBOUND,Â. Frazão (A) corrals the missed shot.
+101245701,1,9:27,8 — 2,DRIVING_LAYUP,F. Adamčík (A) tries a driving layup, guarded closely by I. Doganhan (H).  Scored.
+101245701,1,9:03,8 — 2,TOPKEY,T. Saunders (H) pulls up at the top of the key and takes a shot.  Shot missed.
+101245701,1,9:03,8 — 2,REBOUND,M. Ilić (A) pulls down a defensive rebound.
+101245701,1,8:57,8 — 2,BAD_PASS,Â. Frazão (A) threw the ball away.
+101245701,1,8:39,8 — 2,STEAL,Ball stolen by A. Nerecionis (A).
+101245701,1,8:28,8 — 2,BASELINE_J,Â. Frazão (A) dribbles baseline and pulls up for a jumper under pressure from M. Repetti (H).  Shot missed.
+101245701,1,8:28,8 — 2,REBOUND,A. Nerecionis (A) flew in from the wing to grab the offensive rebound.
+101245701,1,8:07,8 — 2,TOPKEY,C. Rubio La Fuente (A) threads a pass through the defense and finds F. Adamčík (A).  F. Adamčík (A) pulls up at the top of the key and takes a shot.  Shot missed.
+101245701,1,8:07,8 — 2,REBOUND,T. Saunders (H) grabs the defensive rebound.
+101245701,1,7:55,8 — 2,BASELINE_J,D. Abaloidze (H) opens up the play with a pass to I. Doganhan (H). I. Doganhan (H) dribbles baseline and pulls up for a jumper.  Shot missed.
+101245701,1,7:55,8 — 2,REBOUND,F. Adamčík (A) corrals the missed shot.
+101245701,1,7:40,8 — 2,DRIVING_LAYUP,F. Adamčík (A) threads a pass through the defense and finds M. Ilić (A).  M. Ilić (A) tries a driving layup.  Shot missed.
+101245701,1,7:40,8 — 2,REBOUND,Â. Frazão (A) grabs the offensive rebound.
+101245701,1,7:38,8 — 2,PUTBACK,Â. Frazão (A) collects the rebound and goes back up for the shot, guarded closely by M. Repetti (H).  Shot missed.
+101245701,1,7:38,8 — 2,REBOUND,Â. Frazão (A) boxes out his man and snags the offensive rebound.
+101245701,1,7:33,8 — 2,NOSHOOT_FOUL,Foul called on T. Saunders (H).
+101245701,1,7:27,8 — 2,WING, Â. Frazão (A) attempts a jump-shot from the wing, guarded closely by M. Repetti (H).  Shot missed.
+101245701,1,7:27,8 — 2,REBOUND,T. Saunders (H) grabs the defensive rebound.
+101245701,1,7:12,8 — 4,STRONG,D. Abaloidze (H) backs down his defender and shoots from close range off of a nice pass from J. Ingaramo (H).  Scored.
+101245701,1,7:12,8 — 4,ASSIST,The shot was assisted by J. Ingaramo (H).
+101245701,1,7:00,8 — 4,BASELINE_J,Â. Frazão (A) attempts a baseline jumper, guarded closely by M. Repetti (H).  Shot missed.
+101245701,1,7:00,8 — 4,REBOUND,Â. Frazão (A) grabs the offensive rebound.
+101245701,1,6:58,8 — 4,TIPBACK,Â. Frazão (A) reaches up and tries to tip it in, guarded closely by M. Repetti (H).  Shot blocked.
+101245701,1,6:58,8 — 4,SHOTSTREAKMISS,Â. Frazão (A) can't buy a bucket!
+101245701,1,6:58,8 — 4,REBOUND,The defensive rebound is snapped up by M. Repetti (H).
+101245701,1,6:37,8 — 4,STEAL_ON_PASS,Pass stolen by F. Adamčík (A).
+101245701,1,6:30,8 — 4,STEAL_ON_PASS,J. Ingaramo (H) intercepted a pass.
+101245701,1,6:10,8 — 4,STEAL_ON_PASS,C. Rubio La Fuente (A) intercepted a pass.
+101245701,1,5:48,8 — 4,NOSHOOT_FOUL,Foul called on M. Repetti (H).
+101245701,1,5:48,8 — 4,SUBSTITUTION,M. Kaprál (A) substituted for M. Ilić (A) at PG.
+101245701,1,5:48,8 — 4,SUBSTITUTION,C. Rubio La Fuente (A) was replaced by A. Biezums (A) at SF.
+101245701,1,5:48,8 — 4,SUBSTITUTION,B. Bulejka (A) brought in for Â. Frazão (A) at PF.
+101245701,1,5:48,8 — 4,SUBSTITUTION,V. Lisenko (A) came off the bench to replace A. Nerecionis (A) at center.
+101245701,1,5:41,8 — 4,DRIVING_LAYUP,M. Kaprál (A) tries a driving layup with J. Ingaramo (H) right in his face.  Shot missed.
+101245701,1,5:41,8 — 4,REBOUND,The defensive rebound is snapped up by M. Repetti (H).
+101245701,1,5:18,8 — 4,ELBOW,J. Ingaramo (H) attempts a jumper from the elbow, guarded closely by F. Adamčík (A).  Shot missed.
+101245701,1,5:18,8 — 4,REBOUND,D. Abaloidze (H) boxes out his man and snags the offensive rebound.
+101245701,1,5:11,8 — 6,ELBOW,J. Ingaramo (H) gets off a great pass to D. Abaloidze (H). D. Abaloidze (H) attempts a jumper from the elbow.  Scored.
+101245701,1,5:11,8 — 6,ASSIST,J. Ingaramo (H) credited with the assist.
+101245701,1,4:59,8 — 6,BASELINE_J,A. Biezums (A) opens up the play with a pass to V. Lisenko (A). V. Lisenko (A) dribbles baseline and pulls up for a jumper.  Shot missed.
+101245701,1,4:59,8 — 6,REBOUND_OOB,T. Saunders (H) tries to grab the defensive rebound, but the ball goes out of bounds.
+101245701,1,4:48,8 — 6,BASELINE_J,A. Biezums (A) gets off a great pass to M. Kaprál (A). M. Kaprál (A) attempts a baseline jumper.  Shot missed.
+101245701,1,4:48,8 — 6,REBOUND,The defensive rebound is snapped up by M. Repetti (H).
+101245701,1,4:42,8 — 6,BAD_PASS,M. Repetti (H) threw the ball away.
+101245701,1,4:28,8 — 6,DRIVING_LAYUP,A. Biezums (A) gets off a great pass to M. Kaprál (A). M. Kaprál (A) tries a driving layup.  Shot missed.
+101245701,1,4:28,8 — 6,REBOUND,D. Abaloidze (H) ends the possession with a defensive rebound.
+101245701,1,4:08,8 — 9,WING_THREE,I. Doganhan (H) gets off a great pass to J. Ingaramo (H). J. Ingaramo (H) attempts a three-point shot from the wing.  Scored.
+101245701,1,4:08,8 — 9,ASSIST,The shot was assisted by I. Doganhan (H).
+101245701,1,4:08,8 — 9,TIME_OUT,Full timeout called by Ethereum Traders.
+101245701,1,3:55,8 — 9,DRIVING_LAYUP,A. Biezums (A) tries a driving layup, guarded closely by T. Saunders (H).  Shot missed.
+101245701,1,3:55,8 — 9,REBOUND,The defensive rebound is snapped up by D. Abaloidze (H).
+101245701,1,3:46,8 — 9,BASELINE_J,J. Ingaramo (H) opens up the play with a pass to T. Saunders (H). T. Saunders (H) dribbles baseline and pulls up for a jumper.  Shot missed.
+101245701,1,3:46,8 — 9,REBOUND,F. Adamčík (A) ends the possession with a defensive rebound.
+101245701,1,3:41,8 — 9,BAD_PASS,B. Bulejka (A) threw the ball away.
+101245701,1,3:41,8 — 9,SUBSTITUTION,M. Ilić (A) substituted for M. Kaprál (A) at PG.
+101245701,1,3:41,8 — 9,SUBSTITUTION,A. Biezums (A) was replaced by C. Rubio La Fuente (A) at SF.
+101245701,1,3:41,8 — 9,SUBSTITUTION,Â. Frazão (A) brought in for B. Bulejka (A) at PF.
+101245701,1,3:41,8 — 9,SUBSTITUTION,A. Nerecionis (A) came off the bench to replace V. Lisenko (A) at center.
+101245701,1,3:32,8 — 9,NOSHOOT_FOUL,Foul called on Â. Frazão (A).
+101245701,1,3:18,8 — 9,CORNER_THREE,I. Doganhan (H) fires up a three-point shot from the corner, guarded closely by M. Ilić (A).  Shot missed.
+101245701,1,3:18,8 — 9,REBOUND,Â. Frazão (A) ends the possession with a defensive rebound.
+101245701,1,3:05,8 — 9,STRONG,Bodies go flying as A. Nerecionis (A) plows his way to the basket.  Shot missed.
+101245701,1,3:05,8 — 9,REBOUND,M. Repetti (H) grabs the defensive rebound.
+101245701,1,2:54,8 — 9,FALL_AWAY,I. Doganhan (H) attempts the fade-away, guarded closely by M. Ilić (A).  Shot missed.
+101245701,1,2:54,8 — 9,REBOUND,M. Repetti (H) grabs the offensive rebound.
+101245701,1,2:32,8 — 9,WING_THREE,I. Doganhan (H) attempts a three-point shot from the wing, guarded closely by M. Ilić (A).  Shot missed.
+101245701,1,2:32,8 — 9,SHOTSTREAKMISS,I. Doganhan (H) can't buy a bucket!
+101245701,1,2:32,8 — 9,REBOUND,T. Saunders (H) hustles for the offensive rebound.
+101245701,1,2:12,8 — 9,STRAIGHT_ON_THREE,T. Saunders (H) forces up a three from the top of the arc, guarded closely by C. Rubio La Fuente (A).  Shot missed.
+101245701,1,2:12,8 — 9,REBOUND,A. Nerecionis (A) corrals the missed shot.
+101245701,1,2:02,10 — 9,DRIVING_LAYUP,M. Ilić (A) gets off a great pass to Â. Frazão (A). Â. Frazão (A) tries a driving layup.  Scored.
+101245701,1,2:02,10 — 9,ASSIST,The shot was assisted by M. Ilić (A).
+101245701,1,1:57,10 — 9,NOSHOOT_FOUL,Foul called on Â. Frazão (A).
+101245701,1,1:57,10 — 9,SUBSTITUTION,M. Strgačić (H) will come off the bench to replace J. Ingaramo (H) at PG.
+101245701,1,1:57,10 — 9,SUBSTITUTION,Substitution at C: I. Cubero Arévalo (H) for D. Abaloidze (H).
+101245701,1,1:49,10 — 9,ELBOW,T. Saunders (H) attempts a jumper from the elbow over C. Rubio La Fuente (A).  Shot missed.
+101245701,1,1:49,10 — 9,REBOUND,C. Rubio La Fuente (A) corrals the missed shot.
+101245701,1,1:34,10 — 9,FALL_AWAY,F. Adamčík (A) opens up the play with a pass to Â. Frazão (A). Â. Frazão (A) shoots while falling away.  Shot missed.
+101245701,1,1:34,10 — 9,REBOUND,I. Cubero Arévalo (H) ends the possession with a defensive rebound.
+101245701,1,1:13,10 — 11,LAYUP,I. Cubero Arévalo (H) glides to the hoop and tries to finish off the glass with A. Nerecionis (A) right in his face.  Scored.
+101245701,1,1:07,10 — 11,BAD_PASS,The pass from Â. Frazão (A) sailed out of bounds.
+101245701,1,1:07,10 — 11,SUBSTITUTION_SWAP,I. Doganhan (H) and M. Strgačić (H) will swap positions on the court.
+101245701,1,1:07,10 — 11,SUBSTITUTION,I. Doganhan (H) is headed to the bench; he'll be replaced at PG by J. Ingaramo (H).
+101245701,1,1:07,10 — 11,SUBSTITUTION,C. Rubio La Fuente (A) was replaced by A. Biezums (A) at SF.
+101245701,1,1:07,10 — 11,SUBSTITUTION,B. Bulejka (A) brought in for Â. Frazão (A) at PF.
+101245701,1,1:07,10 — 11,SUBSTITUTION,V. Lisenko (A) came off the bench to replace A. Nerecionis (A) at center.
+101245701,1,0:54,10 — 11,OFF_FOUL,Offensive foul called on M. Strgačić (H).
+101245701,1,0:54,10 — 11,SUBSTITUTION,M. Kaprál (A) substituted for M. Ilić (A) at PG.
+101245701,1,0:38,12 — 11,TOPKEY,B. Bulejka (A) pulls up at the top of the key and takes a shot after M. Repetti (H) backed off slightly.   Scored.
+101245701,1,0:31,12 — 11,STEAL_ON_PASS,Pass stolen by F. Adamčík (A).
+101245701,1,0:22,12 — 11,WING, F. Adamčík (A) attempts a jump-shot from the wing, guarded closely by M. Strgačić (H).  Shot missed.
+101245701,1,0:22,12 — 11,REBOUND,V. Lisenko (A) boxes out his man and snags the offensive rebound.
+101245701,1,0:01,12 — 11,TOPKEY,A. Biezums (A) gets off a great pass to M. Kaprál (A). M. Kaprál (A) pulls up at the top of the key and takes a shot.  Shot missed.
+101245701,1,0:01,12 — 11,REBOUND,T. Saunders (H) pulls down a defensive rebound.
+101245701,1,0:00,12 — 11,HALF_COURT_SHOT,T. Saunders (H) offers up a prayer from half-court, guarded closely by A. Biezums (A).  Shot missed.
+101245701,1,0:00,12 — 11,SHOTSTREAKMISS,T. Saunders (H) can't buy a bucket!
+101245701,1,0:00,12 — 11,PERIOD_OVER,End of period.
+101245701,1,0:00,12 — 11,SUBSTITUTION,I. Doganhan (H) substituted for M. Strgačić (H) at SG.
+101245701,1,0:00,12 — 11,SUBSTITUTION,Substitution at C: D. Abaloidze (H) for I. Cubero Arévalo (H).
+101245701,1,0:00,12 — 11,SUBSTITUTION,M. Ilić (A) substituted for M. Kaprál (A) at PG.
+101245701,1,0:00,12 — 11,SUBSTITUTION,A. Biezums (A) was replaced by C. Rubio La Fuente (A) at SF.
+101245701,1,0:00,12 — 11,SUBSTITUTION,Â. Frazão (A) brought in for B. Bulejka (A) at PF.
+101245701,1,0:00,12 — 11,SUBSTITUTION,A. Nerecionis (A) came off the bench to replace V. Lisenko (A) at center.
+101245701,2,11:55,12 — 11,DRIVING_LAYUP,I. Doganhan (H) tries a driving layup, guarded closely by M. Ilić (A).  Shot missed.
+101245701,2,11:55,12 — 11,REBOUND,The defensive rebound is snapped up by C. Rubio La Fuente (A).
+101245701,2,11:40,14 — 11,TOPKEY,M. Ilić (A) pulls up at the top of the key and takes a shot over J. Ingaramo (H).  Scored.
+101245701,2,11:28,14 — 11,WING, D. Abaloidze (H) attempts a jump-shot from the wing, guarded closely by A. Nerecionis (A).  Shot missed.
+101245701,2,11:28,14 — 11,REBOUND,M. Repetti (H) grabs the offensive rebound.
+101245701,2,11:21,14 — 13,FALL_AWAY,J. Ingaramo (H) attempts the fade-away, guarded closely by F. Adamčík (A).  Scored.
+101245701,2,11:01,14 — 13,STRONG,C. Rubio La Fuente (A) gets off a great pass to Â. Frazão (A). Â. Frazão (A) goes up strong for an inside shot.  Shot missed.
+101245701,2,11:01,14 — 13,REBOUND,T. Saunders (H) ends the possession with a defensive rebound.
+101245701,2,10:40,14 — 13,STRAIGHT_ON_THREE,J. Ingaramo (H) forces up a three from the top of the arc, guarded closely by F. Adamčík (A).  Shot missed.
+101245701,2,10:40,14 — 13,NOSHOOT_FOUL,Foul called on Â. Frazão (A).
+101245701,2,10:35,14 — 13,STEAL,Ball stolen by Â. Frazão (A).
+101245701,2,10:20,16 — 13,TOPKEY,Â. Frazão (A) gets off a great pass to C. Rubio La Fuente (A). C. Rubio La Fuente (A) pulls up at the top of the key and takes a shot.  Scored.
+101245701,2,10:20,16 — 13,ASSIST,Â. Frazão (A) credited with the assist.
+101245701,2,10:07,16 — 15,ELBOW,M. Repetti (H) attempts a jumper from the elbow, guarded closely by Â. Frazão (A).  Scored.
+101245701,2,9:46,16 — 15,STRONG,Â. Frazão (A) goes up strong for an inside shot, guarded closely by M. Repetti (H).  Shot missed.
+101245701,2,9:46,16 — 15,REBOUND,T. Saunders (H) grabs the defensive rebound.
+101245701,2,9:22,16 — 15,FALL_AWAY,D. Abaloidze (H) attempts the fade-away over A. Nerecionis (A).  Shot missed.
+101245701,2,9:22,16 — 15,REBOUND,C. Rubio La Fuente (A) pulls down a defensive rebound.
+101245701,2,9:08,18 — 15,TOPKEY,C. Rubio La Fuente (A) gets off a great pass to M. Ilić (A). M. Ilić (A) pulls up at the top of the key and takes a shot.  Scored.
+101245701,2,9:08,18 — 15,ASSIST,C. Rubio La Fuente (A) credited with the assist.
+101245701,2,8:45,18 — 15,BASELINE_J,I. Doganhan (H) attempts a baseline jumper, guarded closely by M. Ilić (A).  Shot missed.
+101245701,2,8:45,18 — 15,REBOUND,Â. Frazão (A) ends the possession with a defensive rebound.
+101245701,2,8:07,18 — 15,STEAL,Ball stolen by J. Ingaramo (H).
+101245701,2,8:01,18 — 15,NOSHOOT_FOUL,Foul called on F. Adamčík (A).
+101245701,2,7:52,18 — 17,STRONG,J. Ingaramo (H) goes up strong for an inside shot, guarded closely by F. Adamčík (A).  Scored.
+101245701,2,7:28,18 — 17,TOPKEY,F. Adamčík (A) pulls up at the top of the key and takes a shot, guarded closely by I. Doganhan (H).  Shot missed.
+101245701,2,7:28,18 — 17,REBOUND,Â. Frazão (A) cleans the offensive glass.
+101245701,2,7:17,18 — 17,WING_THREE,Â. Frazão (A) attempts a three-point shot from the wing, guarded closely by M. Repetti (H).  Shot missed.
+101245701,2,7:17,18 — 17,REBOUND,The defensive rebound is snapped up by T. Saunders (H).
+101245701,2,7:01,18 — 19,DUNK,J. Ingaramo (H)  finds T. Saunders (H) in space. T. Saunders (H) goes way up to snag an alley-oop pass.  Scored.
+101245701,2,7:01,18 — 19,ASSIST,The shot was assisted by J. Ingaramo (H).
+101245701,2,6:40,20 — 19,WING, A. Nerecionis (A) attempts a jump-shot from the wing, guarded closely by D. Abaloidze (H).  Scored.
+101245701,2,6:30,20 — 19,HOOK,J. Ingaramo (H)  finds M. Repetti (H) in space.  M. Repetti (H) attempts a hook shot.  Shot missed.
+101245701,2,6:30,20 — 19,REBOUND,The defensive rebound is snapped up by C. Rubio La Fuente (A).
+101245701,2,6:20,20 — 19,BAD_PASS,Â. Frazão (A) threw the ball away.
+101245701,2,6:20,20 — 19,SUBSTITUTION,M. Kaprál (A) substituted for M. Ilić (A) at PG.
+101245701,2,6:20,20 — 19,SUBSTITUTION,C. Rubio La Fuente (A) was replaced by A. Biezums (A) at SF.
+101245701,2,6:20,20 — 19,SUBSTITUTION,B. Bulejka (A) brought in for Â. Frazão (A) at PF.
+101245701,2,6:20,20 — 19,SUBSTITUTION,V. Lisenko (A) came off the bench to replace A. Nerecionis (A) at center.
+101245701,2,6:59,20 — 21,DUNK,I. Doganhan (H) gets off a great pass to M. Repetti (H). M. Repetti (H) throws down a powerful two-handed dunk.  Scored.
+101245701,2,6:59,20 — 21,ASSIST,The shot was assisted by I. Doganhan (H).
+101245701,2,5:44,20 — 21,DRIVING_LAYUP,M. Kaprál (A) tries a driving layup.  Shot missed.
+101245701,2,5:44,20 — 21,SHOTSTREAKMISS,M. Kaprál (A) can't buy a bucket!
+101245701,2,5:44,20 — 21,REBOUND,D. Abaloidze (H) pulls down a defensive rebound.
+101245701,2,5:35,20 — 21,TOPKEY,T. Saunders (H) pulls up at the top of the key and takes a shot, guarded closely by A. Biezums (A).  Shot missed.
+101245701,2,5:35,20 — 21,REBOUND,The defensive rebound is snapped up by B. Bulejka (A).
+101245701,2,5:21,20 — 21,DRIVING_LAYUP,B. Bulejka (A) gets off a great pass to M. Kaprál (A). M. Kaprál (A) tries a driving layup.  Shot missed.
+101245701,2,5:21,20 — 21,REBOUND,M. Repetti (H) ends the possession with a defensive rebound.
+101245701,2,5:10,20 — 21,STRONG,T. Saunders (H) gets off a great pass to D. Abaloidze (H). D. Abaloidze (H) goes up strong for an inside shot.  Shot missed.
+101245701,2,5:10,20 — 21,REBOUND,V. Lisenko (A) ends the possession with a defensive rebound.
+101245701,2,4:56,20 — 21,DRIVING_LAYUP,F. Adamčík (A) gets off a great pass to M. Kaprál (A). M. Kaprál (A) tries a driving layup.  Shot missed.
+101245701,2,4:56,20 — 21,REBOUND,The defensive rebound is snapped up by T. Saunders (H).
+101245701,2,4:49,20 — 21,BAD_PASS,Ball thrown out of bounds by T. Saunders (H).
+101245701,2,4:36,22 — 21,BASELINE_J,Baseline jumper from V. Lisenko (A).  Scored.
+101245701,2,4:36,22 — 21,ASSIST,The shot was assisted by B. Bulejka (A).
+101245701,2,4:21,22 — 23,DUNK,J. Ingaramo (H) gets off a great pass to I. Doganhan (H). I. Doganhan (H) throws down a powerful two-handed dunk.  Scored.
+101245701,2,4:21,22 — 23,ASSIST,The shot was assisted by J. Ingaramo (H).
+101245701,2,4:08,22 — 23,WING_THREE,F. Adamčík (A) attempts a three-point shot from the wing, guarded closely by I. Doganhan (H).  Shot missed.
+101245701,2,4:08,22 — 23,REBOUND,T. Saunders (H) pulls down a defensive rebound.
+101245701,2,3:58,22 — 25,STRONG,D. Abaloidze (H) bullies his way to the basket for a tough inside shot under pressure from V. Lisenko (A).  Scored.
+101245701,2,3:43,25 — 25,STRAIGHT_ON_THREE,F. Adamčík (A) forces up a three from the top of the arc.  Scored.
+101245701,2,3:43,25 — 25,ASSIST,A. Biezums (A) credited with the assist.
+101245701,2,3:35,25 — 25,NOSHOOT_FOUL,Foul called on M. Kaprál (A).
+101245701,2,3:35,25 — 25,SUBSTITUTION,M. Strgačić (H) will come off the bench to replace J. Ingaramo (H) at PG.
+101245701,2,3:35,25 — 25,SUBSTITUTION,Substitution at C: I. Cubero Arévalo (H) for D. Abaloidze (H).
+101245701,2,3:35,25 — 25,SUBSTITUTION,M. Ilić (A) substituted for M. Kaprál (A) at PG.
+101245701,2,3:35,25 — 25,SUBSTITUTION,A. Biezums (A) was replaced by C. Rubio La Fuente (A) at SF.
+101245701,2,3:35,25 — 25,SUBSTITUTION,Â. Frazão (A) brought in for B. Bulejka (A) at PF.
+101245701,2,3:35,25 — 25,SUBSTITUTION,A. Nerecionis (A) came off the bench to replace V. Lisenko (A) at center.
+101245701,2,3:24,25 — 25,WING_THREE,M. Strgačić (H) attempts a three-point shot from the wing after F. Adamčík (A) backed off slightly.   Shot missed.
+101245701,2,3:24,25 — 25,REBOUND,C. Rubio La Fuente (A) ends the possession with a defensive rebound.
+101245701,2,3:09,27 — 25,BASELINE_J,M. Ilić (A) threads a pass through the defense and finds Â. Frazão (A).  Â. Frazão (A) puts up an off-balance jumper from the baseline.  Scored.
+101245701,2,3:09,27 — 25,ASSIST,The shot was assisted by M. Ilić (A).
+101245701,2,2:58,27 — 25,DRIVING_LAYUP,I. Doganhan (H) tries a driving layup
+101245701,2,2:58,27 — 25,SHOOTING_FOUL,M. Ilić (A) is called for a shooting foul.
+101245701,2,2:58,27 — 25,FREE_THROW_MISSED,Free throw missed by I. Doganhan (H).
+101245701,2,2:58,27 — 25,FREE_THROW_MISSED,Free throw missed by I. Doganhan (H).
+101245701,2,2:58,27 — 25,REBOUND,A. Nerecionis (A) corrals the missed shot.
+101245701,2,2:44,27 — 25,BASELINE_J,F. Adamčík (A) threads a pass through the defense and finds C. Rubio La Fuente (A).  C. Rubio La Fuente (A) puts up an off-balance jumper from the baseline.  Shot missed.
+101245701,2,2:44,27 — 25,REBOUND,The defensive rebound is snapped up by T. Saunders (H).
+101245701,2,2:35,27 — 27,DUNK,T. Saunders (H) gets off a great pass to M. Repetti (H). M. Repetti (H) throws down a powerful two-handed dunk.  Scored.
+101245701,2,2:35,27 — 27,ASSIST,The shot was assisted by T. Saunders (H).
+101245701,2,2:23,27 — 27,DRIVING_LAYUP,Â. Frazão (A) gets off a great pass to F. Adamčík (A). F. Adamčík (A) tries a driving layup.  Shot missed.
+101245701,2,2:23,27 — 27,REBOUND_OOB,I. Doganhan (H) tries to grab the defensive rebound, but the ball goes out of bounds.
+101245701,2,2:10,30 — 27,STRAIGHT_ON_THREE,M. Ilić (A) forces up a three from the top of the arc, guarded closely by M. Strgačić (H).  Scored.
+101245701,2,2:04,30 — 27,STEAL,Ball stolen by F. Adamčík (A).
+101245701,2,1:50,30 — 27,DRIVING_LAYUP,Â. Frazão (A) tries a driving layup.  Shot missed.
+101245701,2,1:50,30 — 27,REBOUND,The defensive rebound is snapped up by M. Strgačić (H).
+101245701,2,1:34,30 — 27,ELBOW,I. Doganhan (H) gets off a great pass to M. Repetti (H). M. Repetti (H) attempts a jumper from the elbow.  Shot missed.
+101245701,2,1:34,30 — 27,REBOUND,C. Rubio La Fuente (A) ends the possession with a defensive rebound.
+101245701,2,1:21,30 — 27,DRIVING_LAYUP,F. Adamčík (A) tries a driving layup, guarded closely by I. Doganhan (H).  Shot missed.
+101245701,2,1:21,30 — 27,REBOUND,I. Cubero Arévalo (H) ends the possession with a defensive rebound.
+101245701,2,1:05,30 — 29,HOOK, M. Strgačić (H) attempts a hook shot, guarded closely by F. Adamčík (A).  Scored.
+101245701,2,0:49,30 — 29,ELBOW,C. Rubio La Fuente (A) gets off a great pass to M. Ilić (A). M. Ilić (A) attempts a jumper from the elbow.  Shot missed.
+101245701,2,0:49,30 — 29,REBOUND,The defensive rebound is snapped up by T. Saunders (H).
+101245701,2,0:28,30 — 29,STRONG,I. Doganhan (H) opens up the play with a pass to I. Cubero Arévalo (H). I. Cubero Arévalo (H) bullies his way to the basket for a tough inside shot.  Shot missed.
+101245701,2,0:28,30 — 29,REBOUND,Â. Frazão (A) grabs the defensive rebound.
+101245701,2,0:12,30 — 29,ELBOW,F. Adamčík (A) elevates and fires off a pull-up jumper from the elbow after I. Doganhan (H) backed off slightly.   Shot missed.
+101245701,2,0:12,30 — 29,REBOUND,M. Repetti (H) grabs the defensive rebound.
+101245701,2,0:03,30 — 29,DRIVING_LAYUP,I. Cubero Arévalo (H) gets off a great pass to M. Repetti (H). M. Repetti (H) tries a driving layup.  Shot missed.
+101245701,2,0:03,30 — 29,REBOUND,Â. Frazão (A) grabs the defensive rebound.
+101245701,2,0:00,30 — 29,SHOT_CLOCK_ZERO,Shot clock violation on Ethereum Traders.
+101245701,2,0:00,30 — 29,SUBSTITUTION_SWAP,I. Doganhan (H) and M. Strgačić (H) will swap positions on the court.
+101245701,2,0:00,30 — 29,SUBSTITUTION,J. Ingaramo (H) will come off the bench to replace I. Doganhan (H) at PG.
+101245701,2,0:00,30 — 29,SUBSTITUTION,M. Yanming (H) brought in for T. Saunders (H) at SF.
+101245701,2,0:00,30 — 29,SUBSTITUTION,Substitution at C: D. Abaloidze (H) for I. Cubero Arévalo (H).
+101245701,2,0:00,30 — 29,SUBSTITUTION,M. Kaprál (A) substituted for M. Ilić (A) at PG.
+101245701,2,0:00,30 — 29,SUBSTITUTION,C. Rubio La Fuente (A) was replaced by A. Biezums (A) at SF.
+101245701,2,0:00,30 — 29,SUBSTITUTION,B. Bulejka (A) brought in for Â. Frazão (A) at PF.
+101245701,2,0:00,30 — 29,SUBSTITUTION,V. Lisenko (A) came off the bench to replace A. Nerecionis (A) at center.
+101245701,2,0:00,30 — 29,PERIOD_OVER,End of period.
+101245701,2,0:00,30 — 29,HALF_OVER,Half time.
+101245701,2,0:00,30 — 29,SUBSTITUTION,I. Doganhan (H) substituted for M. Strgačić (H) at SG.
+101245701,2,0:00,30 — 29,SUBSTITUTION,T. Saunders (H) brought in for M. Yanming (H) at SF.
+101245701,2,0:00,30 — 29,SUBSTITUTION,M. Ilić (A) substituted for M. Kaprál (A) at PG.
+101245701,2,0:00,30 — 29,SUBSTITUTION,A. Biezums (A) was replaced by C. Rubio La Fuente (A) at SF.
+101245701,2,0:00,30 — 29,SUBSTITUTION,Â. Frazão (A) brought in for B. Bulejka (A) at PF.
+101245701,2,0:00,30 — 29,SUBSTITUTION,A. Nerecionis (A) came off the bench to replace V. Lisenko (A) at center.
+101245701,3,11:54,30 — 29,DUNK_MISSED,M. Repetti (H) goes way up to snag the alley-oop pass after C. Rubio La Fuente (A) backed off slightly.   Shot blocked.
+101245701,3,11:54,30 — 29,REBOUND,Â. Frazão (A) pulls down a defensive rebound.
+101245701,3,11:32,33 — 29,STRAIGHT_ON_THREE,C. Rubio La Fuente (A) forces up a three from the top of the arc, guarded closely by T. Saunders (H).  Scored.
+101245701,3,11:11,33 — 29,WING,T. Saunders (H) tries to bank one in from the wing with C. Rubio La Fuente (A) right in his face.  Shot missed.
+101245701,3,11:11,33 — 29,REBOUND,Â. Frazão (A) ends the possession with a defensive rebound.
+101245701,3,10:58,33 — 29,WING_THREE,C. Rubio La Fuente (A) opens up the play with a pass to F. Adamčík (A). F. Adamčík (A) attempts a three-point shot from the wing.  Shot missed.
+101245701,3,10:58,33 — 29,REBOUND,J. Ingaramo (H) pulls down a defensive rebound.
+101245701,3,10:47,33 — 29,WING_THREE,D. Abaloidze (H) attempts a three-point shot from the wing after A. Nerecionis (A) backed off slightly.   Shot missed.
+101245701,3,10:47,33 — 29,REBOUND,A. Nerecionis (A) corrals the missed shot.
+101245701,3,10:35,33 — 29,WING, M. Ilić (A) attempts a jump-shot from the wing, guarded closely by J. Ingaramo (H).  Shot missed.
+101245701,3,10:35,33 — 29,REBOUND,The defensive rebound is snapped up by J. Ingaramo (H).
+101245701,3,10:23,33 — 29,OFF_FOUL,Offensive foul called on M. Repetti (H).
+101245701,3,10:11,33 — 29,TOPKEY,A. Nerecionis (A) pulls up at the top of the key and takes a shot, guarded closely by D. Abaloidze (H).  Shot blocked.
+101245701,3,10:11,33 — 29,REBOUND,A. Nerecionis (A) flew in from the wing to grab the offensive rebound.
+101245701,3,10:09,33 — 29,TIPBACK,A. Nerecionis (A) reaches up and tries to tip it in, guarded closely by D. Abaloidze (H).  Shot missed.
+101245701,3,10:09,33 — 29,REBOUND,M. Repetti (H) ends the possession with a defensive rebound.
+101245701,3,9:48,33 — 29,TOPKEY,J. Ingaramo (H) pulls up at the top of the key and takes a shot after F. Adamčík (A) backed off slightly.   Shot missed.
+101245701,3,9:48,33 — 29,REBOUND_OOB,Â. Frazão (A) tries to grab the defensive rebound, but the ball goes out of bounds.
+101245701,3,9:42,33 — 29,WING, D. Abaloidze (H) attempts a jump-shot from the wing, guarded closely by A. Nerecionis (A).  Shot missed.
+101245701,3,9:42,33 — 29,REBOUND,The defensive rebound is snapped up by C. Rubio La Fuente (A).
+101245701,3,9:27,35 — 29,DRIVING_LAYUP,C. Rubio La Fuente (A) gets off a great pass to M. Ilić (A). M. Ilić (A) tries a driving layup.  Scored.
+101245701,3,9:27,35 — 29,ASSIST,The shot was assisted by C. Rubio La Fuente (A).
+101245701,3,9:18,35 — 29,TOPKEY,I. Doganhan (H) pulls up at the top of the key and takes a shot, guarded closely by M. Ilić (A).  Shot missed.
+101245701,3,9:18,35 — 29,REBOUND_OOB,Neither team can corral the airball, and Ethereum Traders will take the ball out of bounds
+101245701,3,8:57,38 — 29,CORNER_THREE,M. Ilić (A) opens up the play with a pass to F. Adamčík (A). F. Adamčík (A) launches a three-pointer from the corner of the floor.  Scored.
+101245701,3,8:57,38 — 29,ASSIST,The shot was assisted by M. Ilić (A).
+101245701,3,8:46,38 — 29,WING, M. Repetti (H) attempts a jump-shot from the wing, as C. Rubio La Fuente (A) rotates over and alters his shot.  Shot blocked.
+101245701,3,8:46,38 — 29,REBOUND,Â. Frazão (A) ends the possession with a defensive rebound.
+101245701,3,8:26,38 — 29,WING, F. Adamčík (A) attempts a jump-shot from the wing, guarded closely by I. Doganhan (H).  Shot missed.
+101245701,3,8:26,38 — 29,REBOUND,T. Saunders (H) ends the possession with a defensive rebound.
+101245701,3,8:15,38 — 31,DRIVING_LAYUP,T. Saunders (H) tries a driving layup, guarded closely by C. Rubio La Fuente (A).  Scored.
+101245701,3,8:03,40 — 31,DUNK,Quick drop-step move leads to a two-handed dunk by A. Nerecionis (A) off of a nice pass from F. Adamčík (A).  Scored.
+101245701,3,8:03,40 — 31,ASSIST,The shot was assisted by F. Adamčík (A).
+101245701,3,7:47,40 — 31,ELBOW,T. Saunders (H) elevates and fires off a pull-up jumper from the elbow after C. Rubio La Fuente (A) backed off slightly.   Shot missed.
+101245701,3,7:47,40 — 31,REBOUND,F. Adamčík (A) grabs the defensive rebound.
+101245701,3,7:33,40 — 31,BASELINE_J,C. Rubio La Fuente (A) dribbles baseline and pulls up for a jumper under pressure from T. Saunders (H).  Shot missed.
+101245701,3,7:33,40 — 31,REBOUND,I. Doganhan (H) ends the possession with a defensive rebound.
+101245701,3,7:12,40 — 31,STRAIGHT_ON_THREE,J. Ingaramo (H) forces up a three from the top of the arc, guarded closely by F. Adamčík (A).  Shot missed.
+101245701,3,7:12,40 — 31,REBOUND,The defensive rebound is snapped up by Â. Frazão (A).
+101245701,3,6:52,40 — 31,WING_THREE,F. Adamčík (A) attempts a three-point shot from the wing under pressure from I. Doganhan (H).  Shot missed.
+101245701,3,6:52,40 — 31,REBOUND,D. Abaloidze (H) corrals the missed shot.
+101245701,3,6:33,40 — 31,STEAL_ON_PASS,M. Ilić (A) intercepted a pass.
+101245701,3,6:20,40 — 31,TOPKEY,C. Rubio La Fuente (A) pulls up at the top of the key and takes a shot after T. Saunders (H) backed off slightly.   Shot missed.
+101245701,3,6:20,40 — 31,REBOUND,C. Rubio La Fuente (A) cleans the offensive glass.
+101245701,3,6:05,40 — 31,WING_THREE,Â. Frazão (A) attempts a three-point shot from the wing, guarded closely by M. Repetti (H).  Shot missed.
+101245701,3,6:05,40 — 31,REBOUND,M. Repetti (H) ends the possession with a defensive rebound.
+101245701,3,5:53,40 — 33,TOPKEY,M. Repetti (H) pulls up at the top of the key and takes a shot, guarded closely by Â. Frazão (A).  Scored.
+101245701,3,5:37,42 — 33,TOPKEY,F. Adamčík (A) pulls up at the top of the key and takes a shot, guarded closely by I. Doganhan (H).  Scored.
+101245701,3,5:21,42 — 33,TOPKEY,T. Saunders (H) pulls up at the top of the key and takes a shot, guarded closely by C. Rubio La Fuente (A).  Shot missed.
+101245701,3,5:21,42 — 33,REBOUND,T. Saunders (H) flew in from the wing to grab the offensive rebound.
+101245701,3,5:15,42 — 33,DRIVING_LAYUP,J. Ingaramo (H) gets off a great pass to D. Abaloidze (H). D. Abaloidze (H) tries a driving layup.  Shot missed.
+101245701,3,5:15,42 — 33,REBOUND,F. Adamčík (A) corrals the missed shot.
+101245701,3,5:08,42 — 33,NOSHOOT_FOUL,Foul called on T. Saunders (H).
+101245701,3,5:08,42 — 33,SUBSTITUTION,M. Kaprál (A) substituted for M. Ilić (A) at PG.
+101245701,3,5:08,42 — 33,SUBSTITUTION,C. Rubio La Fuente (A) was replaced by A. Biezums (A) at SF.
+101245701,3,5:08,42 — 33,SUBSTITUTION,B. Bulejka (A) brought in for Â. Frazão (A) at PF.
+101245701,3,5:08,42 — 33,SUBSTITUTION,V. Lisenko (A) came off the bench to replace A. Nerecionis (A) at center.
+101245701,3,5:00,44 — 33,BASELINE_J,A. Biezums (A) attempts a baseline jumper, guarded closely by T. Saunders (H).  Scored.
+101245701,3,5:00,44 — 33,TIME_OUT,Full timeout called by Stopa Tigers.
+101245701,3,4:54,44 — 33,NOSHOOT_FOUL,Foul called on F. Adamčík (A).
+101245701,3,4:46,44 — 35,TOPKEY,T. Saunders (H) pulls up at the top of the key and takes a shot over A. Biezums (A).  Scored.
+101245701,3,4:32,44 — 35,TOPKEY,M. Kaprál (A) pulls up at the top of the key and takes a shot
+101245701,3,4:32,44 — 35,SHOOTING_FOUL,J. Ingaramo (H) is called for a shooting foul.
+101245701,3,4:32,44 — 35,FREE_THROW_MISSED,Free throw missed by M. Kaprál (A).
+101245701,3,4:32,45 — 35,FREE_THROW_MADE,M. Kaprál (A)'s free throw attempt is up and good.
+101245701,3,4:21,45 — 35,DRIVING_LAYUP,I. Doganhan (H) tries a driving layup
+101245701,3,4:21,45 — 35,SHOOTING_FOUL,M. Kaprál (A) is called for a shooting foul.
+101245701,3,4:21,45 — 36,FREE_THROW_MADE,I. Doganhan (H)'s free throw attempt is up and good.
+101245701,3,4:21,45 — 37,FREE_THROW_MADE,Free throw made by I. Doganhan (H).
+101245701,3,4:08,47 — 37,DRIVING_LAYUP,A. Biezums (A) gets off a great pass to M. Kaprál (A). M. Kaprál (A) tries a driving layup.  Scored.
+101245701,3,4:08,47 — 37,ASSIST,The shot was assisted by A. Biezums (A).
+101245701,3,3:52,47 — 37,DRIVING_LAYUP,I. Doganhan (H) tries a driving layup
+101245701,3,3:52,47 — 37,SHOOTING_FOUL,M. Kaprál (A) is called for a shooting foul.
+101245701,3,3:52,47 — 37,FREE_THROW_MISSED,Free throw missed by I. Doganhan (H).
+101245701,3,3:52,47 — 37,FREE_THROW_MISSED,I. Doganhan (H) throws up a brick from the line.
+101245701,3,3:52,47 — 37,REBOUND,M. Repetti (H) boxes out his man and snags the offensive rebound.
+101245701,3,3:43,47 — 39,DRIVING_LAYUP,T. Saunders (H) gets off a great pass to J. Ingaramo (H). J. Ingaramo (H) tries a driving layup.  Scored.
+101245701,3,3:43,47 — 39,ASSIST,The shot was assisted by T. Saunders (H).
+101245701,3,3:27,47 — 39,STRAIGHT_ON_THREE,A. Biezums (A) forces up a three from the top of the arc.  Shot missed.
+101245701,3,3:27,47 — 39,REBOUND,D. Abaloidze (H) corrals the missed shot.
+101245701,3,3:18,47 — 39,ELBOW,D. Abaloidze (H) threads a pass through the defense and finds J. Ingaramo (H).  J. Ingaramo (H) attempts a jumper from the elbow.  Shot missed.
+101245701,3,3:18,47 — 39,REBOUND,The defensive rebound is snapped up by A. Biezums (A).
+101245701,3,3:05,47 — 39,STRAIGHT_ON_THREE,A. Biezums (A) gets off a great pass to F. Adamčík (A). F. Adamčík (A) forces up a three from the top of the arc.  Shot missed.
+101245701,3,3:05,47 — 39,REBOUND_OOB,M. Repetti (H) tries to grab the defensive rebound, but the ball goes out of bounds.
+101245701,3,2:48,47 — 39,NOSHOOT_FOUL,Foul called on J. Ingaramo (H).
+101245701,3,2:48,47 — 39,SUBSTITUTION,Substitution at C: I. Cubero Arévalo (H) for D. Abaloidze (H).
+101245701,3,2:48,47 — 39,SUBSTITUTION,M. Ilić (A) substituted for M. Kaprál (A) at PG.
+101245701,3,2:48,47 — 39,SUBSTITUTION,A. Biezums (A) was replaced by C. Rubio La Fuente (A) at SF.
+101245701,3,2:48,47 — 39,SUBSTITUTION,Â. Frazão (A) brought in for B. Bulejka (A) at PF.
+101245701,3,2:48,47 — 39,SUBSTITUTION,A. Nerecionis (A) came off the bench to replace V. Lisenko (A) at center.
+101245701,3,2:30,47 — 39,LAYUP,A. Nerecionis (A) finds a clear path to the hoop and lays it up.  Shot missed.
+101245701,3,2:30,47 — 39,REBOUND,M. Repetti (H) ends the possession with a defensive rebound.
+101245701,3,2:21,47 — 41,DRIVING_LAYUP,T. Saunders (H) gets off a great pass to J. Ingaramo (H). J. Ingaramo (H) tries a driving layup.  Scored.
+101245701,3,2:21,47 — 41,ASSIST,T. Saunders (H) credited with the assist.
+101245701,3,1:58,49 — 41,BASELINE_J,Â. Frazão (A) opens up the play with a pass to F. Adamčík (A). F. Adamčík (A) dribbles baseline and pulls up for a jumper.  Scored.
+101245701,3,1:58,49 — 41,ASSIST,The shot was assisted by Â. Frazão (A).
+101245701,3,1:36,49 — 41,DRIVING_LAYUP,I. Cubero Arévalo (H) tries a driving layup over A. Nerecionis (A).  Shot missed.
+101245701,3,1:36,49 — 41,REBOUND,A. Nerecionis (A) ends the possession with a defensive rebound.
+101245701,3,1:21,49 — 41,ELBOW,M. Ilić (A) attempts a jumper from the elbow, guarded closely by J. Ingaramo (H).  Shot missed.
+101245701,3,1:21,49 — 41,REBOUND,A. Nerecionis (A) flew in from the wing to grab the offensive rebound.
+101245701,3,1:19,51 — 41,TIPBACK,A. Nerecionis (A) reaches up and tries to tip it in, guarded closely by I. Cubero Arévalo (H).  Scored.
+101245701,3,1:06,51 — 41,TOPKEY,J. Ingaramo (H) pulls up at the top of the key and takes a shot after F. Adamčík (A) backed off slightly.   Shot missed.
+101245701,3,1:06,51 — 41,REBOUND,Â. Frazão (A) grabs the defensive rebound.
+101245701,3,0:50,54 — 41,CORNER_THREE,C. Rubio La Fuente (A) catches in the corner and launches for three off of a nice pass from M. Ilić (A).  Scored.
+101245701,3,0:50,54 — 41,ASSIST,The shot was assisted by M. Ilić (A).
+101245701,3,0:37,54 — 41,BASELINE_J,I. Cubero Arévalo (H) dribbles baseline and pulls up for a jumper under pressure from A. Nerecionis (A).  Shot missed.
+101245701,3,0:37,54 — 41,REBOUND,The defensive rebound is snapped up by A. Nerecionis (A).
+101245701,3,0:26,54 — 41,TOPKEY,Â. Frazão (A) opens up the play with a pass to M. Ilić (A). M. Ilić (A) pulls up at the top of the key and takes a shot.  Shot missed.
+101245701,3,0:26,54 — 41,REBOUND,C. Rubio La Fuente (A) cleans the offensive glass.
+101245701,3,0:18,54 — 41,DRIVING_LAYUP,F. Adamčík (A) gets off a great pass to Â. Frazão (A). Â. Frazão (A) tries a driving layup.  Shot missed.
+101245701,3,0:18,54 — 41,REBOUND,M. Repetti (H) corrals the missed shot.
+101245701,3,0:02,54 — 43,TOPKEY,I. Cubero Arévalo (H) gets off a great pass to J. Ingaramo (H). J. Ingaramo (H) pulls up at the top of the key and takes a shot.  Scored.
+101245701,3,0:02,54 — 43,ASSIST,I. Cubero Arévalo (H) credited with the assist.
+101245701,3,0:00,54 — 43,HALF_COURT_SHOT,M. Ilić (A) hopes for a miracle as he throws up a long half-court shot after J. Ingaramo (H) backed off slightly.   Shot missed.
+101245701,3,0:00,54 — 43,PERIOD_OVER,End of period.
+101245701,3,0:00,54 — 43,SUBSTITUTION,Substitution at C: D. Abaloidze (H) for I. Cubero Arévalo (H).
+101245701,4,11:45,56 — 43,BASELINE_J,Â. Frazão (A) attempts a baseline jumper, guarded closely by M. Repetti (H).  Scored.
+101245701,4,11:33,56 — 43,WING, M. Repetti (H) attempts a jump-shot from the wing after Â. Frazão (A) backed off slightly.   Shot missed.
+101245701,4,11:33,56 — 43,REBOUND,A. Nerecionis (A) corrals the missed shot.
+101245701,4,11:19,56 — 43,BASELINE_J,F. Adamčík (A) threads a pass through the defense and finds Â. Frazão (A).  Â. Frazão (A) puts up an off-balance jumper from the baseline.  Shot missed.
+101245701,4,11:19,56 — 43,REBOUND,T. Saunders (H) grabs the defensive rebound.
+101245701,4,11:10,56 — 43,WING, T. Saunders (H) attempts a jump-shot from the wing.  Shot missed.
+101245701,4,11:10,56 — 43,REBOUND,A. Nerecionis (A) pulls down a defensive rebound.
+101245701,4,10:54,58 — 43,DUNK,Quick drop-step move leads to a two-handed dunk by A. Nerecionis (A) off of a nice pass from C. Rubio La Fuente (A).  Scored.
+101245701,4,10:54,58 — 43,ASSIST,C. Rubio La Fuente (A) credited with the assist.
+101245701,4,10:42,58 — 46,STRAIGHT_ON_THREE,I. Doganhan (H) forces up a three from the top of the arc, guarded closely by M. Ilić (A).  Scored.
+101245701,4,10:22,58 — 46,TOPKEY,M. Ilić (A) pulls up at the top of the key and takes a shot, guarded closely by J. Ingaramo (H).  Shot missed.
+101245701,4,10:22,58 — 46,REBOUND,D. Abaloidze (H) corrals the missed shot.
+101245701,4,10:16,58 — 46,NOSHOOT_FOUL,Foul called on M. Ilić (A).
+101245701,4,10:10,58 — 48,STRONG,D. Abaloidze (H) backs down his defender and shoots from close range off of a nice pass from T. Saunders (H).  Scored.
+101245701,4,10:10,58 — 48,ASSIST,The shot was assisted by T. Saunders (H).
+101245701,4,9:54,58 — 48,STEAL_ON_PASS,J. Ingaramo (H) intercepted a pass.
+101245701,4,9:49,58 — 48,TOPKEY,T. Saunders (H) pulls up at the top of the key and takes a shot under pressure from C. Rubio La Fuente (A).  Shot missed.
+101245701,4,9:49,58 — 48,REBOUND,A. Nerecionis (A) pulls down a defensive rebound.
+101245701,4,9:34,58 — 48,THREE_SECOND,F. Adamčík (A) is whistled for a three-second violation.
+101245701,4,9:22,58 — 48,ELBOW,I. Doganhan (H) attempts a jumper from the elbow
+101245701,4,9:22,58 — 48,SHOOTING_FOUL,M. Ilić (A) is called for a shooting foul.
+101245701,4,9:22,58 — 48,FREE_THROW_MISSED,Free throw missed by I. Doganhan (H).
+101245701,4,9:22,58 — 49,FREE_THROW_MADE,I. Doganhan (H) gets the free throw to go.
+101245701,4,9:00,60 — 49,BASELINE_J,C. Rubio La Fuente (A) dribbles baseline and pulls up for a jumper under pressure from T. Saunders (H).  Scored.
+101245701,4,8:44,60 — 51,DRIVING_LAYUP,J. Ingaramo (H) gets off a great pass to I. Doganhan (H). I. Doganhan (H) tries a driving layup.  Scored.
+101245701,4,8:44,60 — 51,ASSIST,The shot was assisted by J. Ingaramo (H).
+101245701,4,8:30,60 — 51,BASELINE_J,Â. Frazão (A) attempts a baseline jumper, guarded closely by M. Repetti (H).  Shot missed.
+101245701,4,8:30,60 — 51,REBOUND,F. Adamčík (A) hustles for the offensive rebound.
+101245701,4,8:16,60 — 51,ELBOW,F. Adamčík (A) gets off a great pass to C. Rubio La Fuente (A). C. Rubio La Fuente (A) attempts a jumper from the elbow.  Shot missed.
+101245701,4,8:16,60 — 51,REBOUND_OOB,There's a scramble for the ball, and both players look to the ref, who rules in favor of Ethereum Traders
+101245701,4,8:02,60 — 51,STRAIGHT_ON_THREE,C. Rubio La Fuente (A) forces up a three from the top of the arc, guarded closely by T. Saunders (H).  Shot missed.
+101245701,4,8:02,60 — 51,REBOUND,I. Doganhan (H) corrals the missed shot.
+101245701,4,7:52,60 — 51,DRIVING_LAYUP,T. Saunders (H) tries a driving layup.  Shot missed.
+101245701,4,7:52,60 — 51,REBOUND,A. Nerecionis (A) corrals the missed shot.
+101245701,4,7:36,60 — 51,CORNER_THREE,F. Adamčík (A) fires up a three-point shot from the corner, guarded closely by I. Doganhan (H).  Shot missed.
+101245701,4,7:36,60 — 51,REBOUND,D. Abaloidze (H) corrals the missed shot.
+101245701,4,7:25,60 — 53,BASELINE_J,J. Ingaramo (H)  finds I. Doganhan (H) in space. I. Doganhan (H) puts up a jumper from the baseline.  Scored.
+101245701,4,7:25,60 — 53,ASSIST,The shot was assisted by J. Ingaramo (H).
+101245701,4,7:14,62 — 53,DRIVING_LAYUP,M. Ilić (A) threads a pass through the defense and finds Â. Frazão (A).  Â. Frazão (A) tries a driving layup.  Scored.
+101245701,4,7:14,62 — 53,ASSIST,The shot was assisted by M. Ilić (A).
+101245701,4,7:14,62 — 53,DOUBLE_DOUBLE,Â. Frazão (A) now has a double double.
+101245701,4,6:51,62 — 53,DRIVING_LAYUP,I. Doganhan (H) tries a driving layup over M. Ilić (A).  Shot missed.
+101245701,4,6:51,62 — 53,REBOUND_OOB,A. Nerecionis (A) tries to grab the defensive rebound, but the ball goes out of bounds.
+101245701,4,6:40,62 — 53,NOSHOOT_FOUL,Foul called on M. Ilić (A).
+101245701,4,6:40,62 — 53,SUBSTITUTION,M. Kaprál (A) substituted for M. Ilić (A) at PG.
+101245701,4,6:40,62 — 53,SUBSTITUTION,C. Rubio La Fuente (A) was replaced by A. Biezums (A) at SF.
+101245701,4,6:40,62 — 53,SUBSTITUTION,B. Bulejka (A) brought in for Â. Frazão (A) at PF.
+101245701,4,6:40,62 — 53,SUBSTITUTION,V. Lisenko (A) came off the bench to replace A. Nerecionis (A) at center.
+101245701,4,6:26,62 — 53,DRIVING_LAYUP,I. Doganhan (H) tries a driving layup
+101245701,4,6:26,62 — 53,SHOOTING_FOUL,M. Kaprál (A) is called for a shooting foul.
+101245701,4,6:26,62 — 53,FREE_THROW_MISSED,Free throw missed by I. Doganhan (H).
+101245701,4,6:26,62 — 53,FREE_THROW_MISSED,Free throw missed by I. Doganhan (H).
+101245701,4,6:26,62 — 53,REBOUND,The defensive rebound is snapped up by M. Kaprál (A).
+101245701,4,6:13,64 — 53,TOPKEY,M. Kaprál (A) pulls up at the top of the key and takes a shot, guarded closely by J. Ingaramo (H).  Scored.
+101245701,4,5:49,64 — 55,DRIVING_LAYUP,D. Abaloidze (H) tries a driving layup after V. Lisenko (A) backed off slightly.   Scored.
+101245701,4,5:43,64 — 55,NOSHOOT_FOUL,Foul called on J. Ingaramo (H).
+101245701,4,5:37,64 — 55,DRIVING_LAYUP,M. Kaprál (A) gets off a great pass to A. Biezums (A). A. Biezums (A) tries a driving layup.  Shot missed.
+101245701,4,5:37,64 — 55,REBOUND,I. Doganhan (H) pulls down a defensive rebound.
+101245701,4,5:26,64 — 58,WING_THREE,T. Saunders (H) attempts a three-point shot from the wing, guarded closely by A. Biezums (A).  Scored.
+101245701,4,5:26,64 — 58,TIME_OUT,Full timeout called by Ethereum Traders.
+101245701,4,5:11,66 — 58,ELBOW,V. Lisenko (A) slips off a screen and fires from the elbow with D. Abaloidze (H) right in his face.  Scored.
+101245701,4,4:59,66 — 60,BASELINE_J,T. Saunders (H) gets off a great pass to J. Ingaramo (H). J. Ingaramo (H) attempts a baseline jumper.  Scored.
+101245701,4,4:59,66 — 60,ASSIST,The shot was assisted by T. Saunders (H).
+101245701,4,4:37,66 — 60,WING,B. Bulejka (A)  finds M. Kaprál (A) in space.  M. Kaprál (A) attempts a jump-shot from the wing.  Shot missed.
+101245701,4,4:37,66 — 60,REBOUND,V. Lisenko (A) flew in from the wing to grab the offensive rebound.
+101245701,4,4:13,69 — 60,WING_THREE,B. Bulejka (A) attempts a three-point shot from the wing.  Scored.
+101245701,4,4:13,69 — 60,ASSIST,The shot was assisted by F. Adamčík (A).
+101245701,4,4:02,69 — 60,FALL_AWAY,D. Abaloidze (H) goes up with the fade-away after V. Lisenko (A) backed off slightly.   Shot missed.
+101245701,4,4:02,69 — 60,REBOUND,M. Repetti (H) boxes out his man and snags the offensive rebound.
+101245701,4,4:00,69 — 60,TIPBACK,M. Repetti (H) reaches up and tries to tip it in, as A. Biezums (A) rotates over and alters his shot.  Shot missed.
+101245701,4,4:00,69 — 60,REBOUND,M. Kaprál (A) ends the possession with a defensive rebound.
+101245701,4,3:44,72 — 60,STRAIGHT_ON_THREE,M. Kaprál (A) forces up a three from the top of the arc, guarded closely by J. Ingaramo (H).  Scored.
+101245701,4,3:32,72 — 62,DUNK,M. Repetti (H) threads a pass through the defense and finds I. Doganhan (H).  I. Doganhan (H) goes baseline and stretches out for the dunk.  Scored.
+101245701,4,3:32,72 — 62,ASSIST,The shot was assisted by M. Repetti (H).
+101245701,4,3:08,72 — 62,WING, A. Biezums (A) attempts a jump-shot from the wing, guarded closely by T. Saunders (H).  Shot missed.
+101245701,4,3:08,72 — 62,REBOUND,V. Lisenko (A) flew in from the wing to grab the offensive rebound.
+101245701,4,2:58,72 — 62,BAD_PASS,V. Lisenko (A) threw the ball away.
+101245701,4,2:58,72 — 62,SUBSTITUTION,Substitution at C: I. Cubero Arévalo (H) for D. Abaloidze (H).
+101245701,4,2:58,72 — 62,SUBSTITUTION,M. Ilić (A) substituted for M. Kaprál (A) at PG.
+101245701,4,2:58,72 — 62,SUBSTITUTION,A. Biezums (A) was replaced by C. Rubio La Fuente (A) at SF.
+101245701,4,2:58,72 — 62,SUBSTITUTION,Â. Frazão (A) brought in for B. Bulejka (A) at PF.
+101245701,4,2:58,72 — 62,SUBSTITUTION,A. Nerecionis (A) came off the bench to replace V. Lisenko (A) at center.
+101245701,4,2:46,72 — 62,TRAVEL,T. Saunders (H) called for a traveling violation.
+101245701,4,2:26,72 — 62,STEAL,Ball stolen by I. Doganhan (H).
+101245701,4,2:14,72 — 62,TOPKEY,J. Ingaramo (H) pulls up at the top of the key and takes a shot, guarded closely by F. Adamčík (A).  Shot missed.
+101245701,4,2:14,72 — 62,REBOUND,M. Ilić (A) ends the possession with a defensive rebound.
+101245701,4,2:02,72 — 62,WING_THREE,C. Rubio La Fuente (A) attempts a three-point shot from the wing, guarded closely by T. Saunders (H).  Shot missed.
+101245701,4,2:02,72 — 62,REBOUND,T. Saunders (H) grabs the defensive rebound.
+101245701,4,1:41,72 — 64,DUNK,I. Cubero Arévalo (H) gets off a great pass to J. Ingaramo (H). J. Ingaramo (H) throws down a powerful two-handed dunk.  Scored.
+101245701,4,1:41,72 — 64,ASSIST,The shot was assisted by I. Cubero Arévalo (H).
+101245701,4,1:26,72 — 64,ELBOW,F. Adamčík (A) elevates and fires off a pull-up jumper from the elbow
+101245701,4,1:26,72 — 64,SHOOTING_FOUL,I. Doganhan (H) is called for a shooting foul.
+101245701,4,1:26,73 — 64,FREE_THROW_MADE,The free throw by F. Adamčík (A) is up and in.
+101245701,4,1:26,73 — 64,SUBSTITUTION_SWAP,M. Repetti (H) and I. Cubero Arévalo (H) will swap positions on the court.
+101245701,4,1:26,73 — 64,SUBSTITUTION,M. Strgačić (H) substituted for I. Doganhan (H) at SG.
+101245701,4,1:26,73 — 64,SUBSTITUTION,Substitution at C: D. Abaloidze (H) for M. Repetti (H).
+101245701,4,1:26,73 — 64,SUBSTITUTION,B. Bulejka (A) brought in for Â. Frazão (A) at PF.
+101245701,4,1:26,73 — 64,FREE_THROW_MISSED,F. Adamčík (A) throws up a brick from the line.
+101245701,4,1:26,73 — 64,REBOUND,D. Abaloidze (H) corrals the missed shot.
+101245701,4,1:26,73 — 64,DOUBLE_DOUBLE,D. Abaloidze (H) now has a double double.
+101245701,4,1:17,73 — 67,CORNER_THREE,J. Ingaramo (H) fires up a three-point shot from the corner, guarded closely by F. Adamčík (A).  Scored.
+101245701,4,1:15,73 — 67,NOSHOOT_FOUL,Foul called on D. Abaloidze (H).
+101245701,4,1:15,73 — 67,SUBSTITUTION,I. Doganhan (H) substituted for M. Strgačić (H) at SG.
+101245701,4,1:15,73 — 67,SUBSTITUTION,Change at PF: M. Repetti (H) in. I. Cubero Arévalo (H) out.
+101245701,4,1:13,73 — 67,NOSHOOT_FOUL,Foul called on M. Repetti (H).
+101245701,4,0:57,73 — 67,CORNER_THREE,M. Ilić (A) gets off a great pass to F. Adamčík (A). F. Adamčík (A) fires up a three-point shot from the corner.  Shot missed.
+101245701,4,0:57,73 — 67,REBOUND,The defensive rebound is snapped up by M. Repetti (H).
+101245701,4,0:57,73 — 67,TIME_OUT,Full timeout called by Stopa Tigers.
+101245701,4,0:57,73 — 67,SUBSTITUTION,Â. Frazão (A) brought in for B. Bulejka (A) at PF.
+101245701,4,0:49,73 — 67,STRONG,M. Repetti (H) gets off a great pass to D. Abaloidze (H). D. Abaloidze (H) goes up strong for an inside shot.  Shot missed.
+101245701,4,0:49,73 — 67,REBOUND,Â. Frazão (A) grabs the defensive rebound.
+101245701,4,0:47,73 — 67,NOSHOOT_FOUL,Foul called on J. Ingaramo (H).
+101245701,4,0:47,73 — 67,SUBSTITUTION,M. Strgačić (H) substituted for I. Doganhan (H) at SG.
+101245701,4,0:47,73 — 67,SUBSTITUTION,Change at PF: I. Cubero Arévalo (H) in. M. Repetti (H) out.
+101245701,4,0:47,73 — 67,SUBSTITUTION,B. Bulejka (A) brought in for Â. Frazão (A) at PF.
+101245701,4,0:47,74 — 67,FREE_THROW_MADE,Free throw made by M. Ilić (A).
+101245701,4,0:47,75 — 67,FREE_THROW_MADE,M. Ilić (A)'s free throw attempt is up and good.
+101245701,4,0:47,75 — 67,SUBSTITUTION,I. Doganhan (H) substituted for M. Strgačić (H) at SG.
+101245701,4,0:47,75 — 67,SUBSTITUTION,Change at PF: M. Repetti (H) in. I. Cubero Arévalo (H) out.
+101245701,4,0:38,75 — 67,WING_THREE,J. Ingaramo (H) attempts a three-point shot from the wing, guarded closely by F. Adamčík (A).  Shot missed.
+101245701,4,0:38,75 — 67,REBOUND,B. Bulejka (A) grabs the defensive rebound.
+101245701,4,0:36,75 — 67,NOSHOOT_FOUL,Foul called on J. Ingaramo (H).
+101245701,4,0:36,75 — 67,SUBSTITUTION,M. Strgačić (H) substituted for I. Doganhan (H) at SG.
+101245701,4,0:36,75 — 67,SUBSTITUTION,Change at PF: I. Cubero Arévalo (H) in. M. Repetti (H) out.
+101245701,4,0:36,76 — 67,FREE_THROW_MADE,M. Ilić (A)'s free throw attempt is up and good.
+101245701,4,0:36,77 — 67,FREE_THROW_MADE,The free throw by M. Ilić (A) is up and in.
+101245701,4,0:36,77 — 67,SUBSTITUTION,Change at PF: M. Repetti (H) in. I. Cubero Arévalo (H) out.
+101245701,4,0:36,77 — 67,SUBSTITUTION,Â. Frazão (A) brought in for B. Bulejka (A) at PF.
+101245701,4,0:28,77 — 67,OFF_FOUL,Offensive foul called on M. Repetti (H).
+101245701,4,0:26,77 — 67,NOSHOOT_FOUL,Foul called on M. Strgačić (H).
+101245701,4,0:26,78 — 67,FREE_THROW_MADE,Free throw made by M. Ilić (A).
+101245701,4,0:26,79 — 67,FREE_THROW_MADE,The free throw by M. Ilić (A) is up and in.
+101245701,4,0:19,79 — 67,WING_THREE,T. Saunders (H) attempts a three-point shot from the wing, guarded closely by C. Rubio La Fuente (A).  Shot missed.
+101245701,4,0:19,79 — 67,REBOUND,T. Saunders (H) grabs the offensive rebound.
+101245701,4,0:17,79 — 67,WING_THREE,M. Repetti (H) attempts a three-point shot from the wing, guarded closely by Â. Frazão (A).  Shot missed.
+101245701,4,0:17,79 — 67,REBOUND,A. Nerecionis (A) corrals the missed shot.
+101245701,4,0:00,81 — 67,DUNK,Â. Frazão (A) opens up the play with a pass to A. Nerecionis (A). A. Nerecionis (A) skies over the defender and throws it down one-handed.  Scored.
+101245701,4,0:00,81 — 67,ASSIST,The shot was assisted by Â. Frazão (A).
+101245701,4,0:00,81 — 67,BUZZERBEATER,A buzzerbeater for A. Nerecionis (A)!
+101245701,4,0:00,81 — 67,PERIOD_OVER,End of period.
