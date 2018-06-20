@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 import scrapy
+import psycopg2
 from bs4 import BeautifulSoup
+
+from buzzerbeater_scraper.items import PlayByPlayItem
+
 
 class BuzzerbeaterSpider(scrapy.Spider):
 
@@ -35,6 +39,7 @@ class BuzzerbeaterSpider(scrapy.Spider):
                 print("URL", url)
                 yield scrapy.Request(url, callback=self.parse_pbp)
 
+    # Parses the Play-by-Play page
     def parse_pbp(self, response):
         print("URL", response.url)
         soup = BeautifulSoup(response.text, 'lxml')
@@ -47,21 +52,20 @@ class BuzzerbeaterSpider(scrapy.Spider):
         match_id = match_id.replace("/match/", "")
         match_id = match_id.replace("/pbp.aspx", "")
 
-        # Preparing a CSV file
-        f = open('-'.join([match_id, "match.csv"]), 'w')
-        f.write("match_id,qtr,clock,score,event_type,event")
-
         # Iterating through the Play-by-play table
         i = 1
         while i < len(play_by_play.find_all('tr')):
             row = play_by_play.select('tr')[i]
-            event_type = row['class']
-            qtr = row.select('td')[0]
-            clock = row.select('td')[1]
-            score = row.select('td')[2]
-            event = row.select('td')[3]
-            string = ','.join([match_id, qtr.get_text(), clock.get_text(), score.get_text(), event_type[0], event.get_text()])
-            print(string.replace(" , ", ","), file=f)
+            item_match_id = int(match_id)
+            item_event_type = row['class'][0]
+            item_quarter = row.select('td')[0].get_text()
+            item_clock = row.select('td')[1].get_text()
+            item_score = row.select('td')[2].get_text()
+            item_event = row.select('td')[3].get_text()
+
+            # Creating an Item to insert into the DB
+            playByPlayItem = PlayByPlayItem(id=int(str(match_id) + str(i)), match_id=item_match_id, event_type=item_event_type,
+                                            quarter=int(item_quarter), clock=item_clock, score=item_score, event=item_event)
+            yield playByPlayItem
             i += 1
-        f.close()
 
