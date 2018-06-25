@@ -19,3 +19,13 @@ class PlayByPlayItem(scrapy.Item):
     score = scrapy.Field()
     event = scrapy.Field()
     pass
+
+class MatchItem(scrapy.Item):
+    id = scrapy.Field()
+    match_date = scrapy.Field()
+    home_team_id = scrapy.Field()
+    away_team_id = scrapy.Field()
+
+class TeamItem(scrapy.Item):
+    id = scrapy.Field()
+    name = scrapy.Field()

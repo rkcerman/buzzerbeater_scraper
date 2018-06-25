@@ -8,6 +8,7 @@ from psycopg2 import IntegrityError
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
+from buzzerbeater_scraper.items import PlayByPlayItem, MatchItem, TeamItem
 
 
 class BuzzerbeaterScraperPipeline(object):
@@ -24,11 +25,28 @@ class BuzzerbeaterScraperPipeline(object):
         self.conn.close()
 
     def process_item(self, item, spider):
-        try:
-            self.cur.execute("INSERT INTO play_by_plays VALUES(%s, %s, %s, %s, %s, %s, %s) ON CONFLICT DO NOTHING",
-                             (item['id'], item['event_type'], item['quarter'],
-                              item['clock'], item['score'], item['event'], item['match_id']))
-            self.conn.commit()
-        except IntegrityError as e:
-            print("Duplicate primary key entry, skipping")
-        return item
+        if isinstance(item, PlayByPlayItem):
+            try:
+                self.cur.execute("INSERT INTO play_by_plays VALUES(%s, %s, %s, %s, %s, %s, %s) ON CONFLICT DO NOTHING",
+                                 (item['id'], item['event_type'], item['quarter'],
+                                  item['clock'], item['score'], item['event'], item['match_id']))
+                self.conn.commit()
+            except IntegrityError as e:
+                print("Duplicate primary key entry, skipping")
+            return item
+        if isinstance(item, MatchItem):
+            try:
+                self.cur.execute("INSERT INTO matches VALUES(%s, %s, %s, %s) ON CONFLICT DO NOTHING",
+                                 (item['id'], item['match_date'], item['home_team_id'], item['away_team_id']))
+                self.conn.commit()
+            except IntegrityError as e:
+                print("Duplicate primary key entry, skipping")
+            return item
+        if isinstance(item, TeamItem):
+            try:
+                self.cur.execute("INSERT INTO teams VALUES(%s, %s) ON CONFLICT DO NOTHING",
+                                 (item['id'], item['name']))
+                self.conn.commit()
+            except IntegrityError as e:
+                print("Duplicate primary key entry, skipping")
+            return item
