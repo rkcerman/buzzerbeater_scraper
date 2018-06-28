@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
+import re
 from datetime import datetime
 from dateutil.parser import parse
 from bs4 import BeautifulSoup
@@ -88,20 +89,17 @@ class BuzzerbeaterSpider(scrapy.Spider):
                                        away_team_id=away_team_id, home_team_id=home_team_id)
                 yield match_item
 
-                print("href: ", box_score_link.extract())
                 yield response.follow(box_score_link.extract_first(), self.parse_boxscore)
 
     # TODO parse the actual box score
     # Parses the Boxscore page
     def parse_boxscore(self, response):
         for href in response.xpath('//a[@title="Play-By-Play"]').css('::attr(href)'):
-            print(href)
             yield response.follow(href, self.parse_pbp)
 
     # TODO Try to find a way to use scrapy's native parsing here
     # Parses the Play-by-Play page
     def parse_pbp(self, response):
-        print("URL", response.url)
         soup = BeautifulSoup(response.text, 'lxml')
 
         # Selecting the Play-by-play table
@@ -121,11 +119,18 @@ class BuzzerbeaterSpider(scrapy.Spider):
             item_quarter = row.select('td')[0].get_text()
             item_clock = row.select('td')[1].get_text()
             item_score = row.select('td')[2].get_text()
-            item_event = row.select('td')[3].get_text()
+
+            item_event = row.select('td')[3]
+            item_event_text = item_event.get_text()
+            for href in item_event.find_all('a'):
+                player_name = href.get_text()
+                player_href_id = href.get('href')
+                player_href_id = re.search('\/player\/(\d+)\/overview.aspx', player_href_id).group(1)
+                item_event_text = item_event_text.replace(player_name, player_href_id)
 
             # Creating an Item to insert into the DB
             playByPlayItem = PlayByPlayItem(id=int(str(match_id) + str(i)), match_id=item_match_id, event_type=item_event_type,
-                                            quarter=int(item_quarter), clock=item_clock, score=item_score, event=item_event)
+                                            quarter=int(item_quarter), clock=item_clock, score=item_score, event=item_event_text)
             yield playByPlayItem
             i += 1
 
