@@ -2,7 +2,6 @@
 import scrapy
 import re
 from datetime import datetime
-from dateutil.parser import parse
 from bs4 import BeautifulSoup
 
 from buzzerbeater_scraper.items import PlayByPlayItem, TeamItem, MatchItem
@@ -121,10 +120,9 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
             item_score = row.select('td')[2].get_text()
 
             item_event = row.select('td')[3]
-            item_event_links = item_event.find_all('a')
 
             # Replacing Player names for IDs; makes jobs down the line easier
-            for idx, href in enumerate(item_event_links):
+            for idx, href in enumerate(item_event.find_all('a')):
                 player_href_id = href.get('href')
                 player_href_id = re.search('\/player\/(\d+)\/overview.aspx', player_href_id).group(1)
                 item_event.select('a')[idx].string = player_href_id

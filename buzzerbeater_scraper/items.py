@@ -29,3 +29,6 @@ class MatchItem(scrapy.Item):
 class TeamItem(scrapy.Item):
     id = scrapy.Field()
     name = scrapy.Field()
+
+class OnlinePeopleItem(scrapy.Item):
+    value = scrapy.Field()
