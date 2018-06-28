@@ -8,17 +8,15 @@ from bs4 import BeautifulSoup
 from buzzerbeater_scraper.items import PlayByPlayItem, TeamItem, MatchItem
 
 
-class BuzzerbeaterSpider(scrapy.Spider):
+class BuzzerbeaterMatchesSpider(scrapy.Spider):
 
-    name = "buzzerbeater"
+    name = "buzzerbeater_matches_spider"
     allowed_domains = ["buzzerbeater.com"]
     start_urls = (
         'http://www.buzzerbeater.com/default.aspx',
     )
     urls = [
         'http://www.buzzerbeater.com/team/58420/schedule.aspx'
-    #    'http://www.buzzerbeater.com/match/101245701/pbp.aspx',
-    #    'http://www.buzzerbeater.com/match/101245693/pbp.aspx'
     ]
 
     def parse(self, response):
@@ -52,6 +50,7 @@ class BuzzerbeaterSpider(scrapy.Spider):
                 match_date = datetime.strptime(match_date, '%m/%d/%Y')
                 print("date : ", match_date)
 
+                # TODO Fails at Great/Big 8, also likely a shitty approach (avoid try/except)
                 # Creating the Away Team item
                 try:
                     away_team_name = row.xpath('td[3]/a/text()').extract_first()
@@ -89,7 +88,8 @@ class BuzzerbeaterSpider(scrapy.Spider):
                                        away_team_id=away_team_id, home_team_id=home_team_id)
                 yield match_item
 
-                yield response.follow(box_score_link.extract_first(), self.parse_boxscore)
+                if box_score_link.extract_first() == "/match/101867528/boxscore.aspx":
+                    yield response.follow(box_score_link.extract_first(), self.parse_boxscore)
 
     # TODO parse the actual box score
     # Parses the Boxscore page
@@ -121,16 +121,18 @@ class BuzzerbeaterSpider(scrapy.Spider):
             item_score = row.select('td')[2].get_text()
 
             item_event = row.select('td')[3]
-            item_event_text = item_event.get_text()
-            for href in item_event.find_all('a'):
-                player_name = href.get_text()
+            item_event_links = item_event.find_all('a')
+
+            # Replacing Player names for IDs; makes jobs down the line easier
+            for idx, href in enumerate(item_event_links):
                 player_href_id = href.get('href')
                 player_href_id = re.search('\/player\/(\d+)\/overview.aspx', player_href_id).group(1)
-                item_event_text = item_event_text.replace(player_name, player_href_id)
+                item_event.select('a')[idx].string = player_href_id
 
             # Creating an Item to insert into the DB
             playByPlayItem = PlayByPlayItem(id=int(str(match_id) + str(i)), match_id=item_match_id, event_type=item_event_type,
-                                            quarter=int(item_quarter), clock=item_clock, score=item_score, event=item_event_text)
+                                            quarter=int(item_quarter), clock=item_clock, score=item_score, event=item_event.get_text())
+
             yield playByPlayItem
             i += 1
 
