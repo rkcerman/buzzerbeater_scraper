@@ -32,3 +32,25 @@ class TeamItem(scrapy.Item):
 
 class OnlinePeopleItem(scrapy.Item):
     value = scrapy.Field()
+
+class PlayerItem(scrapy.Item):
+    id = scrapy.Field()
+    weekly_salary = scrapy.Field()
+    dmi = scrapy.Field()
+    age = scrapy.Field()
+    height = scrapy.Field()
+    position = scrapy.Field()
+    name = scrapy.Field()
+    team_id = scrapy.Field()
+
+class PlayerHistoryItem(scrapy.Item):
+    player_id = scrapy.Field()
+    event = scrapy.Field()
+    date = scrapy.Field()
+    season = scrapy.Field()
+    details = scrapy.Field()
+
+class PlayerSkillsItem(scrapy.Item):
+    player_id = scrapy.Field()
+    skill = scrapy.Field()
+    value = scrapy.Field()
