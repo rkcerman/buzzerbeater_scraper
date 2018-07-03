@@ -6,9 +6,9 @@ from scrapy import FormRequest
 
 from buzzerbeater_scraper.items import PlayerItem, PlayerSkillsItem, TeamItem
 
-
 class BuzzerbeaterTransfersSpider(scrapy.Spider):
 
+    transfer_list_page = 0
     name = "transfers_spider"
     allowed_domains = ["buzzerbeater.com"]
     start_urls = (
@@ -40,9 +40,8 @@ class BuzzerbeaterTransfersSpider(scrapy.Spider):
                 yield scrapy.Request(url, callback=self.parse_transfer_search)
 
     def parse_transfer_search(self, response):
-        viewstate = response.xpath('//input[@name="__VIEWSTATE"]/@value').extract()
-        eventvalidation = response.xpath('//input[@name="__EVENTVALIDATION"]/@value').extract()
-        print(viewstate)
+        viewstate = response.xpath('//input[@name="__VIEWSTATE"]/@value').extract_first()
+        eventvalidation = response.xpath('//input[@name="__EVENTVALIDATION"]/@value').extract_first()
         print(eventvalidation)
         formdata = {
             "__EVENTTARGET": "",
@@ -51,9 +50,9 @@ class BuzzerbeaterTransfersSpider(scrapy.Spider):
             "__VIEWSTATE": viewstate,
             "ctl00$hdnNetlogLang": "",
             "ctl00$myURL": "http://www.buzzerbeater.com/manage/transferlist.aspx",
-            "ctl00$tbCurrentPageName": "Link",
-            "ctl00$tbCustomLinkText": "Link",
-            "ctl00$tbCustomLinkURL": "Link",
+            "ctl00$tbCurrentPageName": "Link Name",
+            "ctl00$tbCustomLinkText": "Link Name",
+            "ctl00$tbCustomLinkURL": "Link URL",
             "ctl00$cphContent$ddlSkill1": "0",
             "ctl00$cphContent$ddlSkill2": "0",
             "ctl00$cphContent$ddlSkill3": "0",
@@ -96,17 +95,52 @@ class BuzzerbeaterTransfersSpider(scrapy.Spider):
 
     # TODO follow next page
     def parse_transfers(self, response):
-         for row in response.xpath('//div[@id="playerbox"]'):
-             player_link = row.xpath('div[@class="boxheader"]/a/@href')
+        self.transfer_list_page += 1
+        self.logger.info(msg=("Transfer list page: ", self.transfer_list_page))
+        viewstate = response.xpath('//input[@name="__VIEWSTATE"]/@value').extract_first()
+        eventvalidation = response.xpath('//input[@name="__EVENTVALIDATION"]/@value').extract_first()
+        previouspage = response.xpath('//input[@name="__PREVIOUSPAGE"]/@value').extract_first()
+        page = response.xpath('//input[@name="ctl00$cphContent$hdnPage"]/@value').extract_first()
+        search_id = response.xpath('//input[@name="ctl00$cphContent$hdnSearchID"]/@value').extract_first()
+        search_date = response.xpath('//input[@name="ctl00$cphContent$hdnSearchDate"]/@value').extract_first()
 
-             yield response.follow(player_link.extract_first(), self.parse_player)
+        formdata = {
+            "__EVENTTARGET": "",
+            "__EVENTARGUMENT": "",
+            "__PREVIOUSPAGE": previouspage,
+            "__EVENTVALIDATION": eventvalidation,
+            "__VIEWSTATE": viewstate,
+            "ctl00$hdnNetlogLang": "",
+            "ctl00$myURL": "http://www.buzzerbeater.com/manage/transferlist.aspx",
+            "ctl00$tbCurrentPageName": "Link Name",
+            "ctl00$tbCustomLinkText": "Link Name",
+            "ctl00$tbCustomLinkURL": "Link URL",
+            "ctl00$cphContent$btnNextPage": "Next Page",
+            "ctl00$cphContent$hdnPage": page,
+            "ctl00$cphContent$hdnTotalPages": "100",
+            "ctl00$cphContent$hdnTotalResults": "1000",
+            "ctl00$cphContent$hdnSearchID": search_id,
+            "ctl00$cphContent$hdnSearchParams": "",
+            "ctl00$cphContent$hdnSearchDate": search_date,
+            "ctl00$cphContent$hdnSortBy": "1",
+            "ctl00$cphContent$hdnPlayerCompare": "0"
+        }
+
+        if response.xpath('//input[@name="ctl00$cphContent$btnNextPage"]/@value').extract_first() is not None:
+            self.logger.info(msg="Next Page button present")
+            for row in response.xpath('//div[@id="playerbox"]'):
+                player_link = row.xpath('div[@class="boxheader"]/a/@href')
+                yield response.follow(player_link.extract_first(), self.parse_player)
+            yield FormRequest(url=self.urls[0], formdata=formdata, callback=self.parse_transfers)
+
+    #def parse_player_boxes(self, response):
+    #    self.logger.info(msg="player_boxes")
 
     # TODO add potential and role scraping
     def parse_player(self, response):
         # Getting player's name and ID
         player_id = re.search('/player\/(\d+)\/overview.aspx', response.url).group(1)
         player_name = response.xpath('//h1/text()').extract_first()
-        print(player_id, " ", player_name)
 
         # Extracting basic info available about all players
         if player_name != "Player Not Found" :
@@ -119,8 +153,7 @@ class BuzzerbeaterTransfersSpider(scrapy.Spider):
                 team_name = personal_info.xpath("div/a/text()").extract_first()
             except AttributeError as e:
                 team_id = "0000000000"
-
-            print(team_id)
+                team_name = "000000000"
 
             personal_info_text = personal_info.extract_first()
             weekly_salary = re.search('\$.(.+)<br', personal_info_text).group(1)
@@ -134,12 +167,6 @@ class BuzzerbeaterTransfersSpider(scrapy.Spider):
             # TODO replace is ugly, do through regex
             position = re.search('\s+(.+)\s+', position).group(1).replace("\r", "")
 
-            print(age)
-            print(height)
-            print(game_shape)
-            print(position)
-            print(weekly_salary)
-
             team_item = TeamItem(id=team_id, name=team_name)
             player_item = PlayerItem(id=player_id, weekly_salary=weekly_salary, dmi=dmi, age=age, height=height,
                                      position=position, name=player_name, team_id=team_id)
@@ -151,14 +178,12 @@ class BuzzerbeaterTransfersSpider(scrapy.Spider):
             skills_td = skills_div.xpath('table/tr/td/following-sibling::td[1]')
 
             if skills_td.xpath("table").extract_first() is not None:
-                print(skills_td)
                 skills_table = skills_td.xpath('table[1]')
 
                 for skill in skills_table.xpath('tr/td'):
                     if skill.xpath("a").extract_first() is not None:
                         skill_name = re.search('<td>\s+(.+)\:', skill.extract()).group(1)
                         skill_value = skill.xpath('a/@title').extract_first()
-                        print(skill_name, skill_value)
 
                         player_skills_item = PlayerSkillsItem(player_id=player_id, skill=skill_name, value=skill_value)
                         yield player_skills_item
