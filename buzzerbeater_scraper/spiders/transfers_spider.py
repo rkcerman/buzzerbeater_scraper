@@ -39,6 +39,7 @@ class BuzzerbeaterTransfersSpider(scrapy.Spider):
                 self.logger.info(["URL", url])
                 yield scrapy.Request(url, callback=self.parse_transfer_search)
 
+    # Sends a transfer search request to obtain the players on the market
     def parse_transfer_search(self, response):
         viewstate = response.xpath('//input[@name="__VIEWSTATE"]/@value').extract_first()
         eventvalidation = response.xpath('//input[@name="__EVENTVALIDATION"]/@value').extract_first()
@@ -92,8 +93,7 @@ class BuzzerbeaterTransfersSpider(scrapy.Spider):
 
         yield FormRequest(url=self.urls[0], callback=self.parse_transfers, formdata=formdata)
 
-
-    # TODO follow next page
+    # Parses the search results and follows the links to the individual player overviews
     def parse_transfers(self, response):
         self.transfer_list_page += 1
         self.logger.info(msg=("Transfer list page: ", self.transfer_list_page))
@@ -126,23 +126,24 @@ class BuzzerbeaterTransfersSpider(scrapy.Spider):
             "ctl00$cphContent$hdnPlayerCompare": "0"
         }
 
+        for row in response.xpath('//div[@id="playerbox"]'):
+            player_link = row.xpath('div[@class="boxheader"]/a/@href')
+            yield response.follow(player_link.extract_first(), self.parse_player)
+
+        # If the 'next page' button is not present, it's the last page and stop
         if response.xpath('//input[@name="ctl00$cphContent$btnNextPage"]/@value').extract_first() is not None:
             self.logger.info(msg="Next Page button present")
-            for row in response.xpath('//div[@id="playerbox"]'):
-                player_link = row.xpath('div[@class="boxheader"]/a/@href')
-                yield response.follow(player_link.extract_first(), self.parse_player)
             yield FormRequest(url=self.urls[0], formdata=formdata, callback=self.parse_transfers)
 
-    #def parse_player_boxes(self, response):
-    #    self.logger.info(msg="player_boxes")
-
     # TODO add potential and role scraping
+    # TODO move this to a more relevant .py the moment you have it
+    # Parses individual player overviews
     def parse_player(self, response):
         # Getting player's name and ID
         player_id = re.search('/player\/(\d+)\/overview.aspx', response.url).group(1)
         player_name = response.xpath('//h1/text()').extract_first()
 
-        # Extracting basic info available about all players
+        # Extracting basic info (the "left" column) available about all players
         if player_name != "Player Not Found" :
 
             personal_info = response.xpath('//td[@id="playerPersonalInfo"]')
@@ -173,7 +174,7 @@ class BuzzerbeaterTransfersSpider(scrapy.Spider):
             yield team_item
             yield player_item
 
-            # Extracting skills
+            # Extracting skills (the "right" column)
             skills_div = response.xpath('//div[@id="ctl00_cphContent_faceContainer"]/following-sibling::div[1]')
             skills_td = skills_div.xpath('table/tr/td/following-sibling::td[1]')
 
@@ -192,5 +193,6 @@ class BuzzerbeaterTransfersSpider(scrapy.Spider):
         else:
             print("Player not found")
 
+    # Parses the player history page
     def parse_history(self, response):
         print("hi")
