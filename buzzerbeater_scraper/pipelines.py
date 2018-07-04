@@ -37,7 +37,8 @@ class BuzzerbeaterScraperPipeline(object):
             return item
         if isinstance(item, MatchItem):
             try:
-                self.cur.execute("INSERT INTO matches VALUES(%s, %s, %s, %s, %s) ON CONFLICT DO NOTHING",
+                self.cur.execute("INSERT INTO matches VALUES(%s, %s, %s, %s, %s) ON CONFLICT DO NOTHING"
+                                 " SET season=EXCLUDED.season",
                                  (item['id'], item['match_date'], item['home_team_id'], item['away_team_id'],
                                   item['season']))
                 self.conn.commit()
@@ -63,7 +64,9 @@ class BuzzerbeaterScraperPipeline(object):
                 self.cur.execute("INSERT INTO players (id, created_at, last_update_at, team_id, weekly_salary, dmi,"
                                  "age, height, position, name)"
                                  " VALUES(%s, current_timestamp, current_timestamp, %s, %s, %s, %s, %s, %s, %s) "
-                                 "ON CONFLICT DO NOTHING",
+                                 "ON CONFLICT (id) DO UPDATE "
+                                 "SET team_id=EXCLUDED.team_id, weekly_salary=EXCLUDED.weekly_salary, dmi=EXCLUDED.dmi"
+                                 ", age=EXCLUDED.age, height=EXCLUDED.height, position=EXCLUDED.position",
                                  (item['id'], item['team_id'], item['weekly_salary'], item['dmi'],
                                   item['age'], item['height'], item['position'], item['name']))
                 self.conn.commit()
