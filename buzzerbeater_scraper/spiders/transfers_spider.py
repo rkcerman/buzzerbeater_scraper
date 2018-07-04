@@ -190,9 +190,25 @@ class BuzzerbeaterTransfersSpider(scrapy.Spider):
                         yield player_skills_item
                     else:
                         print("Empty row")
+
+            player_history_link = response.xpath('//a[@title="Player History"]/@href')
+            yield response.follow(player_history_link.extract_first(), self.parse_player_history)
+
         else:
             print("Player not found")
 
+    # TODO move this to a more relevant .py the moment you have it
     # Parses the player history page
-    def parse_history(self, response):
-        print("hi")
+    def parse_player_history(self, response):
+        player_id = re.search('/player\/(\d+)\/history.aspx', response.url).group(1)
+        history_table = response.xpath('//table[@class="history stats"]')
+
+        for idx, row in enumerate(history_table.xpath('tr')):
+            if idx != 0:
+                event = row.xpath('td[1]/text()').extract_first()
+                date = row.xpath('td[2]/text()').extract_first()
+                season = row.xpath('td[3]/text()').extract_first()
+
+                # TODO Parse details and save to separate tables
+                details = row.xpath('td[4]/descendant-or-self::*/text()').extract()
+                print(''.join(details))
