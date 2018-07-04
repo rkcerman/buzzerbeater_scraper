@@ -11,7 +11,7 @@ from psycopg2 import IntegrityError
 from buzzerbeater_scraper.items import PlayByPlayItem, MatchItem, TeamItem, OnlinePeopleItem, PlayerItem, \
     PlayerSkillsItem
 
-
+# TODO implement UPSERT
 class BuzzerbeaterScraperPipeline(object):
     def open_spider(self, spider):
         hostname = 'localhost'
@@ -37,8 +37,9 @@ class BuzzerbeaterScraperPipeline(object):
             return item
         if isinstance(item, MatchItem):
             try:
-                self.cur.execute("INSERT INTO matches VALUES(%s, %s, %s, %s) ON CONFLICT DO NOTHING",
-                                 (item['id'], item['match_date'], item['home_team_id'], item['away_team_id']))
+                self.cur.execute("INSERT INTO matches VALUES(%s, %s, %s, %s, %s) ON CONFLICT DO NOTHING",
+                                 (item['id'], item['match_date'], item['home_team_id'], item['away_team_id'],
+                                  item['season']))
                 self.conn.commit()
             except IntegrityError as e:
                 print("Duplicate primary key entry, skipping")

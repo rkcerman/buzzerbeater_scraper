@@ -25,6 +25,7 @@ class MatchItem(scrapy.Item):
     match_date = scrapy.Field()
     home_team_id = scrapy.Field()
     away_team_id = scrapy.Field()
+    season = scrapy.Field()
 
 class TeamItem(scrapy.Item):
     id = scrapy.Field()

@@ -41,15 +41,21 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
 
     # Parses the Schedule page
     def parse_schedule(self, response):
+        season = response.xpath('//option[@selected="selected"]/@value').extract_first()
+
+        # TODO enumerate not necessary anymore, remove in the future
         # Iterating through each row
         for idx, row in enumerate(response.xpath('//table[@class="schedule"]/tr')):
             print(idx)
-            if idx != 0:
+            box_score_link = row.xpath('td[4]/a[@id="matchBoxscoreLink"]').css('::attr(href)').extract_first()
+
+            if box_score_link is not None:
                 match_date = row.xpath('td[1]//text()').extract_first().split()[0]
                 match_date = datetime.strptime(match_date, '%m/%d/%Y')
                 print("date : ", match_date)
 
                 # TODO Fails at Great/Big 8, also likely a shitty approach (avoid try/except)
+                # TODO do it with descendant-or-self
                 # Creating the Away Team item
                 try:
                     away_team_name = row.xpath('td[3]/a/text()').extract_first()
@@ -78,16 +84,14 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
 
                 yield home_team_item
 
-                box_score_link = row.xpath('td[4]/a[@id="matchBoxscoreLink"]').css('::attr(href)')
-
                 # Extracting the Match ID
-                match_id = box_score_link.extract_first().replace("/match/", "").replace("/boxscore.aspx", "")
+                match_id = box_score_link.replace("/match/", "").replace("/boxscore.aspx", "")
 
                 match_item = MatchItem(id=match_id, match_date=match_date,
-                                       away_team_id=away_team_id, home_team_id=home_team_id)
+                                       away_team_id=away_team_id, home_team_id=home_team_id, season=season)
                 yield match_item
 
-                yield response.follow(box_score_link.extract_first(), self.parse_boxscore)
+                yield response.follow(box_score_link, self.parse_boxscore)
 
     # TODO parse the actual box score
     # Parses the Boxscore page
