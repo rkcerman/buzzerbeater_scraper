@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import buzzerbeater_scraper.config
 import psycopg2
 from psycopg2 import IntegrityError
 
@@ -15,10 +16,10 @@ from buzzerbeater_scraper.items import PlayByPlayItem, MatchItem, TeamItem, Onli
 # TODO implement UPSERT
 class BuzzerbeaterScraperPipeline(object):
     def open_spider(self, spider):
-        hostname = 'localhost'
-        username = 'rkcerman'  # the username when you create the database
-        password = 'konzolka.23'  # change to your password
-        database = 'testpython'
+        hostname = buzzerbeater_scraper.config.DATABASE_CONFIG['hostname']
+        username = buzzerbeater_scraper.config.DATABASE_CONFIG['username']
+        password = buzzerbeater_scraper.config.DATABASE_CONFIG['password']
+        database = buzzerbeater_scraper.config.DATABASE_CONFIG['database']
         self.conn = psycopg2.connect(host=hostname, user=username, password=password, dbname=database)
         self.cur = self.conn.cursor()
 

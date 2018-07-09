@@ -192,6 +192,9 @@ class BuzzerbeaterTransfersSpider(scrapy.Spider):
                     else:
                         print("Empty row")
 
+            # Extracting transfer info (if exists)
+            
+
             player_history_link = response.xpath('//a[@title="Player History"]/@href')
             yield response.follow(player_history_link.extract_first(), self.parse_player_history)
 
