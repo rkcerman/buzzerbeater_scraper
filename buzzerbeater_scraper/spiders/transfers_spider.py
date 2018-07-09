@@ -4,7 +4,8 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 from scrapy import FormRequest
 
-from buzzerbeater_scraper.items import PlayerItem, PlayerSkillsItem, TeamItem
+from buzzerbeater_scraper.items import PlayerItem, PlayerSkillsItem, TeamItem, PlayerHistoryItem
+
 
 class BuzzerbeaterTransfersSpider(scrapy.Spider):
 
@@ -207,8 +208,13 @@ class BuzzerbeaterTransfersSpider(scrapy.Spider):
             if idx != 0:
                 event = row.xpath('td[1]/text()').extract_first()
                 date = row.xpath('td[2]/text()').extract_first()
+                date = datetime.strptime(date, '%m/%d/%Y')
                 season = row.xpath('td[3]/text()').extract_first()
 
                 # TODO Parse details and save to separate tables
                 details = row.xpath('td[4]/descendant-or-self::*/text()').extract()
                 print(''.join(details))
+
+                player_history_item = PlayerHistoryItem(player_id=player_id, event=event, date=date, season=season
+                                                        , details=''.join(details))
+                yield player_history_item
