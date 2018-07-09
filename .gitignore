@@ -1,2 +1,5 @@
 venv/
 buzzerbeater_scraper/config.py
+*.pyc
+*.pyo
+buzzerbeater_scraper/__pycache__
