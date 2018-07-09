@@ -168,9 +168,27 @@ class BuzzerbeaterTransfersSpider(scrapy.Spider):
             # TODO replace is ugly, do through regex
             position = re.search('\s+(.+)\s+', position).group(1).replace("\r", "")
 
+            # Extracting transfer info (if exists)
+            transfer_info = response.xpath(
+                '//span[@id="ctl00_cphContent_LbtTransferEstimateIntroNew"]/text()').extract_first()
+
+            # Looping through each element that contains transfer info
+            if transfer_info is not None:
+                i = 1
+                transfer_estimate = []
+                while i <= 3:
+                    span = response.xpath(
+                        '//span[@id="ctl00_cphContent_LblTransferEstimate' + str(i) + 'new"]/text()').extract_first()
+                    print(span)
+
+                    if span is not None:
+                        transfer_estimate.append(span.replace('\xa0', ''))
+                    i += 1
+                transfer_estimate = ' '.join(transfer_estimate)
+
             team_item = TeamItem(id=team_id, name=team_name)
             player_item = PlayerItem(id=player_id, weekly_salary=weekly_salary, dmi=dmi, age=age, height=height,
-                                     position=position, name=player_name, team_id=team_id)
+                                     position=position, name=player_name, team_id=team_id, transfer_estimate=transfer_estimate)
             yield team_item
             yield player_item
 
@@ -190,24 +208,6 @@ class BuzzerbeaterTransfersSpider(scrapy.Spider):
                         yield player_skills_item
                     else:
                         print("Empty row")
-
-            # Extracting transfer info (if exists)
-            transfer_info = response.xpath(
-                '//span[@id="ctl00_cphContent_LbtTransferEstimateIntroNew"]/text()').extract_first()
-
-            if transfer_info is not None:
-                i = 1
-                transfer_estimate = []
-                while i <= 3:
-                    span = response.xpath(
-                        '//span[@id="ctl00_cphContent_LblTransferEstimate' + str(i) + 'new"]/text()').extract_first()
-                    print(span)
-
-                    if span is not None:
-                        transfer_estimate.append(span)
-                    i += 1
-                transfer_estimate = ' '.join(transfer_estimate)
-                print("Transfer price estimate:", transfer_estimate)
 
             player_history_link = response.xpath('//a[@title="Player History"]/@href')
             yield response.follow(player_history_link.extract_first(), self.parse_player_history)

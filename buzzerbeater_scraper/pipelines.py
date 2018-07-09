@@ -64,13 +64,15 @@ class BuzzerbeaterScraperPipeline(object):
         if isinstance(item, PlayerItem):
             try:
                 self.cur.execute("INSERT INTO players (id, created_at, last_update_at, team_id, weekly_salary, dmi,"
-                                 "age, height, position, name)"
-                                 " VALUES(%s, current_timestamp, current_timestamp, %s, %s, %s, %s, %s, %s, %s) "
+                                 "age, height, position, name, transfer_estimate)"
+                                 " VALUES(%s, current_timestamp, current_timestamp, %s, %s, %s, %s, %s, %s, %s, %s) "
                                  "ON CONFLICT (id) DO UPDATE "
-                                 "SET team_id=EXCLUDED.team_id, weekly_salary=EXCLUDED.weekly_salary, dmi=EXCLUDED.dmi"
-                                 ", age=EXCLUDED.age, height=EXCLUDED.height, position=EXCLUDED.position",
+                                 "SET last_update_at=current_timestamp, team_id=EXCLUDED.team_id, "
+                                 "weekly_salary=EXCLUDED.weekly_salary, dmi=EXCLUDED.dmi, "
+                                 "age=EXCLUDED.age, height=EXCLUDED.height, position=EXCLUDED.position, "
+                                 "transfer_estimate=EXCLUDED.transfer_estimate",
                                  (item['id'], item['team_id'], item['weekly_salary'], item['dmi'],
-                                  item['age'], item['height'], item['position'], item['name']))
+                                  item['age'], item['height'], item['position'], item['name'], item['transfer_estimate']))
                 self.conn.commit()
             except IntegrityError as e:
                 print("Duplicate primary key entry in players, skipping")

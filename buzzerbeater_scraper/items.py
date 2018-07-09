@@ -43,6 +43,7 @@ class PlayerItem(scrapy.Item):
     position = scrapy.Field()
     name = scrapy.Field()
     team_id = scrapy.Field()
+    transfer_estimate = scrapy.Field()
 
 class PlayerHistoryItem(scrapy.Item):
     player_id = scrapy.Field()

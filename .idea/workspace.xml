@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="44b49686-e162-4ba2-8c95-3e44a55449bf" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/buzzerbeater_scraper/items.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_scraper/items.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/buzzerbeater_scraper/pipelines.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_scraper/pipelines.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/buzzerbeater_scraper/spiders/transfers_spider.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_scraper/spiders/transfers_spider.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -25,11 +27,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="transfers_spider.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="transfers_spider.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/spiders/transfers_spider.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="450">
-              <caret line="208" column="35" selection-start-line="208" selection-start-column="35" selection-end-line="208" selection-end-column="35" />
+            <state>
+              <caret line="184" column="72" selection-start-line="184" selection-start-column="72" selection-end-line="184" selection-end-column="72" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -52,17 +54,17 @@
       <file leaf-file-name="items.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/items.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
-              <caret line="27" column="25" selection-start-line="27" selection-start-column="25" selection-end-line="27" selection-end-column="25" />
+            <state relative-caret-position="321">
+              <caret line="45" column="36" selection-start-line="45" selection-start-column="36" selection-end-line="45" selection-end-column="36" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="pipelines.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="pipelines.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/pipelines.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="21" column="71" selection-start-line="21" selection-start-column="71" selection-end-line="21" selection-end-column="71" />
+            <state relative-caret-position="360">
+              <caret line="69" column="52" selection-start-line="69" selection-start-column="52" selection-end-line="69" selection-end-column="52" />
               <folding>
                 <element signature="e#25#41#0" expanded="true" />
               </folding>
@@ -112,11 +114,11 @@
         <option value="$PROJECT_DIR$/buzzerbeater_analyzer/database_calls.py" />
         <option value="$PROJECT_DIR$/buzzerbeater_scraper/settings.py" />
         <option value="$PROJECT_DIR$/buzzerbeater_scraper/spiders/online_people_logger.py" />
-        <option value="$PROJECT_DIR$/buzzerbeater_scraper/items.py" />
         <option value="$PROJECT_DIR$/buzzerbeater_scraper/spiders/matches_spider.py" />
         <option value="$PROJECT_DIR$/buzzerbeater_scraper/config.py" />
-        <option value="$PROJECT_DIR$/buzzerbeater_scraper/pipelines.py" />
+        <option value="$PROJECT_DIR$/buzzerbeater_scraper/items.py" />
         <option value="$PROJECT_DIR$/buzzerbeater_scraper/spiders/transfers_spider.py" />
+        <option value="$PROJECT_DIR$/buzzerbeater_scraper/pipelines.py" />
       </list>
     </option>
   </component>
@@ -582,20 +584,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/pipelines.py">
+    <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/spiders/matches_spider.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="21" column="71" selection-start-line="21" selection-start-column="71" selection-end-line="21" selection-end-column="71" />
+        <state relative-caret-position="306">
+          <caret line="126" column="12" selection-start-line="126" selection-start-column="12" selection-end-line="126" selection-end-column="12" />
           <folding>
-            <element signature="e#25#41#0" expanded="true" />
+            <element signature="e#24#37#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/items.py">
+    <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/spiders/transfers_spider.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="27" column="25" selection-start-line="27" selection-start-column="25" selection-end-line="27" selection-end-column="25" />
+        <state>
+          <caret line="184" column="72" selection-start-line="184" selection-start-column="72" selection-end-line="184" selection-end-column="72" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -609,22 +614,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/spiders/matches_spider.py">
+    <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/items.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="126" column="12" selection-start-line="126" selection-start-column="12" selection-end-line="126" selection-end-column="12" />
-          <folding>
-            <element signature="e#24#37#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="321">
+          <caret line="45" column="36" selection-start-line="45" selection-start-column="36" selection-end-line="45" selection-end-column="36" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/spiders/transfers_spider.py">
+    <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/pipelines.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="208" column="35" selection-start-line="208" selection-start-column="35" selection-end-line="208" selection-end-column="35" />
+        <state relative-caret-position="360">
+          <caret line="69" column="52" selection-start-line="69" selection-start-column="52" selection-end-line="69" selection-end-column="52" />
           <folding>
-            <element signature="e#0#13#0" expanded="true" />
+            <element signature="e#25#41#0" expanded="true" />
           </folding>
         </state>
       </provider>
