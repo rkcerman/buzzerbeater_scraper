@@ -8,7 +8,6 @@ from buzzerbeater_scraper.items import PlayerItem, PlayerSkillsItem, TeamItem, P
 
 
 class BuzzerbeaterTransfersSpider(scrapy.Spider):
-
     transfer_list_page = 0
     name = "transfers_spider"
     allowed_domains = ["buzzerbeater.com"]
@@ -145,7 +144,7 @@ class BuzzerbeaterTransfersSpider(scrapy.Spider):
         player_name = response.xpath('//h1/text()').extract_first()
 
         # Extracting basic info (the "left" column) available about all players
-        if player_name != "Player Not Found" :
+        if player_name != "Player Not Found":
 
             personal_info = response.xpath('//td[@id="playerPersonalInfo"]')
 
@@ -193,7 +192,22 @@ class BuzzerbeaterTransfersSpider(scrapy.Spider):
                         print("Empty row")
 
             # Extracting transfer info (if exists)
-            
+            transfer_info = response.xpath(
+                '//span[@id="ctl00_cphContent_LbtTransferEstimateIntroNew"]/text()').extract_first()
+
+            if transfer_info is not None:
+                i = 1
+                transfer_estimate = []
+                while i <= 3:
+                    span = response.xpath(
+                        '//span[@id="ctl00_cphContent_LblTransferEstimate' + str(i) + 'new"]/text()').extract_first()
+                    print(span)
+
+                    if span is not None:
+                        transfer_estimate.append(span)
+                    i += 1
+                transfer_estimate = ' '.join(transfer_estimate)
+                print("Transfer price estimate:", transfer_estimate)
 
             player_history_link = response.xpath('//a[@title="Player History"]/@href')
             yield response.follow(player_history_link.extract_first(), self.parse_player_history)
@@ -216,7 +230,6 @@ class BuzzerbeaterTransfersSpider(scrapy.Spider):
 
                 # TODO Parse details and save to separate tables
                 details = row.xpath('td[4]/descendant-or-self::*/text()').extract()
-                print(''.join(details))
 
                 player_history_item = PlayerHistoryItem(player_id=player_id, event=event, date=date, season=season
                                                         , details=''.join(details))
