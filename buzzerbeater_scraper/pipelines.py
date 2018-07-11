@@ -12,8 +12,6 @@ from psycopg2 import IntegrityError
 from buzzerbeater_scraper.items import PlayByPlayItem, MatchItem, TeamItem, OnlinePeopleItem, PlayerItem, \
     PlayerSkillsItem, PlayerHistoryItem
 
-
-# TODO implement UPSERT
 class BuzzerbeaterScraperPipeline(object):
     def open_spider(self, spider):
         hostname = buzzerbeater_scraper.config.DATABASE_CONFIG['hostname']
@@ -39,8 +37,7 @@ class BuzzerbeaterScraperPipeline(object):
             return item
         if isinstance(item, MatchItem):
             try:
-                self.cur.execute("INSERT INTO matches VALUES(%s, %s, %s, %s, %s) ON CONFLICT DO NOTHING"
-                                 " SET season=EXCLUDED.season",
+                self.cur.execute("INSERT INTO matches VALUES(%s, %s, %s, %s, %s) ON CONFLICT DO NOTHING",
                                  (item['id'], item['match_date'], item['home_team_id'], item['away_team_id'],
                                   item['season']))
                 self.conn.commit()

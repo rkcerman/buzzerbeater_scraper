@@ -4,7 +4,9 @@ import re
 from datetime import datetime
 from bs4 import BeautifulSoup
 
+from buzzerbeater_scraper import pbp_parser
 from buzzerbeater_scraper.items import PlayByPlayItem, TeamItem, MatchItem
+from buzzerbeater_scraper.pbp_parser import PlayByPlayParser
 
 
 class BuzzerbeaterMatchesSpider(scrapy.Spider):
@@ -131,9 +133,12 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
                 item_event.select('a')[idx].string = player_href_id
 
             # Creating an Item to insert into the DB
-            playByPlayItem = PlayByPlayItem(id=int(str(match_id) + str(i)), match_id=item_match_id, event_type=item_event_type,
+            pbp_item = PlayByPlayItem(id=int(str(match_id) + str(i)), match_id=item_match_id, event_type=item_event_type,
                                             quarter=int(item_quarter), clock=item_clock, score=item_score, event=item_event.get_text())
+            pbp_parser.PlayByPlayParser.parse(self=PlayByPlayParser, pbp_item=pbp_item)
 
-            yield playByPlayItem
+            # TODO uncomment after work
+            # yield pbp_item
+
             i += 1
 
