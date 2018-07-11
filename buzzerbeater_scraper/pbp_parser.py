@@ -72,8 +72,11 @@ class PlayByPlayParser:
         print(shot_play['event'])
 
         outcome = self.get_shot_outcome(shot_event=shot_play['event'])
+        print("Outcome : " + outcome)
+        defender = self.get_defender(shot_event=shot_play['event'])
+        print(defender)
 
-
+    # Gets the outcome of the shot (scored? missed? blocked?)
     @staticmethod
     def get_shot_outcome(shot_event):
         # Get the outcome
@@ -85,5 +88,32 @@ class PlayByPlayParser:
             outcome = outcome.replace('.', '').replace(' ', '_').lower()
         else:
             outcome = 'fouled'
-        print(outcome)
         return outcome
+
+    # Finds the shot defender based on the regex patterns
+    @staticmethod
+    def get_defender(shot_event):
+        patterns = [
+            ', guarded closely by (\d+)',
+            'as (\d+) rotates over and alters his shot',
+            ' under pressure from (\d+)',
+            ' with (\d+) right in his face',
+            ' over (\d+).',
+            ' after (\d+) backed off slightly',
+        ]
+
+        defender_dict = {}
+        for pattern in patterns:
+            search = re.search(pattern, shot_event)
+            if search is not None:
+                pattern = re.sub(pattern='(, |^ |\.)', repl='', string=pattern)
+                pattern = re.sub(pattern='( \(\\\\d\+\) )', repl='_', string=pattern)
+                pattern = re.sub(pattern='( \(\\\\d\+\))', repl='', string=pattern)
+                pattern = re.sub(pattern=' ', repl='_', string=pattern)
+                pattern = pattern.lower()
+                defender = search.group(1)
+                defender_dict = {
+                    pattern: defender
+                }
+        return defender_dict
+
