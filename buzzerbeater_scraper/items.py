@@ -9,8 +9,6 @@ import scrapy
 
 
 class PlayByPlayItem(scrapy.Item):
-    # define the fields for your item here like:
-    # name = scrapy.Field()
     id = scrapy.Field()
     match_id = scrapy.Field()
     event_type = scrapy.Field()

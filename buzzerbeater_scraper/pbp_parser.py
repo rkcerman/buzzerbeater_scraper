@@ -3,14 +3,13 @@ import re
 from buzzerbeater_scraper.items import PlayByPlayItem
 
 
+# TODO badly needs unit testing
 # Class for parsing each play-by-play by
 # assigning a play categories to each play type. Each category gets parsed differently.
 class PlayByPlayParser:
-    # TODO turnover should be -> X loses the ball
-    # TODO steal should be -> Y steals the ball
     event_type_categories = {
-        'ASSIST': 'passing',
-        'BAD_PASS': ['turnover', 'passing'],
+        'ASSIST': 'assist',
+        'BAD_PASS': 'turnover',
         'BASELINE_J': ['mid', 'shot'],
         'BLOWOUT': 'info',
         'BUZZERBEATER': 'info',
@@ -40,8 +39,8 @@ class PlayByPlayParser:
         'SHOTSTREAKMAKE': 'info',
         'SHOTSTREAKMISS': 'info',
         'SPINNY': ['mid', 'shot'],
-        'STEAL': ['turnover', 'steal'],
-        'STEAL_ON_PASS': ['turnover', 'steal'],
+        'STEAL': 'steal',
+        'STEAL_ON_PASS': 'steal',
         'STRAIGHT_ON_THREE': ['three', 'shot'],
         'STRONG': ['inside', 'shot'],
         'SUBSTITUTION': 'info',
@@ -58,8 +57,9 @@ class PlayByPlayParser:
         'WING_THREE': ['three', 'shot']
     }
 
+    # Reads play type and decides what to do with the play
     def parse(self, pbp_item):
-        # Looks up the event type as a key value in the event_type_groups dictionary
+        # Looks up the play type as a key value in the event_type_groups dictionary
         event_group = self.event_type_categories.get(pbp_item['event_type'])
         if 'shot' in event_group:
             self.parse_shots(self, shot_play=pbp_item)
@@ -69,13 +69,19 @@ class PlayByPlayParser:
 
         # Turn all the Goaltends into Scoreds because noone cares
         shot_play['event'] = shot_play['event'].replace('Goaltending called', 'Scored')
-        print(shot_play['event'])
 
         outcome = self.get_shot_outcome(shot_event=shot_play['event'])
-        print("Outcome : " + outcome)
         defender = self.get_defender(shot_event=shot_play['event'])
-        print(defender)
+        passer = self.get_passer(shot_event=shot_play['event'])
 
+        shooter = ''
+        # TODO maybe should throw a custom exception if no shooter returned
+        for id in re.findall(pattern='(\d+)', string=shot_play['event']):
+            if id not in (defender, passer):
+                shooter = id
+                break
+
+    # TODO research if all the methods below should actually be static or not
     # Gets the outcome of the shot (scored? missed? blocked?)
     @staticmethod
     def get_shot_outcome(shot_event):
@@ -99,7 +105,7 @@ class PlayByPlayParser:
             ' under pressure from (\d+)',
             ' with (\d+) right in his face',
             ' over (\d+).',
-            ' after (\d+) backed off slightly',
+            ' after (\d+) backed off slightly'
         ]
 
         defender_dict = {}
@@ -117,3 +123,20 @@ class PlayByPlayParser:
                 }
         return defender_dict
 
+    # Finds the shot passer based on the regex patterns
+    @staticmethod
+    def get_passer(shot_event):
+        patterns = [
+            'off of a nice pass from (\d+)',
+            '(\d+) gets off a great pass to',
+            '(\d+) opens up the play with a pass to',
+            '(\d+) threads a pass through the defense and finds',
+            'finds (\d+) in space'
+        ]
+
+        passer = ""
+        for pattern in patterns:
+            search = re.search(pattern, shot_event)
+            if search is not None:
+                passer = search.group(1)
+        return passer
