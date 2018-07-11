@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="44b49686-e162-4ba2-8c95-3e44a55449bf" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/buzzerbeater_scraper/pbp_tags.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/buzzerbeater_scraper/pbp_parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_scraper/pbp_parser.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -29,8 +29,8 @@
       <file leaf-file-name="pbp_parser.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/pbp_parser.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-399">
-              <caret line="61" column="8" selection-start-line="61" selection-start-column="8" selection-end-line="61" selection-end-column="8" />
+            <state relative-caret-position="210">
+              <caret line="14" column="41" selection-start-line="14" selection-start-column="41" selection-end-line="14" selection-end-column="41" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -41,8 +41,17 @@
       <file leaf-file-name="items.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/items.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
-              <caret line="13" column="22" selection-start-line="13" selection-start-column="22" selection-end-line="13" selection-end-column="22" />
+            <state relative-caret-position="141">
+              <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="pbp_tags.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/pbp_tags.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret column="21" selection-start-column="21" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -52,6 +61,15 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-729">
               <caret line="14" selection-start-line="14" selection-end-line="14" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="config.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/config.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="75">
+              <caret line="5" selection-start-line="5" selection-end-line="5" />
             </state>
           </provider>
         </entry>
@@ -81,10 +99,11 @@
         <option value="$PROJECT_DIR$/buzzerbeater_scraper/settings.py" />
         <option value="$PROJECT_DIR$/buzzerbeater_scraper/spiders/online_people_logger.py" />
         <option value="$PROJECT_DIR$/buzzerbeater_scraper/config.py" />
-        <option value="$PROJECT_DIR$/buzzerbeater_scraper/items.py" />
         <option value="$PROJECT_DIR$/buzzerbeater_scraper/pipelines.py" />
         <option value="$PROJECT_DIR$/buzzerbeater_scraper/spiders/transfers_spider.py" />
         <option value="$PROJECT_DIR$/buzzerbeater_scraper/spiders/matches_spider.py" />
+        <option value="$PROJECT_DIR$/buzzerbeater_scraper/items.py" />
+        <option value="$PROJECT_DIR$/buzzerbeater_scraper/pbp_tags.py" />
         <option value="$PROJECT_DIR$/buzzerbeater_scraper/pbp_parser.py" />
       </list>
     </option>
@@ -293,9 +312,10 @@
     <frame x="-3" y="30" width="1372" height="741" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.20790629" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16764276" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32917318" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32917318" />
       <window_info anchor="bottom" id="Python Console" order="7" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.49141964" />
@@ -309,7 +329,6 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32917318" />
     </layout>
     <layout-to-restore>
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -335,16 +354,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/spiders/transfers_spider.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2760">
-          <caret line="184" column="72" selection-start-line="184" selection-start-column="72" selection-end-line="184" selection-end-column="72" />
-          <folding>
-            <element signature="e#0#13#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/spiders/online_people_logger.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
@@ -620,20 +629,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/config.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" selection-start-line="5" selection-end-line="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/pipelines.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-729">
-          <caret line="14" selection-start-line="14" selection-end-line="14" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/spiders/transfers_spider.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -654,17 +649,38 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/config.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/pipelines.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-729">
+          <caret line="14" selection-start-line="14" selection-end-line="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/pbp_tags.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="21" selection-start-column="21" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/items.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="13" column="22" selection-start-line="13" selection-start-column="22" selection-end-line="13" selection-end-column="22" />
+        <state relative-caret-position="141">
+          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/pbp_parser.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-399">
-          <caret line="61" column="8" selection-start-line="61" selection-start-column="8" selection-end-line="61" selection-end-column="8" />
+        <state relative-caret-position="210">
+          <caret line="14" column="41" selection-start-line="14" selection-start-column="41" selection-end-line="14" selection-end-column="41" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
           </folding>
