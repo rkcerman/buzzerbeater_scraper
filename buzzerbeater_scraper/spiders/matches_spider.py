@@ -5,6 +5,7 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 
 from buzzerbeater_scraper import pbp_parser
+from buzzerbeater_scraper.pbp_tags import PLAY_TYPE_CATEGORIES
 from buzzerbeater_scraper.items import PlayByPlayItem, TeamItem, MatchItem
 from buzzerbeater_scraper.pbp_parser import PlayByPlayParser
 
@@ -45,10 +46,8 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
     def parse_schedule(self, response):
         season = response.xpath('//option[@selected="selected"]/@value').extract_first()
 
-        # TODO enumerate not necessary anymore, remove in the future
         # Iterating through each row
-        for idx, row in enumerate(response.xpath('//table[@class="schedule"]/tr')):
-            print(idx)
+        for row in response.xpath('//table[@class="schedule"]/tr'):
             box_score_link = row.xpath('td[4]/a[@id="matchBoxscoreLink"]').css('::attr(href)').extract_first()
 
             if box_score_link is not None:
@@ -123,7 +122,6 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
             item_quarter = row.select('td')[0].get_text()
             item_clock = row.select('td')[1].get_text()
             item_score = row.select('td')[2].get_text()
-
             item_event = row.select('td')[3]
 
             # Replacing Player names for IDs; makes jobs down the line easier
@@ -132,13 +130,26 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
                 player_href_id = re.search('\/player\/(\d+)\/overview.aspx', player_href_id).group(1)
                 item_event.select('a')[idx].string = player_href_id
 
-            # Creating an Item to insert into the DB
-            pbp_item = PlayByPlayItem(id=int(str(match_id) + str(i)), match_id=item_match_id, event_type=item_event_type,
-                                            quarter=int(item_quarter), clock=item_clock, score=item_score, event=item_event.get_text())
-            pbp_parser.PlayByPlayParser.parse(self=PlayByPlayParser, pbp_item=pbp_item)
+            # Adding custom play_type_categories to the plays
+            play_tags = PLAY_TYPE_CATEGORIES.get(item_event_type)
+            print("Play tags", play_tags)
 
-            # TODO uncomment after work
-            # yield pbp_item
+            # Creating an Item to insert into the DB
+            pbp_item = PlayByPlayItem(
+                id=int(str(match_id) + str(i)),
+                match_id=item_match_id,
+                event_type=item_event_type,
+                quarter=int(item_quarter),
+                clock=item_clock,
+                score=item_score,
+                event=item_event.get_text(),
+                play_tags=play_tags
+            )
+
+            yield pbp_item
+            if 'shot' in play_tags:
+                shots_item = pbp_parser.PlayByPlayParser.parse(self=PlayByPlayParser, pbp_item=pbp_item)
+                yield shots_item
 
             i += 1
 

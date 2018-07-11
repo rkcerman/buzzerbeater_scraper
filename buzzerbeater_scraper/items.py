@@ -16,7 +16,18 @@ class PlayByPlayItem(scrapy.Item):
     clock = scrapy.Field()
     score = scrapy.Field()
     event = scrapy.Field()
+    play_tags = scrapy.Field()
     pass
+
+
+class ShotsItem(scrapy.Item):
+    pbp_id = scrapy.Field()
+    shooter = scrapy.Field()
+    outcome = scrapy.Field()
+    defender = scrapy.Field()
+    defense_type = scrapy.Field()
+    passer = scrapy.Field()
+
 
 class MatchItem(scrapy.Item):
     id = scrapy.Field()
@@ -25,12 +36,15 @@ class MatchItem(scrapy.Item):
     away_team_id = scrapy.Field()
     season = scrapy.Field()
 
+
 class TeamItem(scrapy.Item):
     id = scrapy.Field()
     name = scrapy.Field()
 
+
 class OnlinePeopleItem(scrapy.Item):
     value = scrapy.Field()
+
 
 class PlayerItem(scrapy.Item):
     id = scrapy.Field()
@@ -43,12 +57,14 @@ class PlayerItem(scrapy.Item):
     team_id = scrapy.Field()
     transfer_estimate = scrapy.Field()
 
+
 class PlayerHistoryItem(scrapy.Item):
     player_id = scrapy.Field()
     event = scrapy.Field()
     date = scrapy.Field()
     season = scrapy.Field()
     details = scrapy.Field()
+
 
 class PlayerSkillsItem(scrapy.Item):
     player_id = scrapy.Field()

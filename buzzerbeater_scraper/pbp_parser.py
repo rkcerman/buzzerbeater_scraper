@@ -1,8 +1,7 @@
 import re
 from buzzerbeater_scraper.pbp_tags import PLAY_TYPE_CATEGORIES
 
-from buzzerbeater_scraper.items import PlayByPlayItem
-
+from buzzerbeater_scraper.items import ShotsItem
 
 # TODO badly needs unit testing
 # Class for parsing each play-by-play by
@@ -13,25 +12,46 @@ class PlayByPlayParser:
     def parse(self, pbp_item):
         # Looks up the play type as a key value in the event_type_groups dictionary
         event_group = PLAY_TYPE_CATEGORIES.get(pbp_item['event_type'])
+
         if 'shot' in event_group:
-            self.parse_shots(self, shot_play=pbp_item)
+            return self.parse_shots(self, shot_play=pbp_item)
 
     def parse_shots(self, shot_play):
-        # Let's list all the players in this particular play
-
+        print("Parsing shot -----")
         # Turn all the Goaltends into Scoreds because noone cares
         shot_play['event'] = shot_play['event'].replace('Goaltending called', 'Scored')
 
         outcome = self.get_shot_outcome(shot_event=shot_play['event'])
-        defender = self.get_defender(shot_event=shot_play['event'])
+        defensive_play = self.get_defender(shot_event=shot_play['event'])
+
         passer = self.get_passer(shot_event=shot_play['event'])
 
-        shooter = ''
-        # TODO maybe should throw a custom exception if no shooter returned
-        for id in re.findall(pattern='(\d+)', string=shot_play['event']):
-            if id not in (defender, passer):
-                shooter = id
+        for player_id in re.findall(pattern='(\d+)', string=shot_play['event']):
+            if player_id not in (defensive_play, passer):
+                shooter = player_id
                 break
+
+        shots_item = ShotsItem(
+            pbp_id=shot_play['id'],
+            shooter=shooter,
+            outcome=outcome,
+        )
+
+        try:
+            shots_item['defender'] = defensive_play[1]
+            shots_item['defense_type'] = defensive_play[0]
+        except IndexError as e:
+            shots_item['defender'] = None
+            shots_item['defense_type'] = None
+            print("No defender.")
+
+        print("Passer: " + passer)
+        if passer != '':
+            shots_item['passer'] = passer
+        else:
+            shots_item['passer'] = None
+
+        return shots_item
 
     # TODO research if all the methods below should actually be static or not
     # Gets the outcome of the shot (scored? missed? blocked?)
@@ -60,7 +80,7 @@ class PlayByPlayParser:
             ' after (\d+) backed off slightly'
         ]
 
-        defender_dict = {}
+        defender_list = []
         for pattern in patterns:
             search = re.search(pattern, shot_event)
             if search is not None:
@@ -70,10 +90,12 @@ class PlayByPlayParser:
                 pattern = re.sub(pattern=' ', repl='_', string=pattern)
                 pattern = pattern.lower()
                 defender = search.group(1)
-                defender_dict = {
-                    pattern: defender
-                }
-        return defender_dict
+                defender_list = [
+                    pattern,
+                    defender
+                ]
+        print(defender_list)
+        return defender_list
 
     # Finds the shot passer based on the regex patterns
     @staticmethod
@@ -86,7 +108,7 @@ class PlayByPlayParser:
             'finds (\d+) in space'
         ]
 
-        passer = ""
+        passer = ''
         for pattern in patterns:
             search = re.search(pattern, shot_event)
             if search is not None:

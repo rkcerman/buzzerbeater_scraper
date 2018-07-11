@@ -10,7 +10,8 @@ from psycopg2 import IntegrityError
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 from buzzerbeater_scraper.items import PlayByPlayItem, MatchItem, TeamItem, OnlinePeopleItem, PlayerItem, \
-    PlayerSkillsItem, PlayerHistoryItem
+    PlayerSkillsItem, PlayerHistoryItem, ShotsItem
+
 
 class BuzzerbeaterScraperPipeline(object):
     def open_spider(self, spider):
@@ -28,9 +29,19 @@ class BuzzerbeaterScraperPipeline(object):
     def process_item(self, item, spider):
         if isinstance(item, PlayByPlayItem):
             try:
-                self.cur.execute("INSERT INTO play_by_plays VALUES(%s, %s, %s, %s, %s, %s, %s) ON CONFLICT DO NOTHING",
+                self.cur.execute("INSERT INTO play_by_plays VALUES(%s, %s, %s, %s, %s, %s, %s, %s::play_tags[]) ON CONFLICT"
+                                 "DO NOTHING",
                                  (item['id'], item['event_type'], item['quarter'],
-                                  item['clock'], item['score'], item['event'], item['match_id']))
+                                  item['clock'], item['score'], item['event'], item['match_id'], item['play_tags']))
+                self.conn.commit()
+            except IntegrityError as e:
+                print("Duplicate primary key entry, skipping")
+            return item
+        if isinstance(item, ShotsItem):
+            try:
+                self.cur.execute("INSERT INTO shots VALUES(%s, %s, %s, %s, %s, %s) ON CONFLICT DO NOTHING",
+                                 (item['pbp_id'], item['outcome'], item['defender'],
+                                  item['defense_type'], item['passer'], item['shooter']))
                 self.conn.commit()
             except IntegrityError as e:
                 print("Duplicate primary key entry, skipping")
