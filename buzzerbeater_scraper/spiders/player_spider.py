@@ -180,12 +180,13 @@ class PlayerSpider(scrapy.Spider):
 
                 # TODO Parse details and save to separate tables
                 details = row.xpath('td[4]/descendant-or-self::*/text()').extract()
+                details = ''.join(details).replace('\xa0', '')
 
                 item = PlayerHistoryItem(player_id=player_id,
                                                         event=event,
                                                         date=date,
                                                         season=season,
-                                                        details=''.join(details))
+                                                        details=details)
                 player_history_items.append(item)
 
         return player_history_items

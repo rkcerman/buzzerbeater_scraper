@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="44b49686-e162-4ba2-8c95-3e44a55449bf" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/buzzerbeater_scraper/spiders/player_parser.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/buzzerbeater_scraper/spiders/player_spider.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_scraper/spiders/player_spider.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/buzzerbeater_scraper/spiders/transfers_spider.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_scraper/spiders/transfers_spider.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -14,7 +13,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5426561">
+    <splitter split-orientation="horizontal" split-proportion="0.4919473">
       <split-first>
         <leaf>
           <file leaf-file-name="matches_spider.py" pinned="false" current-in-tab="false">
@@ -50,8 +49,8 @@
           <file leaf-file-name="transfers_spider.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/spiders/transfers_spider.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-765">
-                  <caret line="31" selection-start-line="31" selection-end-line="31" />
+                <state relative-caret-position="420">
+                  <caret line="87" selection-start-line="87" selection-end-line="87" />
                   <folding>
                     <element signature="e#0#13#0" expanded="true" />
                   </folding>
@@ -84,11 +83,11 @@
       </split-first>
       <split-second>
         <leaf>
-          <file leaf-file-name="player_parser.py" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/spiders/player_parser.py">
+          <file leaf-file-name="player_spider.py" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/spiders/player_spider.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="135">
-                  <caret line="110" column="33" selection-start-line="110" selection-start-column="33" selection-end-line="110" selection-end-column="33" />
+                <state relative-caret-position="457">
+                  <caret line="188" column="70" selection-start-line="188" selection-start-column="70" selection-end-line="188" selection-end-column="70" />
                   <folding>
                     <element signature="e#0#13#0" expanded="true" />
                   </folding>
@@ -135,8 +134,9 @@
         <option value="$PROJECT_DIR$/buzzerbeater_scraper/formdata.py" />
         <option value="$PROJECT_DIR$/buzzerbeater_scraper/spiders/matches_spider.py" />
         <option value="$PROJECT_DIR$/buzzerbeater_scraper/player_parser.py" />
-        <option value="$PROJECT_DIR$/buzzerbeater_scraper/spiders/transfers_spider.py" />
         <option value="$PROJECT_DIR$/buzzerbeater_scraper/spiders/player_parser.py" />
+        <option value="$PROJECT_DIR$/buzzerbeater_scraper/spiders/transfers_spider.py" />
+        <option value="$PROJECT_DIR$/buzzerbeater_scraper/spiders/player_spider.py" />
       </list>
     </option>
   </component>
@@ -349,7 +349,7 @@
     <frame x="-3" y="30" width="1372" height="741" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16764276" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.16764276" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.49141964" />
@@ -706,18 +706,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/spiders/transfers_spider.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-765">
-          <caret line="31" selection-start-line="31" selection-end-line="31" />
+        <state relative-caret-position="420">
+          <caret line="87" selection-start-line="87" selection-end-line="87" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/spiders/player_parser.py">
+    <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/spiders/player_spider.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="110" column="33" selection-start-line="110" selection-start-column="33" selection-end-line="110" selection-end-column="33" />
+        <state relative-caret-position="457">
+          <caret line="188" column="70" selection-start-line="188" selection-start-column="70" selection-end-line="188" selection-end-column="70" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
           </folding>
