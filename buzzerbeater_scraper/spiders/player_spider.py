@@ -1,22 +1,21 @@
 import scrapy
-import re
 from datetime import datetime
-from bs4 import BeautifulSoup
-from scrapy import FormRequest
+import re
 
-from buzzerbeater_scraper.items import PlayerItem, PlayerSkillsItem, TeamItem, PlayerHistoryItem
-from buzzerbeater_scraper.formdata import BB_LOGIN, BB_TRANSFER_SEARCH_FORMDATA, BB_TRANSFER_NEXT_PAGE_FORMDATA
+from buzzerbeater_scraper.items import PlayerItem, TeamItem, PlayerSkillsItem, PlayerHistoryItem
+from buzzerbeater_scraper.formdata import BB_LOGIN
 
 
-class BuzzerbeaterTransfersSpider(scrapy.Spider):
-    transfer_list_page = 0
-    name = "transfers_spider"
+class PlayerSpider(scrapy.Spider):
+    name = "players_spider"
     allowed_domains = ["buzzerbeater.com"]
     start_urls = (
         'http://www.buzzerbeater.com/default.aspx',
     )
     urls = [
-        'http://www.buzzerbeater.com/manage/transferlist.aspx',
+        'http://www.buzzerbeater.com/player/43023368/overview.aspx',
+        'http://www.buzzerbeater.com/player/40653152/overview.aspx',
+        'http://www.buzzerbeater.com/player/438493178413/overview.aspx'
     ]
 
     def parse(self, response):
@@ -37,49 +36,59 @@ class BuzzerbeaterTransfersSpider(scrapy.Spider):
             self.logger.info("Login successful")
             for url in self.urls:
                 self.logger.info(["URL", url])
-                yield scrapy.Request(url, callback=self.parse_transfer_search)
+                yield scrapy.Request(url, callback=self.parse_player)
 
-    # Sends a transfer search request to obtain the players on the market
-    def parse_transfer_search(self, response):
-        formdata = self.search_page_formdata(response=response)
-
-        yield FormRequest(url=self.urls[0], callback=self.parse_transfers, formdata=formdata)
-
-    # Parses the search results and follows the links to the individual player overviews
-    def parse_transfers(self, response):
-        self.transfer_list_page += 1
-        self.logger.info(msg=("Transfer list page: ", self.transfer_list_page))
-
-        formdata = self.next_page_formdata(response=response)
-        for row in response.xpath('//div[@id="playerbox"]'):
-            player_link = row.xpath('div[@class="boxheader"]/a/@href').extract_first()
-
-            yield response.follow(player_link, self.parse_player)
-
-        # If the 'next page' button is not present, it's the last page and stop
-        if response.xpath('//input[@name="ctl00$cphContent$btnNextPage"]/@value').extract_first() is not None:
-            self.logger.info(msg="Next Page button present")
-            yield FormRequest(url=self.urls[0], formdata=formdata, callback=self.parse_transfers)
-
-    # TODO add potential and role scraping
-    # TODO move this to a more relevant .py the moment you have it
-    # Parses individual player overviews
+    # Wraps the parse_player_html method and yields items
     def parse_player(self, response):
+        player = self.parse_player_html(response=response)
+
+        if player is not None:
+            player_item = player['player_item']
+            team_item = player['team_item']
+
+            yield team_item
+            yield player_item
+
+            # TODO ugly AF
+            try:
+                yield player['player_skills_item']
+            except KeyError:
+                print('No player skills available')
+
+            player_history_link = player['player_history_link']
+            yield response.follow(player_history_link, self.parse_player_history)
+
+    # Parses the player history page
+    def parse_player_history(self, response):
+        player_history_items = self.parse_player_history_html(response=response)
+
+        for item in player_history_items:
+            yield item
+
+    # Static method for parsing the html response of the player overview page
+    @staticmethod
+    def parse_player_html(response):
 
         # Getting player's name and ID
-        player_id = re.search('/player\/(\d+)\/overview.aspx', response.url).group(1)
+        try:
+            player_id = re.search('/player/(\d+)/overview.aspx', response.url).group(1)
+        except AttributeError as e:
+            print('Invalid player id')
+            print(e)
+
         player_name = response.xpath('//h1/text()').extract_first()
 
         # Extracting basic info (the "left" column) available about all players
-        if player_name != "Player Not Found":
+        if player_name not in ("Player Not Found", None) :
 
             personal_info = response.xpath('//td[@id="playerPersonalInfo"]')
 
+            # Checking if the player is retired
             try:
                 team_id = personal_info.xpath("div/a/@href").extract_first()
-                team_id = re.search('/team\/(\d+)\/overview.aspx', team_id).group(1)
+                team_id = re.search('/team/(\d+)/overview.aspx', team_id).group(1)
                 team_name = personal_info.xpath("div/a/text()").extract_first()
-            except AttributeError as e:
+            except AttributeError:
                 team_id = "0000000000"
                 team_name = "000000000"
 
@@ -88,7 +97,7 @@ class BuzzerbeaterTransfersSpider(scrapy.Spider):
             weekly_salary = weekly_salary.replace(" ", "").replace('\xa0', '')
             dmi = re.search('DMI:.\s+(\d+)', personal_info_text).group(1)
             age = re.search('Age:.\s+(\d+)', personal_info_text).group(1)
-            height = re.search('Height:\s+.+ \/ (\d+) cm<br', personal_info_text).group(1)
+            height = re.search('Height:\s+.+ / (\d+) cm<br', personal_info_text).group(1)
             game_shape = personal_info.xpath('//a[@id="ctl00_cphContent_playerForm_linkDen"]/text()').extract_first()
             position = personal_info.xpath('//div[@style="float: right; display: block;"]/text()').extract_first()
 
@@ -123,8 +132,12 @@ class BuzzerbeaterTransfersSpider(scrapy.Spider):
                                      name=player_name,
                                      team_id=team_id,
                                      transfer_estimate=transfer_estimate)
-            yield team_item
-            yield player_item
+
+            # TODO Maybe, um, create a fucking players class?!?!
+            yields = {
+                "team_item": team_item,
+                "player_item": player_item,
+            }
 
             # Extracting skills (the "right" column)
             skills_div = response.xpath('//div[@id="ctl00_cphContent_faceContainer"]/following-sibling::div[1]')
@@ -135,28 +148,29 @@ class BuzzerbeaterTransfersSpider(scrapy.Spider):
 
                 for skill in skills_table.xpath('tr/td'):
                     if skill.xpath("a").extract_first() is not None:
-                        skill_name = re.search('<td>\s+(.+)\:', skill.extract()).group(1)
+                        skill_name = re.search('<td>\s+(.+):', skill.extract()).group(1)
                         skill_value = skill.xpath('a/@title').extract_first()
 
                         player_skills_item = PlayerSkillsItem(player_id=player_id,
                                                               skill=skill_name,
                                                               value=skill_value)
-                        yield player_skills_item
+                        yields['player_skills_item'] = player_skills_item
                     else:
-                        print("Empty row")
+                        print('Empty row')
 
-            player_history_link = response.xpath('//a[@title="Player History"]/@href')
-            yield response.follow(player_history_link.extract_first(), self.parse_player_history)
-
+            player_history_link = response.xpath('//a[@title="Player History"]/@href').extract_first()
+            yields['player_history_link'] = player_history_link
+            return yields
         else:
-            print("Player not found")
+            print('Player not found')
 
-    # TODO move this to a more relevant .py the moment you have it
-    # Parses the player history page
-    def parse_player_history(self, response):
-        player_id = re.search('/player\/(\d+)\/history.aspx', response.url).group(1)
+    # Static method for parsing the html response of the player history page
+    @staticmethod
+    def parse_player_history_html(response):
+        player_id = re.search('/player/(\d+)/history.aspx', response.url).group(1)
         history_table = response.xpath('//table[@class="history stats"]')
 
+        player_history_items = []
         for idx, row in enumerate(history_table.xpath('tr')):
             if idx != 0:
                 event = row.xpath('td[1]/text()').extract_first()
@@ -167,39 +181,11 @@ class BuzzerbeaterTransfersSpider(scrapy.Spider):
                 # TODO Parse details and save to separate tables
                 details = row.xpath('td[4]/descendant-or-self::*/text()').extract()
 
-                player_history_item = PlayerHistoryItem(player_id=player_id,
+                item = PlayerHistoryItem(player_id=player_id,
                                                         event=event,
                                                         date=date,
                                                         season=season,
                                                         details=''.join(details))
-                yield player_history_item
+                player_history_items.append(item)
 
-    # Creates a form data payload to send, simulating the search button
-    def search_page_formdata(self, response):
-        viewstate = response.xpath('//input[@name="__VIEWSTATE"]/@value').extract_first()
-        eventvalidation = response.xpath('//input[@name="__EVENTVALIDATION"]/@value').extract_first()
-
-        formdata = BB_TRANSFER_SEARCH_FORMDATA
-        formdata['__EVENTVALIDATION'] = eventvalidation
-        formdata['__VIEWSTATE'] = viewstate
-
-        return formdata
-
-    # Creates a form data payload to send, simulating the next page button
-    def next_page_formdata(self, response):
-        viewstate = response.xpath('//input[@name="__VIEWSTATE"]/@value').extract_first()
-        eventvalidation = response.xpath('//input[@name="__EVENTVALIDATION"]/@value').extract_first()
-        previouspage = response.xpath('//input[@name="__PREVIOUSPAGE"]/@value').extract_first()
-        page = response.xpath('//input[@name="ctl00$cphContent$hdnPage"]/@value').extract_first()
-        search_id = response.xpath('//input[@name="ctl00$cphContent$hdnSearchID"]/@value').extract_first()
-        search_date = response.xpath('//input[@name="ctl00$cphContent$hdnSearchDate"]/@value').extract_first()
-
-        formdata = BB_TRANSFER_NEXT_PAGE_FORMDATA
-        formdata['__PREVIOUSPAGE'] = previouspage
-        formdata['__EVENTVALIDATION'] = eventvalidation
-        formdata['__VIEWSTATE'] = viewstate
-        formdata['ctl00$cphContent$hdnPage'] = page
-        formdata['ctl00$cphContent$hdnSearchID'] = search_id
-        formdata['ctl00$cphContent$hdnSearchDate'] = search_date
-
-        return formdata
+        return player_history_items
