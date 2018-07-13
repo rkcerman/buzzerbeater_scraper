@@ -67,7 +67,10 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
                     away_team_id = row.xpath('td[3]/strong/a').css('::attr(href)').extract_first().replace("/team/", "")
                 print("Away team: ", away_team_name)
                 away_team_id = away_team_id.replace("/overview.aspx", "")
-                away_team_item = TeamItem(id=away_team_id, name=away_team_name)
+                away_team_item = TeamItem(
+                    id=away_team_id,
+                    name=away_team_name
+                )
 
                 yield away_team_item
                 print(away_team_item)
@@ -81,15 +84,23 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
                     home_team_name = row.xpath('td[6]/strong/a/text()').extract_first()
                     home_team_id = row.xpath('td[6]/strong/a').css('::attr(href)').extract_first().replace("/team/", "")
                 home_team_id = home_team_id.replace("/overview.aspx", "")
-                home_team_item = TeamItem(id=home_team_id, name=home_team_name)
+                home_team_item = TeamItem(
+                    id=home_team_id,
+                    name=home_team_name
+                )
 
                 yield home_team_item
 
                 # Extracting the Match ID
                 match_id = box_score_link.replace("/match/", "").replace("/boxscore.aspx", "")
 
-                match_item = MatchItem(id=match_id, match_date=match_date,
-                                       away_team_id=away_team_id, home_team_id=home_team_id, season=season)
+                match_item = MatchItem(
+                    id=match_id,
+                    match_date=match_date,
+                    away_team_id=away_team_id,
+                    home_team_id=home_team_id,
+                    season=season
+                )
                 yield match_item
 
                 yield response.follow(box_score_link, self.parse_boxscore)
