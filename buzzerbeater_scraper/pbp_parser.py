@@ -3,6 +3,7 @@ from buzzerbeater_scraper.pbp_tags import PLAY_TYPE_CATEGORIES
 
 from buzzerbeater_scraper.items import ShotsItem
 
+
 # TODO badly needs unit testing
 # Class for parsing each play-by-play by
 # assigning a play categories to each play type. Each category gets parsed differently.
@@ -10,6 +11,7 @@ class PlayByPlayParser:
 
     # Reads play type and decides what to do with the play
     def parse(self, pbp_item):
+
         # Looks up the play type as a key value in the event_type_groups dictionary
         event_group = PLAY_TYPE_CATEGORIES.get(pbp_item['event_type'])
 
@@ -17,8 +19,8 @@ class PlayByPlayParser:
             return self.parse_shots(self, shot_play=pbp_item)
 
     def parse_shots(self, shot_play):
-        print("Parsing shot -----")
-        # Turn all the Goaltends into Scoreds because noone cares
+
+        # Turn all the Goaltends into Scores because noone cares
         shot_play['event'] = shot_play['event'].replace('Goaltending called', 'Scored')
 
         outcome = self.get_shot_outcome(shot_event=shot_play['event'])
@@ -31,6 +33,7 @@ class PlayByPlayParser:
                 shooter = player_id
                 break
 
+        # TODO unit test empty shooter (which should never happen)
         shots_item = ShotsItem(
             pbp_id=shot_play['id'],
             shooter=shooter,
@@ -40,7 +43,7 @@ class PlayByPlayParser:
         try:
             shots_item['defender'] = defensive_play[1]
             shots_item['defense_type'] = defensive_play[0]
-        except IndexError as e:
+        except IndexError:
             shots_item['defender'] = None
             shots_item['defense_type'] = None
             print("No defender.")
@@ -57,7 +60,8 @@ class PlayByPlayParser:
     # Gets the outcome of the shot (scored? missed? blocked?)
     @staticmethod
     def get_shot_outcome(shot_event):
-        # Get the outcome
+
+        # Get the outcome through regex
         outcome = re.search('(Shot missed|Scored|Shot blocked)', shot_event)
 
         # Turn all the shot outcomes (Scored | Missed | Shot Blocked) into lowercase with underscores
@@ -80,10 +84,13 @@ class PlayByPlayParser:
             ' after (\d+) backed off slightly'
         ]
 
+        # Create a list with the defense type and the defender
         defender_list = []
         for pattern in patterns:
             search = re.search(pattern, shot_event)
             if search is not None:
+
+                # Turn the pattern into a nice lower case enum with underscores
                 pattern = re.sub(pattern='(, |^ |\.)', repl='', string=pattern)
                 pattern = re.sub(pattern='( \(\\\\d\+\) )', repl='_', string=pattern)
                 pattern = re.sub(pattern='( \(\\\\d\+\))', repl='', string=pattern)
@@ -94,7 +101,6 @@ class PlayByPlayParser:
                     pattern,
                     defender
                 ]
-        print(defender_list)
         return defender_list
 
     # Finds the shot passer based on the regex patterns

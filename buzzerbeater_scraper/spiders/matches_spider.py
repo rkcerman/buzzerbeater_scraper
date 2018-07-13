@@ -61,7 +61,7 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
                 try:
                     away_team_name = row.xpath('td[3]/a/text()').extract_first()
                     away_team_id = row.xpath('td[3]/a').css('::attr(href)').extract_first().replace("/team/", "")
-                except AttributeError as e:
+                except AttributeError:
                     print("Buy ETH <3")
                     away_team_name = row.xpath('td[3]/strong/a/text()').extract_first()
                     away_team_id = row.xpath('td[3]/strong/a').css('::attr(href)').extract_first().replace("/team/", "")
@@ -79,7 +79,7 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
                 try:
                     home_team_name = row.xpath('td[6]/a/text()').extract_first()
                     home_team_id = row.xpath('td[6]/a').css('::attr(href)').extract_first().replace("/team/", "")
-                except AttributeError as e:
+                except AttributeError:
                     print("Buy ETH <3")
                     home_team_name = row.xpath('td[6]/strong/a/text()').extract_first()
                     home_team_id = row.xpath('td[6]/strong/a').css('::attr(href)').extract_first().replace("/team/", "")
@@ -138,7 +138,7 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
             # Replacing Player names for IDs; makes jobs down the line easier
             for idx, href in enumerate(item_event.find_all('a')):
                 player_href_id = href.get('href')
-                player_href_id = re.search('\/player\/(\d+)\/overview.aspx', player_href_id).group(1)
+                player_href_id = re.search('/player\/(\d+)\/overview.aspx', player_href_id).group(1)
                 item_event.select('a')[idx].string = player_href_id
 
             # Adding custom play_type_categories to the plays
@@ -158,6 +158,7 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
             )
 
             yield pbp_item
+
             if 'shot' in play_tags:
                 shots_item = pbp_parser.PlayByPlayParser.parse(self=PlayByPlayParser, pbp_item=pbp_item)
                 yield shots_item
