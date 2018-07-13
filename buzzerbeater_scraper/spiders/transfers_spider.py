@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 from scrapy import FormRequest
 
 from buzzerbeater_scraper.items import PlayerItem, PlayerSkillsItem, TeamItem, PlayerHistoryItem
+from buzzerbeater_scraper.formdata import BB_LOGIN, BB_TRANSFER_SEARCH_FORMDATA, BB_TRANSFER_NEXT_PAGE_FORMDATA
 
 
 class BuzzerbeaterTransfersSpider(scrapy.Spider):
@@ -22,7 +23,7 @@ class BuzzerbeaterTransfersSpider(scrapy.Spider):
         # Opening a login request
         return scrapy.FormRequest.from_response(
             response,
-            formdata={'ctl00$txtLoginName': 'rkcerman', 'ctl00$txtPassword': 'konzola'},
+            formdata=BB_LOGIN,
             callback=self.after_login
         )
 
@@ -44,52 +45,10 @@ class BuzzerbeaterTransfersSpider(scrapy.Spider):
         viewstate = response.xpath('//input[@name="__VIEWSTATE"]/@value').extract_first()
         eventvalidation = response.xpath('//input[@name="__EVENTVALIDATION"]/@value').extract_first()
         print(eventvalidation)
-        formdata = {
-            "__EVENTTARGET": "",
-            "__EVENTARGUMENT": "",
-            "__EVENTVALIDATION": eventvalidation,
-            "__VIEWSTATE": viewstate,
-            "ctl00$hdnNetlogLang": "",
-            "ctl00$myURL": "http://www.buzzerbeater.com/manage/transferlist.aspx",
-            "ctl00$tbCurrentPageName": "Link Name",
-            "ctl00$tbCustomLinkText": "Link Name",
-            "ctl00$tbCustomLinkURL": "Link URL",
-            "ctl00$cphContent$ddlSkill1": "0",
-            "ctl00$cphContent$ddlSkill2": "0",
-            "ctl00$cphContent$ddlSkill3": "0",
-            "ctl00$cphContent$ddlSkill4": "0",
-            "ctl00$cphContent$ddlSkill5": "0",
-            "ctl00$cphContent$ddlSkill6": "0",
-            "ctl00$cphContent$ddlSkill7": "0",
-            "ctl00$cphContent$ddlSkill8": "0",
-            "ctl00$cphContent$tbMinAge": "",
-            "ctl00$cphContent$tbMaxAge": "",
-            "ctl00$cphContent$tbMinSalary": "",
-            "ctl00$cphContent$tbMaxSalary": "",
-            "ctl00$cphContent$tbMinCurrentBid": "",
-            "ctl00$cphContent$tbMaxCurrentBid": "",
-            "ctl00$cphContent$ddlHeightMin": "0",
-            "ctl00$cphContent$ddlHeightMax": "0",
-            "ctl00$cphContent$ddlPotentialMin": "0",
-            "ctl00$cphContent$ddlPotentialMax": "0",
-            "ctl00$cphContent$ddlExperienceMin": "0",
-            "ctl00$cphContent$ddlExperienceMax": "0",
-            "ctl00$cphContent$ddlGameShapeMin": "0",
-            "ctl00$cphContent$ddlGameShapeMax": "0",
-            "ctl00$cphContent$ddlCountry": "0",
-            "ctl00$cphContent$ddlInjury1": "0",
-            "ctl00$cphContent$tbGuardSkillPoints": "",
-            "ctl00$cphContent$tbMaxGuardSkillPoints": "",
-            "ctl00$cphContent$tbForwardSkillPoints": "",
-            "ctl00$cphContent$tbMaxForwardSkillPoints": "",
-            "ctl00$cphContent$tbTotalSkillPoints": "",
-            "ctl00$cphContent$tbMaxTotalSkillPoints": "",
-            "ctl00$cphContent$ddlBestposition": "0",
-            "ctl00$cphContent$ddlBestposition2": "0",
-            "ctl00$cphContent$ddlsortBy": "1",
-            "ctl00$cphContent$btnSearch": "Search",
-            "ctl00$cphContent$tbNewLabel": ""
-        }
+
+        formdata = BB_TRANSFER_SEARCH_FORMDATA
+        formdata['__EVENTVALIDATION'] = eventvalidation
+        formdata['__VIEWSTATE'] = viewstate
 
         yield FormRequest(url=self.urls[0], callback=self.parse_transfers, formdata=formdata)
 
@@ -104,27 +63,13 @@ class BuzzerbeaterTransfersSpider(scrapy.Spider):
         search_id = response.xpath('//input[@name="ctl00$cphContent$hdnSearchID"]/@value').extract_first()
         search_date = response.xpath('//input[@name="ctl00$cphContent$hdnSearchDate"]/@value').extract_first()
 
-        formdata = {
-            "__EVENTTARGET": "",
-            "__EVENTARGUMENT": "",
-            "__PREVIOUSPAGE": previouspage,
-            "__EVENTVALIDATION": eventvalidation,
-            "__VIEWSTATE": viewstate,
-            "ctl00$hdnNetlogLang": "",
-            "ctl00$myURL": "http://www.buzzerbeater.com/manage/transferlist.aspx",
-            "ctl00$tbCurrentPageName": "Link Name",
-            "ctl00$tbCustomLinkText": "Link Name",
-            "ctl00$tbCustomLinkURL": "Link URL",
-            "ctl00$cphContent$btnNextPage": "Next Page",
-            "ctl00$cphContent$hdnPage": page,
-            "ctl00$cphContent$hdnTotalPages": "100",
-            "ctl00$cphContent$hdnTotalResults": "1000",
-            "ctl00$cphContent$hdnSearchID": search_id,
-            "ctl00$cphContent$hdnSearchParams": "",
-            "ctl00$cphContent$hdnSearchDate": search_date,
-            "ctl00$cphContent$hdnSortBy": "1",
-            "ctl00$cphContent$hdnPlayerCompare": "0"
-        }
+        formdata = BB_TRANSFER_NEXT_PAGE_FORMDATA
+        formdata['_PREVIOUSPAGE'] = previouspage
+        formdata['_EVENTVALIDATION'] = eventvalidation
+        formdata['_VIEWSTATE'] = viewstate
+        formdata['tl00$cphContent$hdnPage'] = page
+        formdata['tl00$cphContent$hdnSearchID'] = search_id
+        formdata['tl00$cphContent$hdnSearchDate'] = search_date
 
         for row in response.xpath('//div[@id="playerbox"]'):
             player_link = row.xpath('div[@class="boxheader"]/a/@href')
@@ -139,6 +84,7 @@ class BuzzerbeaterTransfersSpider(scrapy.Spider):
     # TODO move this to a more relevant .py the moment you have it
     # Parses individual player overviews
     def parse_player(self, response):
+
         # Getting player's name and ID
         player_id = re.search('/player\/(\d+)\/overview.aspx', response.url).group(1)
         player_name = response.xpath('//h1/text()').extract_first()
@@ -186,9 +132,17 @@ class BuzzerbeaterTransfersSpider(scrapy.Spider):
                     i += 1
                 transfer_estimate = ' '.join(transfer_estimate)
 
-            team_item = TeamItem(id=team_id, name=team_name)
-            player_item = PlayerItem(id=player_id, weekly_salary=weekly_salary, dmi=dmi, age=age, height=height,
-                                     position=position, name=player_name, team_id=team_id, transfer_estimate=transfer_estimate)
+            team_item = TeamItem(id=team_id,
+                                 name=team_name)
+            player_item = PlayerItem(id=player_id,
+                                     weekly_salary=weekly_salary,
+                                     dmi=dmi,
+                                     age=age,
+                                     height=height,
+                                     position=position,
+                                     name=player_name,
+                                     team_id=team_id,
+                                     transfer_estimate=transfer_estimate)
             yield team_item
             yield player_item
 
@@ -204,7 +158,9 @@ class BuzzerbeaterTransfersSpider(scrapy.Spider):
                         skill_name = re.search('<td>\s+(.+)\:', skill.extract()).group(1)
                         skill_value = skill.xpath('a/@title').extract_first()
 
-                        player_skills_item = PlayerSkillsItem(player_id=player_id, skill=skill_name, value=skill_value)
+                        player_skills_item = PlayerSkillsItem(player_id=player_id,
+                                                              skill=skill_name,
+                                                              value=skill_value)
                         yield player_skills_item
                     else:
                         print("Empty row")
@@ -231,6 +187,9 @@ class BuzzerbeaterTransfersSpider(scrapy.Spider):
                 # TODO Parse details and save to separate tables
                 details = row.xpath('td[4]/descendant-or-self::*/text()').extract()
 
-                player_history_item = PlayerHistoryItem(player_id=player_id, event=event, date=date, season=season
-                                                        , details=''.join(details))
+                player_history_item = PlayerHistoryItem(player_id=player_id,
+                                                        event=event,
+                                                        date=date,
+                                                        season=season,
+                                                        details=''.join(details))
                 yield player_history_item

@@ -8,6 +8,7 @@ from buzzerbeater_scraper import pbp_parser
 from buzzerbeater_scraper.pbp_tags import PLAY_TYPE_CATEGORIES
 from buzzerbeater_scraper.items import PlayByPlayItem, TeamItem, MatchItem
 from buzzerbeater_scraper.pbp_parser import PlayByPlayParser
+from buzzerbeater_scraper.formdata import BB_LOGIN
 
 
 class BuzzerbeaterMatchesSpider(scrapy.Spider):
@@ -25,7 +26,7 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
         # Opening a login request
         return scrapy.FormRequest.from_response(
             response,
-            formdata={'ctl00$txtLoginName': 'rkcerman', 'ctl00$txtPassword': 'konzola'},
+            formdata=BB_LOGIN,
             callback=self.after_login
         )
 
