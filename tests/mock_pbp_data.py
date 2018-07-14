@@ -22,7 +22,7 @@ mock_dlayup_missed_item = PlayByPlayItem(
     play_tags=['shot', 'mid']
 )
 
-mock_defended_item = PlayByPlayItem(
+mock_no_event_item = PlayByPlayItem(
     id=2,
     match_id=11,
     event_type='JUMP_SHOT',
