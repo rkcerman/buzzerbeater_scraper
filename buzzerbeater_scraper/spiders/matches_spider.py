@@ -109,6 +109,7 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
     # TODO parse the actual box score
     # Parses the Boxscore page
     def parse_boxscore(self, response):
+
         for href in response.xpath('//a[@title="Play-By-Play"]').css('::attr(href)'):
             yield response.follow(href, self.parse_pbp)
 

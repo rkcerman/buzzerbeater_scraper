@@ -83,5 +83,27 @@ class TestPlayByPlayParser(unittest.TestCase):
             passer = PlayByPlayParser.get_passer(shot_event=passed_item['event'])
             self.assertEqual(passer, '1234567')
 
+    # Check if the whole event is correctly parsed
+    def test_event(self):
+        print('------- Testing shooter')
+        mock_no_event_item['event'] = '1234567 threads a pass through the defense and finds 987654321. ' \
+                                      ' 987654321 puts up an off-balance jumper from the baseline.  Scored.'
+        shot_item = PlayByPlayParser.parse(self=PlayByPlayParser, pbp_item=mock_no_event_item)
+        self.assertEqual(
+            shot_item['shooter'],
+            '987654321'
+            )
+        self.assertEqual(
+            shot_item['outcome'],
+            'scored'
+        )
+        self.assertEqual(
+            shot_item['defender'],
+            None
+        )
+        self.assertEqual(
+            shot_item['passer'],
+            '1234567'
+        )
 if __name__ == '__main__':
     unittest.main()
