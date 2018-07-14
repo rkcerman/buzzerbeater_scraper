@@ -1,7 +1,7 @@
 import re
-from buzzerbeater_scraper.pbp_tags import PLAY_TYPE_CATEGORIES
 
 from buzzerbeater_scraper.items import ShotsItem
+from buzzerbeater_scraper.regex_patterns import PASSER_PATTERNS, DEFENDER_PATTERNS
 
 
 # TODO badly needs unit testing
@@ -75,14 +75,7 @@ class PlayByPlayParser:
     @staticmethod
     def get_defender(shot_event):
         try:
-            patterns = [
-                ', guarded closely by (\d+)',
-                'as (\d+) rotates over and alters his shot',
-                ' under pressure from (\d+)',
-                ' with (\d+) right in his face',
-                ' over (\d+).',
-                ' after (\d+) backed off slightly'
-            ]
+            patterns = DEFENDER_PATTERNS
 
             # Create a list with the defense type and the defender
             defender_list = []
@@ -110,13 +103,7 @@ class PlayByPlayParser:
     @staticmethod
     def get_passer(shot_event):
         try:
-            patterns = [
-                'off of a nice pass from (\d+)',
-                '(\d+) gets off a great pass to',
-                '(\d+) opens up the play with a pass to',
-                '(\d+) threads a pass through the defense and finds',
-                'finds (\d+) in space'
-            ]
+            patterns = PASSER_PATTERNS
 
             passer = ''
             for pattern in patterns:
