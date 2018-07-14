@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="44b49686-e162-4ba2-8c95-3e44a55449bf" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/buzzerbeater_scraper/pbp_parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_scraper/pbp_parser.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/buzzerbeater_scraper/spiders/matches_spider.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_scraper/spiders/matches_spider.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/mock_pbp_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/mock_pbp_data.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/test_pbp_parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/test_pbp_parser.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -28,11 +27,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="pbp_parser.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="pbp_parser.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/pbp_parser.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="165">
-              <caret line="14" column="39" selection-start-line="14" selection-start-column="39" selection-end-line="14" selection-end-column="39" />
+            <state relative-caret-position="51">
+              <caret line="96" column="20" selection-start-line="96" selection-start-column="20" selection-end-line="96" selection-end-column="20" />
               <folding>
                 <element signature="e#0#9#0" expanded="true" />
               </folding>
@@ -40,11 +39,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="test_pbp_parser.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="test_pbp_parser.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/tests/test_pbp_parser.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="9" column="62" selection-start-line="9" selection-start-column="62" selection-end-line="9" selection-end-column="62" />
+            <state relative-caret-position="426">
+              <caret line="41" column="90" selection-start-line="41" selection-start-column="90" selection-end-line="41" selection-end-column="90" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -108,10 +107,10 @@
         <option value="$PROJECT_DIR$/buzzerbeater_scraper/spiders/player_parser.py" />
         <option value="$PROJECT_DIR$/buzzerbeater_scraper/spiders/player_spider.py" />
         <option value="$PROJECT_DIR$/buzzerbeater_scraper/spiders/transfers_spider.py" />
-        <option value="$PROJECT_DIR$/tests/test_pbp_parser.py" />
         <option value="$PROJECT_DIR$/buzzerbeater_scraper/spiders/matches_spider.py" />
         <option value="$PROJECT_DIR$/tests/mock_pbp_data.py" />
         <option value="$PROJECT_DIR$/buzzerbeater_scraper/pbp_parser.py" />
+        <option value="$PROJECT_DIR$/tests/test_pbp_parser.py" />
       </list>
     </option>
   </component>
@@ -641,23 +640,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tests/mock_pbp_data.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="20" selection-start-line="10" selection-start-column="20" selection-end-line="10" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/test_pbp_parser.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="62" selection-start-line="9" selection-start-column="62" selection-end-line="9" selection-end-column="62" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/spiders/transfers_spider.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="337">
@@ -685,12 +667,29 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/tests/mock_pbp_data.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" column="20" selection-start-line="10" selection-start-column="20" selection-end-line="10" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/pbp_parser.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="14" column="39" selection-start-line="14" selection-start-column="39" selection-end-line="14" selection-end-column="39" />
+        <state relative-caret-position="51">
+          <caret line="96" column="20" selection-start-line="96" selection-start-column="20" selection-end-line="96" selection-end-column="20" />
           <folding>
             <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/test_pbp_parser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="426">
+          <caret line="41" column="90" selection-start-line="41" selection-start-column="90" selection-end-line="41" selection-end-column="90" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
       </provider>
