@@ -7,17 +7,17 @@ mock_info_item = PlayByPlayItem(
     quarter=1,
     clock='11:23',
     score='86 - 80',
-    event='P. Vaculčiak (H) substituted for M. Ilić (H) at SG.',
+    event='4534342 substituted for 12345678 (H) at SG.',
     play_tags='info',
 )
 
-mock_unguarded_item = PlayByPlayItem(
+mock_dlayup_missed_item = PlayByPlayItem(
     id=2,
     match_id=11,
-    event_type='SUBSTITUTION',
+    event_type='DRIVING_LAYUP',
     quarter=1,
     clock='11:23',
     score='86 - 80',
-    event='P. Vaculčiak (H) substituted for M. Ilić (H) at SG.',
-    play_tags='info',
+    event='987654321 attempts a jump-shot from the wing.  Shot missed.',
+    play_tags=['shot', 'mid']
 )

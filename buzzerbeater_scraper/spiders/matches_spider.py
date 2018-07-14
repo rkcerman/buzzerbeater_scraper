@@ -160,9 +160,10 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
 
             yield pbp_item
 
-            if 'shot' in play_tags:
-                shots_item = pbp_parser.PlayByPlayParser.parse(self=PlayByPlayParser, pbp_item=pbp_item)
-                yield shots_item
+            # Check if the item can be processed further, e.g. in case of shot items
+            parsed_pbp_item = pbp_parser.PlayByPlayParser.parse(self=PlayByPlayParser, pbp_item=pbp_item)
+            if parsed_pbp_item is not None:
+                yield parsed_pbp_item
 
             i += 1
 

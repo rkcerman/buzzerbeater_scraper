@@ -10,12 +10,9 @@ from buzzerbeater_scraper.items import ShotsItem
 class PlayByPlayParser:
 
     # Reads play type and decides what to do with the play
+    # If 'shot', returns ShotItem
     def parse(self, pbp_item):
-
-        # Looks up the play type as a key value in the event_type_groups dictionary
-        event_group = PLAY_TYPE_CATEGORIES.get(pbp_item['event_type'])
-
-        if 'shot' in event_group:
+        if 'shot' in pbp_item['play_tags']:
             return self.parse_shots(self, shot_play=pbp_item)
 
     def parse_shots(self, shot_play):
