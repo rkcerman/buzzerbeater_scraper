@@ -37,6 +37,13 @@ class MatchItem(scrapy.Item):
     season = scrapy.Field()
 
 
+class BoxscoreScoreTableItem(scrapy.Item):
+    match_id = scrapy.Field()
+    qtr = scrapy.Field()
+    away_team_score = scrapy.Field()
+    home_team_score = scrapy.Field()
+
+
 class TeamItem(scrapy.Item):
     id = scrapy.Field()
     name = scrapy.Field()

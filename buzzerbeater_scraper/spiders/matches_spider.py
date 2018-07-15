@@ -5,6 +5,8 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 
 from buzzerbeater_scraper import pbp_parser
+from buzzerbeater_scraper import boxscore_parser
+
 from buzzerbeater_scraper.pbp_tags import PLAY_TYPE_CATEGORIES
 from buzzerbeater_scraper.items import PlayByPlayItem, TeamItem, MatchItem
 from buzzerbeater_scraper.pbp_parser import PlayByPlayParser
@@ -109,9 +111,13 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
     # TODO parse the actual box score
     # Parses the Boxscore page
     def parse_boxscore(self, response):
+        match_id = re.search('/match/(\d+)/boxscore.aspx', response.url).group(1)
+        box_score_div = response.xpath('//div[@id="ctl00_cphContent_pnlBoxScore"]')
 
-        for href in response.xpath('//a[@title="Play-By-Play"]').css('::attr(href)'):
-            yield response.follow(href, self.parse_pbp)
+
+        # Following the link to Play-By-Play page
+        pbp_link = response.xpath('//a[@title="Play-By-Play"]').css('::attr(href)').extract_first()
+        yield response.follow(pbp_link, self.parse_pbp)
 
     # TODO Try to find a way to use scrapy's native parsing here
     # Parses the Play-by-Play page
