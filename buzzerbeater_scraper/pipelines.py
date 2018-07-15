@@ -10,7 +10,7 @@ from psycopg2 import IntegrityError
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 from buzzerbeater_scraper.items import PlayByPlayItem, MatchItem, TeamItem, OnlinePeopleItem, PlayerItem, \
-    PlayerSkillsItem, PlayerHistoryItem, ShotsItem, ScoreTableItem
+   PlayerSkillsItem, PlayerHistoryItem, ShotsItem, ScoreTableItem, BoxscoreItem
 
 
 class BuzzerbeaterScraperPipeline(object):
@@ -78,6 +78,46 @@ class BuzzerbeaterScraperPipeline(object):
                                   item['qtr'],
                                   item['away_team_score'],
                                   item['home_team_score']))
+                self.conn.commit()
+            except IntegrityError as e:
+                print("Duplicate primary key entry, skipping")
+            return item
+        if isinstance(item, BoxscoreItem):
+            try:
+                self.cur.execute("INSERT INTO boxscores VALUES("
+                                 "%s, %s, %s, %s, %s"
+                                 "%s, %s, %s, %s, %s"
+                                 "%s, %s, %s, %s, %s"
+                                 "%s, %s, %s, %s, %s"
+                                 "%s, %s, %s, %s, %s, %s"
+                                 ") "
+                                 "ON CONFLICT DO NOTHING",
+                                 (item['match_id'],
+                                  item['away_off_tactic'],
+                                  item['away_def_tactic'],
+                                  item['away_prep_focus'],
+                                  item['away_prep_pace'],
+                                  item['home_off_tactic'],
+                                  item['home_def_tactic'],
+                                  item['home_prep_focus'],
+                                  item['home_prep_pace'],
+                                  item['away_outside_off'],
+                                  item['away_inside_off'],
+                                  item['away_outside_def'],
+                                  item['away_inside_def'],
+                                  item['away_reb'],
+                                  item['away_off_flow'],
+                                  item['home_outside_off'],
+                                  item['home_inside_off'],
+                                  item['home_outside_def'],
+                                  item['home_inside_def'],
+                                  item['home_reb'],
+                                  item['home_off_flow'],
+                                  item['home_prep_focus_matched'],
+                                  item['home_prep_pace_matched'],
+                                  item['away_prep_focus_matched'],
+                                  item['away_prep_pace_matched'],
+                                  item['match_type']))
                 self.conn.commit()
             except IntegrityError as e:
                 print("Duplicate primary key entry, skipping")

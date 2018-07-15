@@ -42,3 +42,14 @@ class BoxscoreParser:
         except AttributeError as e:
             print('ERROR: Only accepting scrapy.selector.Selector type')
             print(e)
+
+    def get_tactics(self, box_score_div)
+        try:
+            tactics_table = box_score_div.xpath('//table[@style="margin: auto;"')
+            away_team_index = 1
+            home_team_index = 3
+            off_tactics_tr = tactics_table.xpath('tr[3]')
+
+        except AttributeError as e:
+            print('ERROR: Only accepting scrapy.selector.Selector type')
+            print(e)

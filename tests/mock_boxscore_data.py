@@ -139,7 +139,7 @@ MOCK_BOXSCORE_DIV = '<div id="ctl00_cphContent_pnlBoxScore">' \
                     '                Offensive Strategy' \
                     '            </td>' \
                     '            <td colspan="2">' \
-                    '                Push the Ball' \
+                    '                Look Inside' \
                     '            </td>' \
                     '        </tr>' \
                     '        <tr>' \

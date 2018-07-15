@@ -44,6 +44,35 @@ class ScoreTableItem(scrapy.Item):
     home_team_score = scrapy.Field()
 
 
+class BoxscoreItem(scrapy.Item):
+    match_id = scrapy.Field()
+    away_off_tactic = scrapy.Field()
+    away_def_tactic = scrapy.Field()
+    away_prep_focus = scrapy.Field()
+    away_prep_pace = scrapy.Field()
+    home_off_tactic = scrapy.Field()
+    home_def_tactic = scrapy.Field()
+    home_prep_focus = scrapy.Field()
+    home_prep_pace = scrapy.Field()
+    away_outside_off = scrapy.Field()
+    away_inside_off = scrapy.Field()
+    away_outside_def = scrapy.Field()
+    away_inside_def = scrapy.Field()
+    away_reb = scrapy.Field()
+    away_off_flow = scrapy.Field()
+    home_outside_off = scrapy.Field()
+    home_inside_off = scrapy.Field()
+    home_outside_def = scrapy.Field()
+    home_inside_def = scrapy.Field()
+    home_reb = scrapy.Field()
+    home_off_flow = scrapy.Field()
+    home_prep_focus_matched = scrapy.Field()
+    home_prep_pace_matched = scrapy.Field()
+    away_prep_focus_matched = scrapy.Field()
+    away_prep_pace_matched = scrapy.Field()
+    match_type = scrapy.Field()
+
+
 class TeamItem(scrapy.Item):
     id = scrapy.Field()
     name = scrapy.Field()
