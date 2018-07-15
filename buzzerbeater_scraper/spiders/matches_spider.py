@@ -11,6 +11,7 @@ from buzzerbeater_scraper.pbp_tags import PLAY_TYPE_CATEGORIES
 from buzzerbeater_scraper.items import PlayByPlayItem, TeamItem, MatchItem
 from buzzerbeater_scraper.pbp_parser import PlayByPlayParser
 from buzzerbeater_scraper.formdata import BB_LOGIN
+from buzzerbeater_scraper.boxscore_parser import BoxscoreParser
 
 
 class BuzzerbeaterMatchesSpider(scrapy.Spider):
@@ -52,23 +53,16 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
         # Iterating through each row
         for row in response.xpath('//table[@class="schedule"]/tr'):
             box_score_link = row.xpath('td[4]/a[@id="matchBoxscoreLink"]').css('::attr(href)').extract_first()
+            away_team_name = row.xpath('td[3]//a/text()').extract_first()
+            home_team_name = row.xpath('td[6]//a/text()').extract_first()
 
-            if box_score_link is not None:
+            # To prevent table headers and all star games from getting scraped
+            if box_score_link and away_team_name and home_team_name is not None:
                 match_date = row.xpath('td[1]//text()').extract_first().split()[0]
                 match_date = datetime.strptime(match_date, '%m/%d/%Y')
-                print("date : ", match_date)
 
-                # TODO Fails at Great/Big 8, also likely a shitty approach (avoid try/except)
-                # TODO do it with descendant-or-self
                 # Creating the Away Team item
-                try:
-                    away_team_name = row.xpath('td[3]/a/text()').extract_first()
-                    away_team_id = row.xpath('td[3]/a').css('::attr(href)').extract_first().replace("/team/", "")
-                except AttributeError:
-                    print("Buy ETH <3")
-                    away_team_name = row.xpath('td[3]/strong/a/text()').extract_first()
-                    away_team_id = row.xpath('td[3]/strong/a').css('::attr(href)').extract_first().replace("/team/", "")
-                print("Away team: ", away_team_name)
+                away_team_id = row.xpath('td[3]/strong/a').css('::attr(href)').extract_first().replace("/team/", "")
                 away_team_id = away_team_id.replace("/overview.aspx", "")
                 away_team_item = TeamItem(
                     id=away_team_id,
@@ -76,16 +70,9 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
                 )
 
                 yield away_team_item
-                print(away_team_item)
 
                 # Creating the Home Team item
-                try:
-                    home_team_name = row.xpath('td[6]/a/text()').extract_first()
-                    home_team_id = row.xpath('td[6]/a').css('::attr(href)').extract_first().replace("/team/", "")
-                except AttributeError:
-                    print("Buy ETH <3")
-                    home_team_name = row.xpath('td[6]/strong/a/text()').extract_first()
-                    home_team_id = row.xpath('td[6]/strong/a').css('::attr(href)').extract_first().replace("/team/", "")
+                home_team_id = row.xpath('td[6]/strong/a').css('::attr(href)').extract_first().replace("/team/", "")
                 home_team_id = home_team_id.replace("/overview.aspx", "")
                 home_team_item = TeamItem(
                     id=home_team_id,
@@ -114,9 +101,19 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
         match_id = re.search('/match/(\d+)/boxscore.aspx', response.url).group(1)
         box_score_div = response.xpath('//div[@id="ctl00_cphContent_pnlBoxScore"]')
 
+        score_tables = BoxscoreParser.get_scores_by_quarter(
+            self=BoxscoreParser,
+            box_score_div=box_score_div,
+            match_id=match_id
+        )
+
+        for score_table_item in score_tables:
+            self.logger.info('Item in score_tables')
+            yield score_tables[score_table_item]
 
         # Following the link to Play-By-Play page
         pbp_link = response.xpath('//a[@title="Play-By-Play"]').css('::attr(href)').extract_first()
+
         yield response.follow(pbp_link, self.parse_pbp)
 
     # TODO Try to find a way to use scrapy's native parsing here

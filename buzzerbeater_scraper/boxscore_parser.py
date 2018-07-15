@@ -12,7 +12,7 @@ class BoxscoreParser:
     # Returns the list of ScoreTableItem
     def get_scores_by_quarter(self, box_score_div, match_id):
         try:
-            score_table = box_score_div.xpath('//table[1]')
+            score_table = box_score_div.xpath('//table[@style="margin: auto;"][1]')
             away_team = score_table.xpath('tr[2]')
             home_team = score_table.xpath('tr[3]')
             score_table_item = ScoreTableItem(match_id=match_id)
