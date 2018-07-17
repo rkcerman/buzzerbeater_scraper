@@ -52,7 +52,7 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
 
         # Iterating through each row
         for row in response.xpath('//table[@class="schedule"]/tr'):
-            boxscore_link = row.xpath('td[4]/a[@id="matchBoxscoreLink"]').css('::attr(href)').extract_first()
+            boxscore_link = row.xpath('td[4]/a[@id="matchBoxscoreLink"]/@href').extract_first()
             away_team_name = row.xpath('td[3]//a/text()').extract_first()
             home_team_name = row.xpath('td[6]//a/text()').extract_first()
 
@@ -62,7 +62,7 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
                 match_date = datetime.strptime(match_date, '%m/%d/%Y')
 
                 # Creating the Away Team item
-                away_team_id = row.xpath('td[3]//a').css('::attr(href)').extract_first().replace("/team/", "")
+                away_team_id = row.xpath('td[3]//a/@href').extract_first().replace("/team/", "")
                 away_team_id = away_team_id.replace("/overview.aspx", "")
                 away_team_item = TeamItem(
                     id=away_team_id,
@@ -72,7 +72,7 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
                 yield away_team_item
 
                 # Creating the Home Team item
-                home_team_id = row.xpath('td[6]//a').css('::attr(href)').extract_first().replace("/team/", "")
+                home_team_id = row.xpath('td[6]//a/@href').extract_first().replace("/team/", "")
                 home_team_id = home_team_id.replace("/overview.aspx", "")
                 home_team_item = TeamItem(
                     id=home_team_id,
@@ -95,15 +95,21 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
 
                 boxscore_api_link = 'http://bbapi.buzzerbeater.com/boxscore.aspx?matchid=' + match_id
 
+                # Login to API before scraping box scores
                 yield scrapy.Request(
                     url='http://bbapi.buzzerbeater.com/login.aspx?login=rkcerman&code=konzola2',
                     callback=self.after_api_login,
                     meta={'match_id': match_id, 'boxscore_api_link': boxscore_api_link}
                 )
 
+    # After API login method that calls the boxscore API link before parsing it
     def after_api_login(self, response):
         print('match_id ', response.meta['match_id'])
-        yield response.follow(url=response.meta['boxscore_api_link'], callback=self.parse_boxscore, meta={'match_id': response.meta['match_id']})
+        yield response.follow(
+            url=response.meta['boxscore_api_link'],
+            callback=self.parse_boxscore,
+            meta={'match_id': response.meta['match_id']}
+        )
 
     # TODO parse the actual box score
     # Parses the Boxscore page
@@ -154,7 +160,10 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
             # Replacing Player names for IDs; makes jobs down the line easier
             for idx, href in enumerate(item_event.find_all('a')):
                 player_href_id = href.get('href')
-                player_href_id = re.search('/player\/(\d+)\/overview.aspx', player_href_id).group(1)
+                player_href_id = re.search(
+                    '/player\/(\d+)\/overview.aspx',
+                    player_href_id
+                ).group(1)
                 item_event.select('a')[idx].string = player_href_id
 
             # Adding custom play_type_categories to the plays
@@ -176,7 +185,10 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
             yield pbp_item
 
             # Check if the item can be processed further, e.g. in case of shot items
-            parsed_pbp_item = pbp_parser.PlayByPlayParser.parse(self=PlayByPlayParser, pbp_item=pbp_item)
+            parsed_pbp_item = pbp_parser.PlayByPlayParser.parse(
+                self=PlayByPlayParser,
+                pbp_item=pbp_item
+            )
             if parsed_pbp_item is not None:
                 yield parsed_pbp_item
 
