@@ -1,4 +1,4 @@
-MOCK_BOXSCORE_DICT = {
+MOCK_SCORE_TABLE_DICT = {
     1: {
         'match_id': 101245565,
         'qtr' : 1,

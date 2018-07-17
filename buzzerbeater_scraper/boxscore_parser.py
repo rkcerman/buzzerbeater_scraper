@@ -11,13 +11,17 @@ class BoxscoreParser:
     # Returns boxscore_item together with score_table
     def parse(self, boxscore_xml):
         match_id = int(boxscore_xml.xpath('//match/@id').extract_first())
+        match_type = boxscore_xml.xpath('//match/@type').extract_first()
         score_table_items = self.get_scores_by_qtr(
             self=self,
             boxscore_xml=boxscore_xml,
             match_id=match_id)
         away_team_xml = boxscore_xml.xpath('//match/awayTeam')
         home_team_xml = boxscore_xml.xpath('//match/homeTeam')
-        boxscore_item = BoxscoreItem(match_id=match_id)
+        boxscore_item = BoxscoreItem(
+            match_id=match_id,
+            match_type=match_type
+        )
 
         for i, team_xml in enumerate([away_team_xml, home_team_xml]):
             if i == 0:
@@ -31,6 +35,12 @@ class BoxscoreParser:
                 boxscore_item=boxscore_item
             )
             boxscore_item = self.get_preps(
+                self=self,
+                team_xml=team_xml,
+                team=team,
+                boxscore_item=boxscore_item
+            )
+            boxscore_item = self.get_team_ratings(
                 self=self,
                 team_xml=team_xml,
                 team=team,
@@ -108,3 +118,30 @@ class BoxscoreParser:
                 print(traceback.print_tb(e.__traceback__))
         else:
             print('Invalid team')
+
+    def get_team_ratings(self, team_xml, team, boxscore_item):
+        if team in ('away', 'home'):
+            try:
+                team_ratings = team_xml.xpath('ratings')
+
+                outside_scoring = float(team_ratings.xpath('outsideScoring/text()').extract_first())
+                inside_scoring = float(team_ratings.xpath('insideScoring/text()').extract_first())
+                outside_defense = float(team_ratings.xpath('outsideDefense/text()').extract_first())
+                inside_defense = float(team_ratings.xpath('insideDefense/text()').extract_first())
+                rebounding = float(team_ratings.xpath('rebounding/text()').extract_first())
+                off_flow = float(team_ratings.xpath('offensiveFlow/text()').extract_first())
+
+                boxscore_item[team + '_outside_off'] = outside_scoring
+                boxscore_item[team + '_inside_off'] = inside_scoring
+                boxscore_item[team + '_outside_def'] = outside_defense
+                boxscore_item[team + '_inside_def'] = inside_defense
+                boxscore_item[team + '_reb'] = rebounding
+                boxscore_item[team + '_off_flow'] = off_flow
+
+                return boxscore_item
+            except AttributeError as e:
+                logging.error('Only accepting scrapy.selector.Selector type')
+                print(traceback.print_tb(e.__traceback__))
+        else:
+            print('Invalid team')
+

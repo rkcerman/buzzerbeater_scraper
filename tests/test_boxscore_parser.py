@@ -3,7 +3,7 @@ import unittest
 from scrapy.selector import Selector, SelectorList
 
 from buzzerbeater_scraper.items import BoxscoreItem
-from tests.mock_boxscore_data import MOCK_BOXSCORE_DICT, MOCK_BOXSCORE_XML
+from tests.mock_boxscore_data import MOCK_SCORE_TABLE_DICT, MOCK_BOXSCORE_XML
 from buzzerbeater_scraper.boxscore_parser import BoxscoreParser
 
 
@@ -53,7 +53,7 @@ class TestBoxscoreParser(unittest.TestCase):
                 boxscore_xml=self.boxscore_xml_sel,
                 match_id=101245565
             ),
-            MOCK_BOXSCORE_DICT
+            MOCK_SCORE_TABLE_DICT
         )
 
     # Test if strategies are correct
@@ -72,17 +72,19 @@ class TestBoxscoreParser(unittest.TestCase):
             team='home',
             boxscore_item=self.boxscore_item
         )
+        # Away team tests
         self.assertEqual(
             test_away_item['away_off_strategy'],
             'RunAndGun'
         )
         self.assertEqual(
-            test_home_item['home_off_strategy'],
-            'Patient'
-        )
-        self.assertEqual(
             test_away_item['away_def_strategy'],
             'ManToMan'
+        )
+        # Home team tests
+        self.assertEqual(
+            test_home_item['home_off_strategy'],
+            'Patient'
         )
         self.assertEqual(
             test_home_item['home_def_strategy'],
@@ -104,6 +106,7 @@ class TestBoxscoreParser(unittest.TestCase):
             team='home',
             boxscore_item=self.boxscore_item
         )
+        # Away team tests
         self.assertEqual(
             test_away_item['away_prep_focus'],
             'Inside'
@@ -120,6 +123,7 @@ class TestBoxscoreParser(unittest.TestCase):
             test_away_item['away_prep_pace_matched'],
             None
         )
+        # Home team tests
         self.assertEqual(
             test_home_item['home_prep_focus'],
             None
@@ -137,6 +141,71 @@ class TestBoxscoreParser(unittest.TestCase):
             'hit'
         )
 
+    # Testing team ratings for both away and home teams
+    def test_team_ratings(self):
+        print('test_team_ratings')
+        test_home_item = BoxscoreParser.get_team_ratings(
+            self=BoxscoreParser,
+            team_xml=self.away_boxscore_xml,
+            team='away',
+            boxscore_item=self.boxscore_item
+        )
+        test_away_item = BoxscoreParser.get_team_ratings(
+            self=BoxscoreParser,
+            team_xml=self.home_boxscore_xml,
+            team='home',
+            boxscore_item=self.boxscore_item
+        )
+        # Away team tests
+        self.assertEqual(
+            test_away_item['away_outside_off'],
+            7.6
+        )
+        self.assertEqual(
+            test_away_item['away_inside_off'],
+            6
+        )
+        self.assertEqual(
+            test_away_item['away_outside_def'],
+            5.6
+        )
+        self.assertEqual(
+            test_away_item['away_inside_def'],
+            7.3
+        )
+        self.assertEqual(
+            test_away_item['away_reb'],
+            5.3
+        )
+        self.assertEqual(
+            test_away_item['away_off_flow'],
+            5
+        )
+        # Home team tests
+        self.assertEqual(
+            test_home_item['home_outside_off'],
+            6.6
+        )
+        self.assertEqual(
+            test_home_item['home_inside_off'],
+            7
+        )
+        self.assertEqual(
+            test_home_item['home_outside_def'],
+            5.6
+        )
+        self.assertEqual(
+            test_home_item['home_inside_def'],
+            9.3
+        )
+        self.assertEqual(
+            test_home_item['home_reb'],
+            7.6
+        )
+        self.assertEqual(
+            test_home_item['home_off_flow'],
+            5.6
+        )
 
     # Test the output of parse()
     def test_parse(self):
@@ -152,9 +221,18 @@ class TestBoxscoreParser(unittest.TestCase):
         # Method testing the score table item
         self.assertEqual(
             test_score_table_item,
-            MOCK_BOXSCORE_DICT
+            MOCK_SCORE_TABLE_DICT
         )
+
         # Methods testing the boxscore_item
+        self.assertEqual(
+            test_boxscore_item['match_id'],
+            101245565
+        )
+        self.assertEqual(
+            test_boxscore_item['match_type'],
+            'league.rs'
+        )
         self.assertEqual(
             test_boxscore_item['away_off_strategy'],
             'RunAndGun'
@@ -194,4 +272,55 @@ class TestBoxscoreParser(unittest.TestCase):
         self.assertEqual(
             test_boxscore_item['home_prep_pace_matched'],
             'hit'
+        )
+
+        # Methods testing team ratings
+        self.assertEqual(
+            test_boxscore_item['away_outside_off'],
+            7.6
+        )
+        self.assertEqual(
+            test_boxscore_item['away_inside_off'],
+            6
+        )
+        self.assertEqual(
+            test_boxscore_item['away_outside_def'],
+            5.6
+        )
+        self.assertEqual(
+            test_boxscore_item['away_inside_def'],
+            7.3
+        )
+        self.assertEqual(
+            test_boxscore_item['away_reb'],
+            5.3
+        )
+        self.assertEqual(
+            test_boxscore_item['away_off_flow'],
+            5
+        )
+        # Home team tests
+        self.assertEqual(
+            test_boxscore_item['home_outside_off'],
+            6.6
+        )
+        self.assertEqual(
+            test_boxscore_item['home_inside_off'],
+            7
+        )
+        self.assertEqual(
+            test_boxscore_item['home_outside_def'],
+            5.6
+        )
+        self.assertEqual(
+            test_boxscore_item['home_inside_def'],
+            9.3
+        )
+        self.assertEqual(
+            test_boxscore_item['home_reb'],
+            7.6
+        )
+        self.assertEqual(
+            test_boxscore_item['home_off_flow'],
+            5.6
         )
