@@ -8,21 +8,38 @@ from buzzerbeater_scraper.boxscore_parser import BoxscoreParser
 
 class TestBoxscoreParser(unittest.TestCase):
 
-    boxscore_xml_sel = Selector(text=MOCK_BOXSCORE_XML)
-    away_boxscore_xml = boxscore_xml_sel.xpath('//match/awayteam')
-    home_boxscore_xml = boxscore_xml_sel.xpath('//match/hometeam')
+    boxscore_xml_sel = Selector(
+        text=MOCK_BOXSCORE_XML,
+        type='xml'
+    )
+    away_boxscore_xml = boxscore_xml_sel.xpath('//match/awayTeam')
+    home_boxscore_xml = boxscore_xml_sel.xpath('//match/homeTeam')
     boxscore_item = BoxscoreItem(match_id=101245565)
 
     # Test invalid type for scores_by_quarter
     def test_invalid_types(self):
         self.assertIsNone(
-            BoxscoreParser.get_scores_by_qtr(self=BoxscoreParser, boxscore_xml=1232, match_id=1)
+            BoxscoreParser.get_scores_by_qtr(
+                self=BoxscoreParser,
+                boxscore_xml=1232,
+                match_id=1
+            )
         )
         self.assertIsNone(
-            BoxscoreParser.get_strategies(self=BoxscoreParser, team_xml=12321, team='away', boxscore_item=self.boxscore_item)
+            BoxscoreParser.get_strategies(
+                self=BoxscoreParser,
+                team_xml=12321,
+                team='away',
+                boxscore_item=self.boxscore_item
+            )
         )
         self.assertIsNone(
-            BoxscoreParser.get_strategies(self=BoxscoreParser, team_xml=12321, team='bla', boxscore_item=self.boxscore_item)
+            BoxscoreParser.get_strategies(
+                self=BoxscoreParser,
+                team_xml=12321,
+                team='bla',
+                boxscore_item=self.boxscore_item
+            )
         )
 
     # Test if scores are correct
@@ -36,41 +53,55 @@ class TestBoxscoreParser(unittest.TestCase):
             MOCK_BOXSCORE_DICT
         )
 
-    # Test if tactics are correct
-    def test_tactics(self):
+    # Test if strategies are correct
+    def test_strategies(self):
+        test_home_item = BoxscoreParser.get_strategies(
+            self=BoxscoreParser,
+            team_xml=self.away_boxscore_xml,
+            team='away',
+            boxscore_item=self.boxscore_item
+        )
+        test_away_item = BoxscoreParser.get_strategies(
+            self=BoxscoreParser,
+            team_xml=self.home_boxscore_xml,
+            team='home',
+            boxscore_item=self.boxscore_item
+        )
         self.assertEqual(
-            BoxscoreParser.get_strategies(
-                self=BoxscoreParser,
-                team_xml=self.away_boxscore_xml,
-                team='away',
-                boxscore_item=self.boxscore_item
-            )['away_off_strategy'],
+            test_away_item['away_off_strategy'],
             'RunAndGun'
         )
         self.assertEqual(
-            BoxscoreParser.get_strategies(
-                self=BoxscoreParser,
-                team_xml=self.home_boxscore_xml,
-                team='home',
-                boxscore_item=self.boxscore_item
-            )['home_off_strategy'],
+            test_home_item['home_off_strategy'],
             'Patient'
         )
         self.assertEqual(
-            BoxscoreParser.get_strategies(
-                self=BoxscoreParser,
-                team_xml=self.away_boxscore_xml,
-                team='away',
-                boxscore_item=self.boxscore_item
-            )['away_def_strategy'],
+            test_away_item['away_def_strategy'],
             'ManToMan'
         )
         self.assertEqual(
-            BoxscoreParser.get_strategies(
-                self=BoxscoreParser,
-                team_xml=self.home_boxscore_xml,
-                team='home',
-                boxscore_item=self.boxscore_item
-            )['home_def_strategy'],
+            test_home_item['home_def_strategy'],
+            '23Zone'
+        )
+
+    def test_parse(self):
+        test_item = BoxscoreParser.parse(
+            self=BoxscoreParser,
+            boxscore_xml=self.boxscore_xml_sel
+        )
+        self.assertEqual(
+            test_item['away_off_strategy'],
+            'RunAndGun'
+        )
+        self.assertEqual(
+            test_item['home_off_strategy'],
+            'Patient'
+        )
+        self.assertEqual(
+            test_item['away_def_strategy'],
+            'ManToMan'
+        )
+        self.assertEqual(
+            test_item['home_def_strategy'],
             '23Zone'
         )

@@ -38,15 +38,15 @@ MOCK_BOXSCORE_XML ='<bbapi version="1">' \
 '<luxury>12</luxury>' \
 '</attendance>' \
 '<awayTeam id="58377">' \
-'<teamName>BK sever 5</teamName>' \
-'<shortName>BK </shortName>' \
+'<teamname>BK sever 5</teamname>' \
+'<shortname>BK </shortname>' \
 '<score partials="23,14,19,29">85</score>' \
 '<offStrategy>RunAndGun</offStrategy>' \
 '<defStrategy>ManToMan</defStrategy>' \
 '<boxscore>' \
 '<player id="28668697">' \
-'<firstName>Fernand</firstName>' \
-'<lastName>Le Goff</lastName>' \
+'<firstname>Fernand</firstname>' \
+'<lastname>Le Goff</lastname>' \
 '<minutes>' \
 '<PG>0</PG>' \
 '<SG>0</SG>' \
@@ -73,8 +73,8 @@ MOCK_BOXSCORE_XML ='<bbapi version="1">' \
 '</performance>' \
 '</player>' \
 '<player id="35115556">' \
-'<firstName>Curtis</firstName>' \
-'<lastName>Harris</lastName>' \
+'<firstname>Curtis</firstname>' \
+'<lastname>Harris</lastname>' \
 '<minutes>' \
 '<PG>0</PG>' \
 '<SG>0</SG>' \
@@ -101,8 +101,8 @@ MOCK_BOXSCORE_XML ='<bbapi version="1">' \
 '</performance>' \
 '</player>' \
 '<player id="36218011">' \
-'<firstName>Guillaume</firstName>' \
-'<lastName>Geay</lastName>' \
+'<firstname>Guillaume</firstname>' \
+'<lastname>Geay</lastname>' \
 '<minutes>' \
 '<PG>0</PG>' \
 '<SG>29</SG>' \
@@ -129,8 +129,8 @@ MOCK_BOXSCORE_XML ='<bbapi version="1">' \
 '</performance>' \
 '</player>' \
 '<player id="36732163">' \
-'<firstName>Sandis</firstName>' \
-'<lastName>Klavinš</lastName>' \
+'<firstname>Sandis</firstname>' \
+'<lastname>Klavinš</lastname>' \
 '<minutes>' \
 '<PG>0</PG>' \
 '<SG>0</SG>' \
@@ -157,8 +157,8 @@ MOCK_BOXSCORE_XML ='<bbapi version="1">' \
 '</performance>' \
 '</player>' \
 '<player id="36877385">' \
-'<firstName>Hüseyin</firstName>' \
-'<lastName>Nazgul</lastName>' \
+'<firstname>Hüseyin</firstname>' \
+'<lastname>Nazgul</lastname>' \
 '<minutes>' \
 '<PG>0</PG>' \
 '<SG>0</SG>' \
@@ -185,8 +185,8 @@ MOCK_BOXSCORE_XML ='<bbapi version="1">' \
 '</performance>' \
 '</player>' \
 '<player id="36894298">' \
-'<firstName>Miquel</firstName>' \
-'<lastName>Miró</lastName>' \
+'<firstname>Miquel</firstname>' \
+'<lastname>Miró</lastname>' \
 '<minutes>' \
 '<PG>27</PG>' \
 '<SG>0</SG>' \
@@ -213,8 +213,8 @@ MOCK_BOXSCORE_XML ='<bbapi version="1">' \
 '</performance>' \
 '</player>' \
 '<player id="39156549">' \
-'<firstName>Alberto</firstName>' \
-'<lastName>Acosta</lastName>' \
+'<firstname>Alberto</firstname>' \
+'<lastname>Acosta</lastname>' \
 '<minutes>' \
 '<PG>0</PG>' \
 '<SG>19</SG>' \
@@ -241,8 +241,8 @@ MOCK_BOXSCORE_XML ='<bbapi version="1">' \
 '</performance>' \
 '</player>' \
 '<player id="39786791">' \
-'<firstName>Elroy</firstName>' \
-'<lastName>Steward</lastName>' \
+'<firstname>Elroy</firstname>' \
+'<lastname>Steward</lastname>' \
 '<minutes>' \
 '<PG>0</PG>' \
 '<SG>0</SG>' \
@@ -269,8 +269,8 @@ MOCK_BOXSCORE_XML ='<bbapi version="1">' \
 '</performance>' \
 '</player>' \
 '<player id="40921645">' \
-'<firstName>Pere</firstName>' \
-'<lastName>Belengué</lastName>' \
+'<firstname>Pere</firstname>' \
+'<lastname>Belengué</lastname>' \
 '<minutes>' \
 '<PG>0</PG>' \
 '<SG>0</SG>' \
@@ -297,8 +297,8 @@ MOCK_BOXSCORE_XML ='<bbapi version="1">' \
 '</performance>' \
 '</player>' \
 '<player id="41525134">' \
-'<firstName>Peregrín</firstName>' \
-'<lastName>Hraška</lastName>' \
+'<firstname>Peregrín</firstname>' \
+'<lastname>Hraška</lastname>' \
 '<minutes>' \
 '<PG>21</PG>' \
 '<SG>0</SG>' \
@@ -325,8 +325,8 @@ MOCK_BOXSCORE_XML ='<bbapi version="1">' \
 '</performance>' \
 '</player>' \
 '<player id="42239973">' \
-'<firstName>Eugen</firstName>' \
-'<lastName>Kašinský</lastName>' \
+'<firstname>Eugen</firstname>' \
+'<lastname>Kašinský</lastname>' \
 '<minutes>' \
 '<PG>0</PG>' \
 '<SG>0</SG>' \
@@ -391,16 +391,16 @@ MOCK_BOXSCORE_XML ='<bbapi version="1">' \
 '</gdp>' \
 '</awayTeam>' \
 '<homeTeam id="58420">' \
-'<teamName>Ethereum Traders</teamName>' \
-'<shortName>ETH</shortName>' \
+'<teamname>Ethereum Traders</teamname>' \
+'<shortname>ETH</shortname>' \
 '<score partials="29,19,20,29">97</score>' \
 '<offStrategy>Patient</offStrategy>' \
 '<defStrategy>23Zone</defStrategy>' \
 '<effort>normal</effort>' \
 '<boxscore>' \
 '<player id="27709839">' \
-'<firstName>Miloš</firstName>' \
-'<lastName>Ilić</lastName>' \
+'<firstname>Miloš</firstname>' \
+'<lastname>Ilić</lastname>' \
 '<minutes>' \
 '<PG>0</PG>' \
 '<SG>32</SG>' \
@@ -427,8 +427,8 @@ MOCK_BOXSCORE_XML ='<bbapi version="1">' \
 '</performance>' \
 '</player>' \
 '<player id="30218918">' \
-'<firstName>Adolfs</firstName>' \
-'<lastName>Biezums</lastName>' \
+'<firstname>Adolfs</firstname>' \
+'<lastname>Biezums</lastname>' \
 '<minutes>' \
 '<PG>0</PG>' \
 '<SG>0</SG>' \
@@ -455,8 +455,8 @@ MOCK_BOXSCORE_XML ='<bbapi version="1">' \
 '</performance>' \
 '</player>' \
 '<player id="31837161">' \
-'<firstName>Carlos</firstName>' \
-'<lastName>Rubio La Fuente</lastName>' \
+'<firstname>Carlos</firstname>' \
+'<lastname>Rubio La Fuente</lastname>' \
 '<minutes>' \
 '<PG>0</PG>' \
 '<SG>16</SG>' \
@@ -483,8 +483,8 @@ MOCK_BOXSCORE_XML ='<bbapi version="1">' \
 '</performance>' \
 '</player>' \
 '<player id="32957585">' \
-'<firstName>Ângelo</firstName>' \
-'<lastName>Frazão</lastName>' \
+'<firstname>Ângelo</firstname>' \
+'<lastname>Frazão</lastname>' \
 '<minutes>' \
 '<PG>0</PG>' \
 '<SG>0</SG>' \
@@ -511,8 +511,8 @@ MOCK_BOXSCORE_XML ='<bbapi version="1">' \
 '</performance>' \
 '</player>' \
 '<player id="32974535">' \
-'<firstName>Valery</firstName>' \
-'<lastName>Lisenko</lastName>' \
+'<firstname>Valery</firstname>' \
+'<lastname>Lisenko</lastname>' \
 '<minutes>' \
 '<PG>0</PG>' \
 '<SG>0</SG>' \
@@ -539,8 +539,8 @@ MOCK_BOXSCORE_XML ='<bbapi version="1">' \
 '</performance>' \
 '</player>' \
 '<player id="35033483">' \
-'<firstName>Camilo</firstName>' \
-'<lastName>Angel</lastName>' \
+'<firstname>Camilo</firstname>' \
+'<lastname>Angel</lastname>' \
 '<minutes>' \
 '<PG>0</PG>' \
 '<SG>0</SG>' \
@@ -568,8 +568,8 @@ MOCK_BOXSCORE_XML ='<bbapi version="1">' \
 '</performance>' \
 '</player>' \
 '<player id="35521904">' \
-'<firstName>Andrius</firstName>' \
-'<lastName>Nerecionis</lastName>' \
+'<firstname>Andrius</firstname>' \
+'<lastname>Nerecionis</lastname>' \
 '<minutes>' \
 '<PG>0</PG>' \
 '<SG>0</SG>' \
@@ -596,8 +596,8 @@ MOCK_BOXSCORE_XML ='<bbapi version="1">' \
 '</performance>' \
 '</player>' \
 '<player id="43023368">' \
-'<firstName>Fabián</firstName>' \
-'<lastName>Adamčík</lastName>' \
+'<firstname>Fabián</firstname>' \
+'<lastname>Adamčík</lastname>' \
 '<minutes>' \
 '<PG>32</PG>' \
 '<SG>0</SG>' \
@@ -624,8 +624,8 @@ MOCK_BOXSCORE_XML ='<bbapi version="1">' \
 '</performance>' \
 '</player>' \
 '<player id="43109016">' \
-'<firstName>Miloslav</firstName>' \
-'<lastName>Kaprál</lastName>' \
+'<firstname>Miloslav</firstname>' \
+'<lastname>Kaprál</lastname>' \
 '<minutes>' \
 '<PG>16</PG>' \
 '<SG>0</SG>' \
@@ -652,8 +652,8 @@ MOCK_BOXSCORE_XML ='<bbapi version="1">' \
 '</performance>' \
 '</player>' \
 '<player id="43916589">' \
-'<firstName>Jakub</firstName>' \
-'<lastName>Šlapka</lastName>' \
+'<firstname>Jakub</firstname>' \
+'<lastname>Šlapka</lastname>' \
 '<minutes>' \
 '<PG>0</PG>' \
 '<SG>0</SG>' \
@@ -680,8 +680,8 @@ MOCK_BOXSCORE_XML ='<bbapi version="1">' \
 '</performance>' \
 '</player>' \
 '<player id="43919669">' \
-'<firstName>Borimír</firstName>' \
-'<lastName>Bulejka</lastName>' \
+'<firstname>Borimír</firstname>' \
+'<lastname>Bulejka</lastname>' \
 '<minutes>' \
 '<PG>0</PG>' \
 '<SG>0</SG>' \

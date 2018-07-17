@@ -22,7 +22,7 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
         'http://www.buzzerbeater.com/default.aspx',
     )
     urls = [
-        'http://www.buzzerbeater.com/team/58420/schedule.aspx'
+        'http://www.buzzerbeater.com/team/58420/schedule.aspx?season=42'
     ]
 
     def parse(self, response):
@@ -52,17 +52,17 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
 
         # Iterating through each row
         for row in response.xpath('//table[@class="schedule"]/tr'):
-            box_score_link = row.xpath('td[4]/a[@id="matchBoxscoreLink"]').css('::attr(href)').extract_first()
+            boxscore_link = row.xpath('td[4]/a[@id="matchBoxscoreLink"]').css('::attr(href)').extract_first()
             away_team_name = row.xpath('td[3]//a/text()').extract_first()
             home_team_name = row.xpath('td[6]//a/text()').extract_first()
 
             # To prevent table headers and all star games from getting scraped
-            if box_score_link and away_team_name and home_team_name is not None:
+            if boxscore_link and away_team_name and home_team_name is not None:
                 match_date = row.xpath('td[1]//text()').extract_first().split()[0]
                 match_date = datetime.strptime(match_date, '%m/%d/%Y')
 
                 # Creating the Away Team item
-                away_team_id = row.xpath('td[3]/strong/a').css('::attr(href)').extract_first().replace("/team/", "")
+                away_team_id = row.xpath('td[3]//a').css('::attr(href)').extract_first().replace("/team/", "")
                 away_team_id = away_team_id.replace("/overview.aspx", "")
                 away_team_item = TeamItem(
                     id=away_team_id,
@@ -72,7 +72,7 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
                 yield away_team_item
 
                 # Creating the Home Team item
-                home_team_id = row.xpath('td[6]/strong/a').css('::attr(href)').extract_first().replace("/team/", "")
+                home_team_id = row.xpath('td[6]//a').css('::attr(href)').extract_first().replace("/team/", "")
                 home_team_id = home_team_id.replace("/overview.aspx", "")
                 home_team_item = TeamItem(
                     id=home_team_id,
@@ -82,7 +82,7 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
                 yield home_team_item
 
                 # Extracting the Match ID
-                match_id = box_score_link.replace("/match/", "").replace("/boxscore.aspx", "")
+                match_id = boxscore_link.replace("/match/", "").replace("/boxscore.aspx", "")
 
                 match_item = MatchItem(
                     id=match_id,
@@ -93,17 +93,28 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
                 )
                 yield match_item
 
-                yield response.follow(box_score_link, self.parse_boxscore)
+                boxscore_api_link = 'http://bbapi.buzzerbeater.com/boxscore.aspx?matchid=' + match_id
+
+                yield scrapy.Request(
+                    url='http://bbapi.buzzerbeater.com/login.aspx?login=rkcerman&code=konzola2',
+                    callback=self.after_api_login,
+                    meta={'match_id': match_id, 'boxscore_api_link': boxscore_api_link}
+                )
+
+    def after_api_login(self, response):
+        print('match_id ', response.meta['match_id'])
+        yield response.follow(url=response.meta['boxscore_api_link'], callback=self.parse_boxscore, meta={'match_id': response.meta['match_id']})
 
     # TODO parse the actual box score
     # Parses the Boxscore page
     def parse_boxscore(self, response):
-        match_id = re.search('/match/(\d+)/boxscore.aspx', response.url).group(1)
-        box_score_div = response.xpath('//div[@id="ctl00_cphContent_pnlBoxScore"]')
+        boxscore_xml = response.xpath('//bbapi/match')
+        print(boxscore_xml.extract_first())
+        match_id = response.meta['match_id']
 
-        score_tables = BoxscoreParser.get_scores_by_quarter(
+        score_tables = BoxscoreParser.get_scores_by_qtr(
             self=BoxscoreParser,
-            box_score_div=box_score_div,
+            boxscore_xml=boxscore_xml,
             match_id=match_id
         )
 
@@ -112,7 +123,7 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
             yield score_tables[score_table_item]
 
         # Following the link to Play-By-Play page
-        pbp_link = response.xpath('//a[@title="Play-By-Play"]').css('::attr(href)').extract_first()
+        pbp_link = 'http://www.buzzerbeater.com/match/' + match_id  + '/pbp.aspx'
 
         yield response.follow(pbp_link, self.parse_pbp)
 
