@@ -46,12 +46,12 @@ class ScoreTableItem(scrapy.Item):
 
 class BoxscoreItem(scrapy.Item):
     match_id = scrapy.Field()
-    away_off_tactic = scrapy.Field()
-    away_def_tactic = scrapy.Field()
+    away_off_strategy = scrapy.Field()
+    away_def_strategy = scrapy.Field()
     away_prep_focus = scrapy.Field()
     away_prep_pace = scrapy.Field()
-    home_off_tactic = scrapy.Field()
-    home_def_tactic = scrapy.Field()
+    home_off_strategy = scrapy.Field()
+    home_def_strategy = scrapy.Field()
     home_prep_focus = scrapy.Field()
     home_prep_pace = scrapy.Field()
     away_outside_off = scrapy.Field()

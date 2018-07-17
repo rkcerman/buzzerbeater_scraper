@@ -1,55 +1,67 @@
 import re
 
 from scrapy.selector import Selector, SelectorList
-from buzzerbeater_scraper.items import ScoreTableItem
+from buzzerbeater_scraper.items import ScoreTableItem, BoxscoreItem
 
 class BoxscoreParser:
 
-    def parse(self, box_score_div):
-        print()
+    def parse(self, boxscore_xml):
+        match_id = int(boxscore_xml.xpath('//match/@id').extract_first())
+        score_table_items = self.get_scores_by_qtr(
+            self=self,
+            boxscore_xml=boxscore_xml,
+            match_id=match_id)
+        away_team_xml = boxscore_xml.xpath('//match/awayteam')
+        home_team_xml = boxscore_xml.xpath('//match/hometeam')
+        boxscore_item = BoxscoreItem(match_id=match_id)
+
+        for i, team_xml in enumerate([away_team_xml, home_team_xml]):
+            if i == 0:
+                team = 'away'
+            else:
+                team = 'home'
+
+            print()
 
     # Parses the final score table
     # Returns the list of ScoreTableItem
-    def get_scores_by_quarter(self, box_score_div, match_id):
+    def get_scores_by_qtr(self, boxscore_xml, match_id):
         try:
-            score_table = box_score_div.xpath('//table[@style="margin: auto;"][1]')
-            away_team = score_table.xpath('tr[2]')
-            home_team = score_table.xpath('tr[3]')
+            away_team_scores = boxscore_xml.xpath('//match/awayteam/score/@partials').extract_first().split(',')
+            home_team_scores = boxscore_xml.xpath('//match/hometeam/score/@partials').extract_first().split(',')
             score_table_item = ScoreTableItem(match_id=match_id)
+
             score_table_items = {}
+            scores_zip = list(zip(away_team_scores, home_team_scores))
 
-            # Iterates through each score table row to create a list with score table items
-            t = 0
-            for team in away_team, home_team:
-                td_list = team.xpath('td')
-
-                for i, td in enumerate(td_list):
-                    if 0 < i < (len(td_list) - 1):
-                        score = int(re.search('(\d+)', td.xpath('text()').extract_first()).group(1))
-
-                        # For away_team we put the initial items into the score table items dict first
-                        if t == 0:
-                            item = score_table_item.copy()
-                            item['qtr'] = i
-                            item['away_team_score'] = score
-                            score_table_items[i] = item
-                        else:
-                            score_table_items[i]['home_team_score'] = score
-                t += 1
+            # Iterates through list of scores to create a list with score table items
+            for i, qtr in enumerate(scores_zip):
+                item = score_table_item.copy()
+                item['qtr'] = i+1
+                item['away_team_score'] = int(qtr[0])
+                item['home_team_score'] = int(qtr[1])
+                score_table_items[i+1] = item
 
             print(score_table_items)
+
             return score_table_items
         except AttributeError as e:
             print('ERROR: Only accepting scrapy.selector.Selector type')
             print(e)
 
-    def get_tactics(self, box_score_div)
-        try:
-            tactics_table = box_score_div.xpath('//table[@style="margin: auto;"')
-            away_team_index = 1
-            home_team_index = 3
-            off_tactics_tr = tactics_table.xpath('tr[3]')
+    def get_strategies(self, team_xml, team, boxscore_item):
+        if team in ('away', 'home'):
+            try:
+                team_off_strategy = team_xml.xpath('offstrategy/text()').extract_first()
+                team_def_strategy = team_xml.xpath('defstrategy/text()').extract_first()
 
-        except AttributeError as e:
-            print('ERROR: Only accepting scrapy.selector.Selector type')
-            print(e)
+                print('off_strategy: ', team_off_strategy)
+
+                boxscore_item[team + '_off_strategy'] = team_off_strategy
+                boxscore_item[team + '_def_strategy'] = team_def_strategy
+                return boxscore_item
+            except AttributeError as e:
+                print('ERROR: Only accepting scrapy.selector.Selector type')
+                print(e)
+        else:
+            print('Invalid team')

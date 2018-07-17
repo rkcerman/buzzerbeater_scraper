@@ -84,7 +84,7 @@ class BuzzerbeaterScraperPipeline(object):
             return item
         if isinstance(item, BoxscoreItem):
             try:
-                self.cur.execute("INSERT INTO boxscores VALUES("
+                self.cur.execute("INSERT INTO box_scores VALUES("
                                  "%s, %s, %s, %s, %s"
                                  "%s, %s, %s, %s, %s"
                                  "%s, %s, %s, %s, %s"
@@ -93,12 +93,12 @@ class BuzzerbeaterScraperPipeline(object):
                                  ") "
                                  "ON CONFLICT DO NOTHING",
                                  (item['match_id'],
-                                  item['away_off_tactic'],
-                                  item['away_def_tactic'],
+                                  item['away_off_strategy'],
+                                  item['away_def_strategy'],
                                   item['away_prep_focus'],
                                   item['away_prep_pace'],
-                                  item['home_off_tactic'],
-                                  item['home_def_tactic'],
+                                  item['home_off_strategy'],
+                                  item['home_def_strategy'],
                                   item['home_prep_focus'],
                                   item['home_prep_pace'],
                                   item['away_outside_off'],
