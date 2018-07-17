@@ -1,3 +1,4 @@
+import logging
 import unittest
 from scrapy.selector import Selector, SelectorList
 
@@ -18,6 +19,7 @@ class TestBoxscoreParser(unittest.TestCase):
 
     # Test invalid type for scores_by_quarter
     def test_invalid_types(self):
+        print('test_invalid_types')
         self.assertIsNone(
             BoxscoreParser.get_scores_by_qtr(
                 self=BoxscoreParser,
@@ -44,6 +46,7 @@ class TestBoxscoreParser(unittest.TestCase):
 
     # Test if scores are correct
     def test_scores_per_quarter(self):
+        print('test_scores_per_quarter')
         self.assertDictEqual(
             BoxscoreParser.get_scores_by_qtr(
                 self=BoxscoreParser,
@@ -55,6 +58,8 @@ class TestBoxscoreParser(unittest.TestCase):
 
     # Test if strategies are correct
     def test_strategies(self):
+        print('test_strategies')
+
         test_home_item = BoxscoreParser.get_strategies(
             self=BoxscoreParser,
             team_xml=self.away_boxscore_xml,
@@ -84,7 +89,9 @@ class TestBoxscoreParser(unittest.TestCase):
             '23Zone'
         )
 
+    # Testing match preps
     def test_preps(self):
+        print('test_preps')
         test_home_item = BoxscoreParser.get_preps(
             self=BoxscoreParser,
             team_xml=self.away_boxscore_xml,
@@ -133,6 +140,8 @@ class TestBoxscoreParser(unittest.TestCase):
 
     # Test the output of parse()
     def test_parse(self):
+        print('test_parse')
+
         test_parse_item = BoxscoreParser.parse(
             self=BoxscoreParser,
             boxscore_xml=self.boxscore_xml_sel
@@ -145,7 +154,6 @@ class TestBoxscoreParser(unittest.TestCase):
             test_score_table_item,
             MOCK_BOXSCORE_DICT
         )
-
         # Methods testing the boxscore_item
         self.assertEqual(
             test_boxscore_item['away_off_strategy'],
@@ -160,6 +168,30 @@ class TestBoxscoreParser(unittest.TestCase):
             'ManToMan'
         )
         self.assertEqual(
+            test_boxscore_item['away_prep_focus'],
+            'Inside'
+        )
+        self.assertEqual(
+            test_boxscore_item['away_prep_focus_matched'],
+            'miss'
+        )
+        self.assertEqual(
+            test_boxscore_item['away_prep_pace'],
+            None
+        )
+        self.assertEqual(
+            test_boxscore_item['away_prep_pace_matched'],
+            None
+        )
+        self.assertEqual(
             test_boxscore_item['home_def_strategy'],
             '23Zone'
+        )
+        self.assertEqual(
+            test_boxscore_item['home_prep_pace'],
+            'Fast'
+        )
+        self.assertEqual(
+            test_boxscore_item['home_prep_pace_matched'],
+            'hit'
         )

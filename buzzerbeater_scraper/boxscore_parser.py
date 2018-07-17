@@ -30,7 +30,12 @@ class BoxscoreParser:
                 team=team,
                 boxscore_item=boxscore_item
             )
-            
+            boxscore_item = self.get_preps(
+                self=self,
+                team_xml=team_xml,
+                team=team,
+                boxscore_item=boxscore_item
+            )
 
         items = [score_table_items, boxscore_item]
         return items
@@ -53,8 +58,6 @@ class BoxscoreParser:
                 item['away_team_score'] = int(qtr[0])
                 item['home_team_score'] = int(qtr[1])
                 score_table_items[i+1] = item
-
-            print(score_table_items)
 
             return score_table_items
         except AttributeError as e:
