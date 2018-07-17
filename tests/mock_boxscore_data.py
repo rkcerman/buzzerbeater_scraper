@@ -386,7 +386,7 @@ MOCK_BOXSCORE_XML ='<bbapi version="1">' \
 '<C>86.6</C>' \
 '</efficiency>' \
 '<gdp>' \
-'<focus>N/A</focus>' \
+'<focus>Inside.miss</focus>' \
 '<pace>N/A</pace>' \
 '</gdp>' \
 '</awayTeam>' \

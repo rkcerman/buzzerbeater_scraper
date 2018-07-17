@@ -84,24 +84,82 @@ class TestBoxscoreParser(unittest.TestCase):
             '23Zone'
         )
 
+    def test_preps(self):
+        test_home_item = BoxscoreParser.get_preps(
+            self=BoxscoreParser,
+            team_xml=self.away_boxscore_xml,
+            team='away',
+            boxscore_item=self.boxscore_item
+        )
+        test_away_item = BoxscoreParser.get_preps(
+            self=BoxscoreParser,
+            team_xml=self.home_boxscore_xml,
+            team='home',
+            boxscore_item=self.boxscore_item
+        )
+        self.assertEqual(
+            test_away_item['away_prep_focus'],
+            'Inside'
+        )
+        self.assertEqual(
+            test_away_item['away_prep_focus_matched'],
+            'miss'
+        )
+        self.assertEqual(
+            test_away_item['away_prep_pace'],
+            None
+        )
+        self.assertEqual(
+            test_away_item['away_prep_pace_matched'],
+            None
+        )
+        self.assertEqual(
+            test_home_item['home_prep_focus'],
+            None
+        )
+        self.assertEqual(
+            test_home_item['home_prep_focus_matched'],
+            None
+        )
+        self.assertEqual(
+            test_home_item['home_prep_pace'],
+            'Fast'
+        )
+        self.assertEqual(
+            test_home_item['home_prep_pace_matched'],
+            'hit'
+        )
+
+
+    # Test the output of parse()
     def test_parse(self):
-        test_item = BoxscoreParser.parse(
+        test_parse_item = BoxscoreParser.parse(
             self=BoxscoreParser,
             boxscore_xml=self.boxscore_xml_sel
         )
+        test_score_table_item = test_parse_item[0]
+        test_boxscore_item = test_parse_item[1]
+
+        # Method testing the score table item
         self.assertEqual(
-            test_item['away_off_strategy'],
+            test_score_table_item,
+            MOCK_BOXSCORE_DICT
+        )
+
+        # Methods testing the boxscore_item
+        self.assertEqual(
+            test_boxscore_item['away_off_strategy'],
             'RunAndGun'
         )
         self.assertEqual(
-            test_item['home_off_strategy'],
+            test_boxscore_item['home_off_strategy'],
             'Patient'
         )
         self.assertEqual(
-            test_item['away_def_strategy'],
+            test_boxscore_item['away_def_strategy'],
             'ManToMan'
         )
         self.assertEqual(
-            test_item['home_def_strategy'],
+            test_boxscore_item['home_def_strategy'],
             '23Zone'
         )

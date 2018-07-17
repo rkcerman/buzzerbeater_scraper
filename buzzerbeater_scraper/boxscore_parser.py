@@ -4,6 +4,7 @@ import traceback
 from scrapy.selector import Selector, SelectorList
 from buzzerbeater_scraper.items import ScoreTableItem, BoxscoreItem
 
+
 class BoxscoreParser:
 
     # A function that parses through the boxscore page (with the help of other functions)
@@ -29,7 +30,10 @@ class BoxscoreParser:
                 team=team,
                 boxscore_item=boxscore_item
             )
-        return boxscore_item
+            
+
+        items = [score_table_items, boxscore_item]
+        return items
 
     # Parses the final score table
     # Returns the list of ScoreTableItem
@@ -68,7 +72,36 @@ class BoxscoreParser:
                 boxscore_item[team + '_def_strategy'] = team_def_strategy
                 return boxscore_item
             except AttributeError as e:
-                logging.error('Only accepting Selector type')
-                print(e)
+                logging.error('Only accepting scrapy.selector.Selector type')
+                print(traceback.print_tb(e.__traceback__))
+        else:
+            print('Invalid team')
+
+    # Gets focus and pace preps set by the (away or home) team
+    def get_preps(self, team_xml, team, boxscore_item):
+        if team in ('away', 'home'):
+            try:
+                team_prep_focus = team_xml.xpath('gdp/focus/text()').extract_first()
+                team_prep_focus = team_prep_focus.split('.')
+                team_prep_pace = team_xml.xpath('gdp/pace/text()').extract_first()
+                team_prep_pace = team_prep_pace.split('.')
+
+                if team_prep_focus[0] != 'N/A':
+                    boxscore_item[team + '_prep_focus'] = team_prep_focus[0]
+                    boxscore_item[team + '_prep_focus_matched'] = team_prep_focus[1]
+                else:
+                    boxscore_item[team + '_prep_focus'] = None
+                    boxscore_item[team + '_prep_focus_matched'] = None
+
+                if team_prep_pace[0] != 'N/A':
+                    boxscore_item[team + '_prep_pace'] = team_prep_pace[0]
+                    boxscore_item[team + '_prep_pace_matched'] = team_prep_pace[1]
+                else:
+                    boxscore_item[team + '_prep_pace'] = None
+                    boxscore_item[team + '_prep_pace_matched'] = None
+                return boxscore_item
+            except AttributeError as e:
+                logging.error('Only accepting scrapy.selector.Selector type')
+                print(traceback.print_tb(e.__traceback__))
         else:
             print('Invalid team')
