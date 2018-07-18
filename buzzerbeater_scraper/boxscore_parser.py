@@ -28,6 +28,7 @@ class BoxscoreParser:
                 team = 'away'
             else:
                 team = 'home'
+            team_id = team_xml.xpath('@id').extract_first()
             boxscore_item = self.get_strategies(
                 self=self,
                 team_xml=team_xml,
@@ -46,8 +47,14 @@ class BoxscoreParser:
                 team=team,
                 boxscore_item=boxscore_item
             )
+            boxscore_stats_items= self.get_stats(
+                self=self,
+                team_xml=team_xml,
+                match_id=match_id,
+                team_id=team_id
+            )
 
-        items = [score_table_items, boxscore_item]
+        items = [score_table_items, boxscore_item, boxscore_stats_items]
         return items
 
     # Parses the final score table
@@ -148,7 +155,7 @@ class BoxscoreParser:
 
     # Gets stats for each player from each team through the 'performance' tag
     # Returns list of BoxscoreStatsItem
-    def get_stats(self, team_xml, match_id):
+    def get_stats(self, team_xml, match_id, team_id):
         try:
             team_stats = team_xml.xpath('boxscore')
             boxscore_stats_items = []
@@ -188,6 +195,7 @@ class BoxscoreParser:
 
                 boxscore_stats_item = BoxscoreStatsItem(
                     match_id=match_id,
+                    team_id=team_id,
                     player_id=player_id,
                     pg_min=pg_min,
                     sg_min=sg_min,

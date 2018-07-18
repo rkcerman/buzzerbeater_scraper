@@ -213,7 +213,8 @@ class TestBoxscoreParser(unittest.TestCase):
         test_away_item = BoxscoreParser.get_stats(
             self=BoxscoreParser,
             team_xml=self.away_boxscore_xml,
-            match_id=101245565
+            match_id=101245565,
+            team_id=58377
         )
         for field in test_away_item[0]:
             print('field: ', field)
@@ -232,6 +233,7 @@ class TestBoxscoreParser(unittest.TestCase):
         )
         test_score_table_item = test_parse_item[0]
         test_boxscore_item = test_parse_item[1]
+        test_boxscore_stats_item = test_parse_item[2]
 
         # Method testing the score table item
         self.assertEqual(
@@ -290,6 +292,7 @@ class TestBoxscoreParser(unittest.TestCase):
         )
 
         # Methods testing team ratings
+        # Away team tests
         self.assertEqual(
             test_boxscore_item['away_outside_off'],
             7.6

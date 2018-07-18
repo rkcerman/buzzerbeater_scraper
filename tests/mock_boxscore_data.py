@@ -29,6 +29,7 @@ MOCK_SCORE_TABLE_DICT = {
 
 MOCK_BOXSCORE_STATS_DICT = {
     'match_id':101245565,
+    'team_id':58377,
     'player_id':28668697,
     'pg_min':0,
     'sg_min':0,

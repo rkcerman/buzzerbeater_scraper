@@ -74,6 +74,7 @@ class BoxscoreItem(scrapy.Item):
 
 class BoxscoreStatsItem(scrapy.Item):
     match_id = scrapy.Field()
+    team_id = scrapy.Field()
     player_id = scrapy.Field()
     pg_min = scrapy.Field()
     sg_min = scrapy.Field()

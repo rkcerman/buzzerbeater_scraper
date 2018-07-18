@@ -131,7 +131,7 @@ class BuzzerbeaterScraperPipeline(object):
                                  "%s, %s, %s, %s, %s,"
                                  "%s, %s, %s, %s, %s,"
                                  "%s, %s, %s, %s, %s,"
-                                 "%s, %s) "
+                                 "%s, %s, %s) "
                                  "ON CONFLICT DO NOTHING",
                                  (item['match_id'],
                                   item['player_id'],
@@ -154,7 +154,8 @@ class BuzzerbeaterScraperPipeline(object):
                                   item['blk'],
                                   item['pf'],
                                   item['pts'],
-                                  item['rating']
+                                  item['rating'],
+                                  item['team_id']
                                   )
                                  )
                 self.conn.commit()
