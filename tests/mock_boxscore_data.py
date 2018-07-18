@@ -1,3 +1,5 @@
+from buzzerbeater_scraper.items import BoxscoreStatsItem
+
 MOCK_SCORE_TABLE_DICT = {
     1: {
         'match_id': 101245565,
@@ -23,6 +25,31 @@ MOCK_SCORE_TABLE_DICT = {
         'away_team_score': 29,
         'home_team_score': 29
     }
+}
+
+MOCK_BOXSCORE_STATS_DICT = {
+    'match_id':101245565,
+    'player_id':28668697,
+    'pg_min':0,
+    'sg_min':0,
+    'sf_min':0,
+    'pf_min':34,
+    'c_min':0,
+    'fgm':6,
+    'fga':11,
+    'tpm':1,
+    'tpa':1,
+    'ftm':0,
+    'fta':0,
+    'oreb':4,
+    'reb':13,
+    'ast':6,
+    't_o':2,
+    'stl':0,
+    'blk':0,
+    'pf':3,
+    'pts':13,
+    'rating':12
 }
 
 MOCK_BOXSCORE_XML ='<bbapi version="1">' \

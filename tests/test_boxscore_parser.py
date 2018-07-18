@@ -3,7 +3,7 @@ import unittest
 from scrapy.selector import Selector, SelectorList
 
 from buzzerbeater_scraper.items import BoxscoreItem
-from tests.mock_boxscore_data import MOCK_SCORE_TABLE_DICT, MOCK_BOXSCORE_XML
+from tests.mock_boxscore_data import MOCK_SCORE_TABLE_DICT, MOCK_BOXSCORE_XML, MOCK_BOXSCORE_STATS_DICT
 from buzzerbeater_scraper.boxscore_parser import BoxscoreParser
 
 
@@ -215,16 +215,12 @@ class TestBoxscoreParser(unittest.TestCase):
             team_xml=self.away_boxscore_xml,
             match_id=101245565
         )
-        test_home_item = BoxscoreParser.get_stats(
-            self=BoxscoreParser,
-            team_xml=self.home_boxscore_xml,
-            match_id=101245565
-        )
-        self.assertEqual(
-            test_away_item[0]['player_id'],
-            28668697
-        )
-
+        for field in test_away_item[0]:
+            print('field: ', field)
+            self.assertEqual(
+                test_away_item[0][field],
+                MOCK_BOXSCORE_STATS_DICT[field]
+            )
 
     # Test the output of parse()
     def test_parse(self):
