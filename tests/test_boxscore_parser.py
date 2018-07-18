@@ -209,23 +209,21 @@ class TestBoxscoreParser(unittest.TestCase):
 
     # Test the get_stats function
     def test_stats(self):
+        print('test_stats')
         test_away_item = BoxscoreParser.get_stats(
             self=BoxscoreParser,
             team_xml=self.away_boxscore_xml,
-            team='away',
-            boxscore_item=self.boxscore_item.copy()
+            match_id=101245565
         )
         test_home_item = BoxscoreParser.get_stats(
             self=BoxscoreParser,
             team_xml=self.home_boxscore_xml,
-            team='home',
-            boxscore_item=self.boxscore_item.copy()
+            match_id=101245565
         )
         self.assertEqual(
-            test_away_item,
-            42239973
+            test_away_item[0]['player_id'],
+            28668697
         )
-        print('test_stats')
 
 
     # Test the output of parse()

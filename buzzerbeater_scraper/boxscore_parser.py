@@ -2,7 +2,7 @@ import logging
 import traceback
 
 from scrapy.selector import Selector, SelectorList
-from buzzerbeater_scraper.items import ScoreTableItem, BoxscoreItem
+from buzzerbeater_scraper.items import ScoreTableItem, BoxscoreItem, BoxscoreStatsItem
 
 
 class BoxscoreParser:
@@ -147,18 +147,73 @@ class BoxscoreParser:
             print('Invalid team')
 
     # Gets stats for each player from each team through the 'performance' tag
-    def get_stats(self, team_xml, team, boxscore_item):
-        if team in ('away', 'home'):
-            try:
-                team_stats = team_xml.xpath('boxscore')
+    # Returns list of BoxscoreStatsItem
+    def get_stats(self, team_xml, match_id):
+        try:
+            team_stats = team_xml.xpath('boxscore')
+            boxscore_stats_items = []
 
-                for player in team_stats.xpath('player'):
-                    player_id = int(player.xpath('@id').extract_first())
+            # Let's select all the players excluding the ones with DNP
+            for player in team_stats.xpath('player[not(.//dnp)]'):
+                player_id = int(player.xpath('@id').extract_first())
 
-                return player_id
-            except AttributeError as e:
-                logging.error('Only accepting scrapy.selector.Selector type')
-                print(traceback.print_tb(e.__traceback__))
-        else:
-            print('Invalid team')
+                minutes = player.xpath('minutes')
+                pg_min = int(minutes.xpath('PG/text()').extract_first())
+                sg_min = int(minutes.xpath('SG/text()').extract_first())
+                sf_min = int(minutes.xpath('SF/text()').extract_first())
+                pf_min = int(minutes.xpath('PF/text()').extract_first())
+                c_min = int(minutes.xpath('C/text()').extract_first())
+
+                performance = player.xpath('performance')
+                fgm = int(performance.xpath('fgm/text()').extract_first())
+                fga = int(performance.xpath('fga/text()').extract_first())
+                tpm = int(performance.xpath('tpm/text()').extract_first())
+                tpa = int(performance.xpath('tpa/text()').extract_first())
+                ftm = int(performance.xpath('ftm/text()').extract_first())
+                fta = int(performance.xpath('fta/text()').extract_first())
+                oreb = int(performance.xpath('oreb/text()').extract_first())
+                reb = int(performance.xpath('reb/text()').extract_first())
+                ast = int(performance.xpath('ast/text()').extract_first())
+                t_o = int(performance.xpath('to/text()').extract_first())
+                stl = int(performance.xpath('stl/text()').extract_first())
+                blk = int(performance.xpath('blk/text()').extract_first())
+                pf = int(performance.xpath('pf/text()').extract_first())
+                pts = int(performance.xpath('pts/text()').extract_first())
+                rating = performance.xpath('rating/text()').extract_first()
+
+                if rating == 'N/A':
+                    rating = None
+                else:
+                    rating = float(rating)
+
+                boxscore_stats_item = BoxscoreStatsItem(
+                    match_id=match_id,
+                    player_id=player_id,
+                    pg_min=pg_min,
+                    sg_min=sg_min,
+                    sf_min=sf_min,
+                    pf_min=pf_min,
+                    c_min=c_min,
+                    fgm=fgm,
+                    fga=fga,
+                    tpm=tpm,
+                    tpa=tpa,
+                    ftm=ftm,
+                    fta=fta,
+                    oreb=oreb,
+                    reb=reb,
+                    ast=ast,
+                    t_o=t_o,
+                    stl=stl,
+                    blk=blk,
+                    pf=pf,
+                    pts=pts,
+                    rating=rating
+                )
+                boxscore_stats_items.append(boxscore_stats_item)
+
+            return boxscore_stats_items
+        except AttributeError as e:
+            logging.error('Only accepting scrapy.selector.Selector type')
+            print(traceback.print_tb(e.__traceback__))
 
