@@ -342,3 +342,13 @@ class TestBoxscoreParser(unittest.TestCase):
             test_boxscore_item['home_off_flow'],
             5.6
         )
+
+        # Methods testing get_stats
+        for player in test_boxscore_stats_item:
+            if player['player_id'] == 28668697:
+                for field in player:
+                    print('field: ', field)
+                    self.assertEqual(
+                        player[field],
+                        MOCK_BOXSCORE_STATS_DICT[field]
+                    )

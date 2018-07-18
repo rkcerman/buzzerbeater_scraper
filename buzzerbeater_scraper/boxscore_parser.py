@@ -23,12 +23,13 @@ class BoxscoreParser:
             match_type=match_type
         )
 
+        boxscore_stats_items = []
         for i, team_xml in enumerate([away_team_xml, home_team_xml]):
             if i == 0:
                 team = 'away'
             else:
                 team = 'home'
-            team_id = team_xml.xpath('@id').extract_first()
+            team_id = int(team_xml.xpath('@id').extract_first())
             boxscore_item = self.get_strategies(
                 self=self,
                 team_xml=team_xml,
@@ -47,7 +48,7 @@ class BoxscoreParser:
                 team=team,
                 boxscore_item=boxscore_item
             )
-            boxscore_stats_items= self.get_stats(
+            boxscore_stats_items += self.get_stats(
                 self=self,
                 team_xml=team_xml,
                 match_id=match_id,
