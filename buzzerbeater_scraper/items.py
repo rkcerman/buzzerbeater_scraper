@@ -17,7 +17,6 @@ class PlayByPlayItem(scrapy.Item):
     score = scrapy.Field()
     event = scrapy.Field()
     play_tags = scrapy.Field()
-    pass
 
 
 class ShotsItem(scrapy.Item):
@@ -71,6 +70,31 @@ class BoxscoreItem(scrapy.Item):
     away_prep_focus_matched = scrapy.Field()
     away_prep_pace_matched = scrapy.Field()
     match_type = scrapy.Field()
+
+
+class BoxscoreStatsItem(scrapy.Item):
+    match_id = scrapy.Field()
+    player_id = scrapy.Field()
+    pg_min = scrapy.Field()
+    sg_min = scrapy.Field()
+    sf_min = scrapy.Field()
+    pf_min = scrapy.Field()
+    c_min = scrapy.Field()
+    fgm = scrapy.Field()
+    fga = scrapy.Field()
+    tpm = scrapy.Field()
+    tpa = scrapy.Field()
+    ftm = scrapy.Field()
+    fta = scrapy.Field()
+    oreb = scrapy.Field()
+    reb = scrapy.Field()
+    ast = scrapy.Field()
+    t_o = scrapy.Field()
+    stl = scrapy.Field()
+    blk = scrapy.Field()
+    pf = scrapy.Field()
+    pts = scrapy.Field()
+    rating = scrapy.Field()
 
 
 class TeamItem(scrapy.Item):

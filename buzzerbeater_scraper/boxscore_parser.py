@@ -144,4 +144,3 @@ class BoxscoreParser:
                 print(traceback.print_tb(e.__traceback__))
         else:
             print('Invalid team')
-

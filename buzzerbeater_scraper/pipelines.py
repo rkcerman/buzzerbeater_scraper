@@ -10,7 +10,7 @@ from psycopg2 import IntegrityError
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 from buzzerbeater_scraper.items import PlayByPlayItem, MatchItem, TeamItem, OnlinePeopleItem, PlayerItem, \
-   PlayerSkillsItem, PlayerHistoryItem, ShotsItem, ScoreTableItem, BoxscoreItem
+    PlayerSkillsItem, PlayerHistoryItem, ShotsItem, ScoreTableItem, BoxscoreItem, BoxscoreStatsItem
 
 
 class BuzzerbeaterScraperPipeline(object):
@@ -84,7 +84,7 @@ class BuzzerbeaterScraperPipeline(object):
             return item
         if isinstance(item, BoxscoreItem):
             try:
-                self.cur.execute("INSERT INTO box_scores VALUES("
+                self.cur.execute("INSERT INTO boxscores VALUES("
                                  "%s, %s, %s, %s, %s"
                                  "%s, %s, %s, %s, %s"
                                  "%s, %s, %s, %s, %s"
@@ -117,10 +117,50 @@ class BuzzerbeaterScraperPipeline(object):
                                   item['home_prep_pace_matched'],
                                   item['away_prep_focus_matched'],
                                   item['away_prep_pace_matched'],
-                                  item['match_type']))
+                                  item['match_type']
+                                  )
+                                 )
                 self.conn.commit()
             except IntegrityError as e:
                 print("Duplicate primary key entry, skipping")
+            return item
+        if isinstance(item, BoxscoreStatsItem):
+            try:
+                self.cur.execute("INSERT INTO boxscore_stats VALUES("
+                                 "%s, %s, %s, %s, %s,"
+                                 "%s, %s, %s, %s, %s,"
+                                 "%s, %s, %s, %s, %s,"
+                                 "%s, %s, %s, %s, %s,"
+                                 "%s, %s) "
+                                 "ON CONFLICT DO NOTHING",
+                                 (item['match_id'],
+                                  item['player_id'],
+                                  item['pg_min'],
+                                  item['sg_min'],
+                                  item['sf_min'],
+                                  item['pf_min'],
+                                  item['c_min'],
+                                  item['fgm'],
+                                  item['fga'],
+                                  item['tpm'],
+                                  item['tpa'],
+                                  item['ftm'],
+                                  item['fta'],
+                                  item['oreb'],
+                                  item['reb'],
+                                  item['ast'],
+                                  item['t_o'],
+                                  item['stl'],
+                                  item['blk'],
+                                  item['pf'],
+                                  item['pts'],
+                                  item['rating']
+                                  )
+                                 )
+                self.conn.commit()
+            except IntegrityError as e:
+                print("Duplicate primary key entry in teams, skipping")
+                print(e)
             return item
         if isinstance(item, TeamItem):
             try:
