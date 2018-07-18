@@ -119,6 +119,7 @@ class BoxscoreParser:
         else:
             print('Invalid team')
 
+    # Gets team ratings from the 'ratings' tag for each team
     def get_team_ratings(self, team_xml, team, boxscore_item):
         if team in ('away', 'home'):
             try:
@@ -144,3 +145,20 @@ class BoxscoreParser:
                 print(traceback.print_tb(e.__traceback__))
         else:
             print('Invalid team')
+
+    # Gets stats for each player from each team through the 'performance' tag
+    def get_stats(self, team_xml, team, boxscore_item):
+        if team in ('away', 'home'):
+            try:
+                team_stats = team_xml.xpath('boxscore')
+
+                for player in team_stats.xpath('player'):
+                    player_id = int(player.xpath('@id').extract_first())
+
+                return player_id
+            except AttributeError as e:
+                logging.error('Only accepting scrapy.selector.Selector type')
+                print(traceback.print_tb(e.__traceback__))
+        else:
+            print('Invalid team')
+

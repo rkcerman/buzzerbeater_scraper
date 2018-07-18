@@ -32,7 +32,7 @@ class TestBoxscoreParser(unittest.TestCase):
                 self=BoxscoreParser,
                 team_xml=12321,
                 team='away',
-                boxscore_item=self.boxscore_item
+                boxscore_item=self.boxscore_item.copy()
             )
         )
         self.assertIsNone(
@@ -40,7 +40,7 @@ class TestBoxscoreParser(unittest.TestCase):
                 self=BoxscoreParser,
                 team_xml=12321,
                 team='bla',
-                boxscore_item=self.boxscore_item
+                boxscore_item=self.boxscore_item.copy()
             )
         )
 
@@ -60,17 +60,17 @@ class TestBoxscoreParser(unittest.TestCase):
     def test_strategies(self):
         print('test_strategies')
 
-        test_home_item = BoxscoreParser.get_strategies(
+        test_away_item = BoxscoreParser.get_strategies(
             self=BoxscoreParser,
             team_xml=self.away_boxscore_xml,
             team='away',
-            boxscore_item=self.boxscore_item
+            boxscore_item=self.boxscore_item.copy()
         )
-        test_away_item = BoxscoreParser.get_strategies(
+        test_home_item = BoxscoreParser.get_strategies(
             self=BoxscoreParser,
             team_xml=self.home_boxscore_xml,
             team='home',
-            boxscore_item=self.boxscore_item
+            boxscore_item=self.boxscore_item.copy()
         )
         # Away team tests
         self.assertEqual(
@@ -94,17 +94,17 @@ class TestBoxscoreParser(unittest.TestCase):
     # Testing match preps
     def test_preps(self):
         print('test_preps')
-        test_home_item = BoxscoreParser.get_preps(
+        test_away_item = BoxscoreParser.get_preps(
             self=BoxscoreParser,
             team_xml=self.away_boxscore_xml,
             team='away',
-            boxscore_item=self.boxscore_item
+            boxscore_item=self.boxscore_item.copy()
         )
-        test_away_item = BoxscoreParser.get_preps(
+        test_home_item = BoxscoreParser.get_preps(
             self=BoxscoreParser,
             team_xml=self.home_boxscore_xml,
             team='home',
-            boxscore_item=self.boxscore_item
+            boxscore_item=self.boxscore_item.copy()
         )
         # Away team tests
         self.assertEqual(
@@ -146,15 +146,15 @@ class TestBoxscoreParser(unittest.TestCase):
         print('test_team_ratings')
         test_home_item = BoxscoreParser.get_team_ratings(
             self=BoxscoreParser,
-            team_xml=self.away_boxscore_xml,
-            team='away',
-            boxscore_item=self.boxscore_item
+            team_xml=self.home_boxscore_xml,
+            team='home',
+            boxscore_item=self.boxscore_item.copy()
         )
         test_away_item = BoxscoreParser.get_team_ratings(
             self=BoxscoreParser,
-            team_xml=self.home_boxscore_xml,
-            team='home',
-            boxscore_item=self.boxscore_item
+            team_xml=self.away_boxscore_xml,
+            team='away',
+            boxscore_item=self.boxscore_item.copy()
         )
         # Away team tests
         self.assertEqual(
@@ -206,6 +206,27 @@ class TestBoxscoreParser(unittest.TestCase):
             test_home_item['home_off_flow'],
             5.6
         )
+
+    # Test the get_stats function
+    def test_stats(self):
+        test_away_item = BoxscoreParser.get_stats(
+            self=BoxscoreParser,
+            team_xml=self.away_boxscore_xml,
+            team='away',
+            boxscore_item=self.boxscore_item.copy()
+        )
+        test_home_item = BoxscoreParser.get_stats(
+            self=BoxscoreParser,
+            team_xml=self.home_boxscore_xml,
+            team='home',
+            boxscore_item=self.boxscore_item.copy()
+        )
+        self.assertEqual(
+            test_away_item,
+            42239973
+        )
+        print('test_stats')
+
 
     # Test the output of parse()
     def test_parse(self):
