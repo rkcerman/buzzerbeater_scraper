@@ -228,4 +228,3 @@ class BoxscoreParser:
         except AttributeError as e:
             logging.error('Only accepting scrapy.selector.Selector type')
             print(traceback.print_tb(e.__traceback__))
-

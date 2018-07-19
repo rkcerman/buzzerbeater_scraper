@@ -5,11 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="44b49686-e162-4ba2-8c95-3e44a55449bf" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/buzzerbeater_scraper/boxscore_parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_scraper/boxscore_parser.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/buzzerbeater_scraper/pipelines.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_scraper/pipelines.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/buzzerbeater_scraper/spiders/matches_spider.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_scraper/spiders/matches_spider.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/buzzerbeater_scraper/spiders/player_spider.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_scraper/spiders/player_spider.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -19,116 +15,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="matches_spider.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/spiders/matches_spider.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1425">
-              <caret line="107" column="40" selection-start-line="107" selection-start-column="40" selection-end-line="107" selection-end-column="40" />
-              <folding>
-                <element signature="e#24#37#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="transfers_spider.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/spiders/transfers_spider.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-390">
-              <caret line="39" column="39" selection-start-line="39" selection-start-column="39" selection-end-line="39" selection-end-column="39" />
-              <folding>
-                <element signature="e#0#13#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="player_spider.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/spiders/player_spider.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="123" column="36" selection-start-line="123" selection-start-column="36" selection-end-line="123" selection-end-column="36" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="boxscore_parser.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/boxscore_parser.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="196" selection-start-line="196" selection-end-line="196" />
-              <folding>
-                <element signature="e#0#14#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="pipelines.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/pipelines.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1605">
-              <caret line="117" column="51" selection-start-line="117" selection-start-column="51" selection-end-line="117" selection-end-column="51" />
-              <folding>
-                <element signature="e#25#59#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="test_boxscore_parser.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tests/test_boxscore_parser.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5145">
-              <caret line="349" column="29" selection-start-line="349" selection-start-column="29" selection-end-line="349" selection-end-column="29" />
-              <folding>
-                <element signature="e#0#14#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="mock_boxscore_data.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/tests/mock_boxscore_data.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="465">
-              <caret line="31" column="19" selection-start-line="31" selection-start-column="19" selection-end-line="31" selection-end-column="19" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="pbp_parser.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/pbp_parser.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="28" column="32" selection-start-line="28" selection-start-column="32" selection-end-line="28" selection-end-column="32" />
-              <folding>
-                <element signature="e#0#9#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="regex_patterns.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/regex_patterns.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="14" selection-start-column="14" selection-end-column="14" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="items.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/items.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1140">
-              <caret line="76" column="26" selection-start-line="76" selection-start-column="26" selection-end-line="76" selection-end-column="26" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -173,8 +60,8 @@
         <option value="$PROJECT_DIR$/tests/test_boxscore_parser.py" />
         <option value="$PROJECT_DIR$/buzzerbeater_scraper/pipelines.py" />
         <option value="$PROJECT_DIR$/buzzerbeater_scraper/spiders/matches_spider.py" />
-        <option value="$PROJECT_DIR$/buzzerbeater_scraper/boxscore_parser.py" />
         <option value="$PROJECT_DIR$/buzzerbeater_scraper/spiders/player_spider.py" />
+        <option value="$PROJECT_DIR$/buzzerbeater_scraper/boxscore_parser.py" />
       </list>
     </option>
   </component>
@@ -190,6 +77,43 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="buzzerbeater_scraper" type="b2602c69:ProjectViewProjectNode" />
+              <item name="buzzerbeater" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="buzzerbeater_scraper" type="b2602c69:ProjectViewProjectNode" />
+              <item name="buzzerbeater" type="462c0819:PsiDirectoryNode" />
+              <item name="buzzerbeater_scraper" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="buzzerbeater_scraper" type="b2602c69:ProjectViewProjectNode" />
+              <item name="buzzerbeater" type="462c0819:PsiDirectoryNode" />
+              <item name="buzzerbeater_web" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="buzzerbeater_scraper" type="b2602c69:ProjectViewProjectNode" />
+              <item name="buzzerbeater" type="462c0819:PsiDirectoryNode" />
+              <item name="buzzerbeater_web" type="462c0819:PsiDirectoryNode" />
+              <item name="player" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="buzzerbeater_scraper" type="b2602c69:ProjectViewProjectNode" />
+              <item name="buzzerbeater" type="462c0819:PsiDirectoryNode" />
+              <item name="tests" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="buzzerbeater_scraper" type="b2602c69:ProjectViewProjectNode" />
+              <item name="buzzerbeater" type="462c0819:PsiDirectoryNode" />
+              <item name="venv" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
       <pane id="Scope">
         <subPane subId="Default">
           <expand>
@@ -207,38 +131,6 @@
               <item name="buzzerbeater" type="cbb8eebc:String" user="buzzerbeater" />
               <item name="buzzerbeater_scraper" type="cbb8eebc:String" user="buzzerbeater_scraper" />
               <item name="spiders" type="cbb8eebc:String" user="spiders" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="buzzerbeater_scraper" type="b2602c69:ProjectViewProjectNode" />
-              <item name="buzzerbeater" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="buzzerbeater_scraper" type="b2602c69:ProjectViewProjectNode" />
-              <item name="buzzerbeater" type="462c0819:PsiDirectoryNode" />
-              <item name="buzzerbeater_scraper" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="buzzerbeater_scraper" type="b2602c69:ProjectViewProjectNode" />
-              <item name="buzzerbeater" type="462c0819:PsiDirectoryNode" />
-              <item name="buzzerbeater_scraper" type="462c0819:PsiDirectoryNode" />
-              <item name="spiders" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="buzzerbeater_scraper" type="b2602c69:ProjectViewProjectNode" />
-              <item name="buzzerbeater" type="462c0819:PsiDirectoryNode" />
-              <item name="tests" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="buzzerbeater_scraper" type="b2602c69:ProjectViewProjectNode" />
-              <item name="buzzerbeater" type="462c0819:PsiDirectoryNode" />
-              <item name="venv" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -391,9 +283,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-3" y="30" width="1372" height="741" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" x="604" y="70" width="158" height="655" id="Project" order="0" weight="0.22156574" />
+      <window_info active="true" content_ui="combo" x="604" y="70" width="158" height="655" id="Project" order="0" visible="true" weight="0.22108346" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.32917318" />
@@ -416,13 +307,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/items.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="27" column="25" selection-start-line="27" selection-start-column="25" selection-end-line="27" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/settings.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
@@ -668,63 +552,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/items.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1140">
-          <caret line="76" column="26" selection-start-line="76" selection-start-column="26" selection-end-line="76" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/regex_patterns.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="14" selection-start-column="14" selection-end-column="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/mock_boxscore_data.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="465">
-          <caret line="31" column="19" selection-start-line="31" selection-start-column="19" selection-end-line="31" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tests/test_boxscore_parser.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5145">
-          <caret line="349" column="29" selection-start-line="349" selection-start-column="29" selection-end-line="349" selection-end-column="29" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/pipelines.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1605">
-          <caret line="117" column="51" selection-start-line="117" selection-start-column="51" selection-end-line="117" selection-end-column="51" />
-          <folding>
-            <element signature="e#25#59#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/spiders/matches_spider.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1425">
+        <state relative-caret-position="15">
           <caret line="107" column="40" selection-start-line="107" selection-start-column="40" selection-end-line="107" selection-end-column="40" />
           <folding>
             <element signature="e#24#37#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/boxscore_parser.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="196" selection-start-line="196" selection-end-line="196" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -741,8 +574,62 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/spiders/player_spider.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
+        <state relative-caret-position="-339">
           <caret line="123" column="36" selection-start-line="123" selection-start-column="36" selection-end-line="123" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/boxscore_parser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1116">
+          <caret line="229" column="53" selection-start-line="229" selection-start-column="53" selection-end-line="229" selection-end-column="53" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/pipelines.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="117" column="51" selection-start-line="117" selection-start-column="51" selection-end-line="117" selection-end-column="51" />
+          <folding>
+            <element signature="e#25#59#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/test_boxscore_parser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="426">
+          <caret line="349" column="29" selection-start-line="349" selection-start-column="29" selection-end-line="349" selection-end-column="29" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/mock_boxscore_data.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="31" column="19" selection-start-line="31" selection-start-column="19" selection-end-line="31" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/regex_patterns.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="14" selection-start-column="14" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/items.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="201">
+          <caret line="76" column="26" selection-start-line="76" selection-start-column="26" selection-end-line="76" selection-end-column="26" />
         </state>
       </provider>
     </entry>
