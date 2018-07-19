@@ -121,6 +121,9 @@ class PlayerSpider(scrapy.Spider):
                     i += 1
                 transfer_estimate = ' '.join(transfer_estimate)
 
+            if not transfer_estimate:
+                transfer_estimate = None
+
             team_item = TeamItem(id=team_id,
                                  name=team_name)
             player_item = PlayerItem(id=player_id,

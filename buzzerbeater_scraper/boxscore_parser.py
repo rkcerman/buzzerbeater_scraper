@@ -1,7 +1,6 @@
 import logging
 import traceback
 
-from scrapy.selector import Selector, SelectorList
 from buzzerbeater_scraper.items import ScoreTableItem, BoxscoreItem, BoxscoreStatsItem
 
 
@@ -60,6 +59,7 @@ class BoxscoreParser:
 
     # Parses the final score table
     # Returns the list of ScoreTableItem
+    # TODO why am I using dict instead of list again?
     def get_scores_by_qtr(self, boxscore_xml, match_id):
         try:
             away_team_scores = boxscore_xml.xpath('//match/awayTeam/score/@partials').extract_first().split(',')
@@ -128,6 +128,7 @@ class BoxscoreParser:
             print('Invalid team')
 
     # Gets team ratings from the 'ratings' tag for each team
+    # Returns original boxscore_item with team ratings included
     def get_team_ratings(self, team_xml, team, boxscore_item):
         if team in ('away', 'home'):
             try:
@@ -189,10 +190,12 @@ class BoxscoreParser:
                 pts = int(performance.xpath('pts/text()').extract_first())
                 rating = performance.xpath('rating/text()').extract_first()
 
-                if rating == 'N/A':
-                    rating = None
-                else:
+                try:
                     rating = float(rating)
+                    if rating < 0:
+                        rating = None
+                except ValueError:
+                    rating = None
 
                 boxscore_stats_item = BoxscoreStatsItem(
                     match_id=match_id,

@@ -42,9 +42,16 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
             self.logger.error("Login failed")
         else:
             self.logger.info("Login successful")
-            for url in self.urls:
-                self.logger.info(["URL", url])
-                yield scrapy.Request(url, callback=self.parse_schedule)
+            yield scrapy.Request(
+                url='http://bbapi.buzzerbeater.com/login.aspx?login=rkcerman&code=konzola2',
+                callback=self.after_api_login
+            )
+
+    # After API login method that calls the boxscore API link before parsing it
+    def after_api_login(self, response):
+        for url in self.urls:
+            self.logger.info(["URL", url])
+            yield scrapy.Request(url, callback=self.parse_schedule)
 
     # Parses the Schedule page
     def parse_schedule(self, response):
@@ -96,37 +103,37 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
                 boxscore_api_link = 'http://bbapi.buzzerbeater.com/boxscore.aspx?matchid=' + match_id
 
                 # Login to API before scraping box scores
-                yield scrapy.Request(
-                    url='http://bbapi.buzzerbeater.com/login.aspx?login=rkcerman&code=konzola2',
-                    callback=self.after_api_login,
-                    meta={'match_id': match_id, 'boxscore_api_link': boxscore_api_link}
+                meta={'match_id': match_id, 'boxscore_api_link': boxscore_api_link}
+                yield response.follow(
+                    url=boxscore_api_link,
+                    callback=self.parse_boxscore,
+                    meta={'match_id': match_id}
                 )
-
-    # After API login method that calls the boxscore API link before parsing it
-    def after_api_login(self, response):
-        print('match_id ', response.meta['match_id'])
-        yield response.follow(
-            url=response.meta['boxscore_api_link'],
-            callback=self.parse_boxscore,
-            meta={'match_id': response.meta['match_id']}
-        )
 
     # TODO parse the actual box score
     # Parses the Boxscore page
     def parse_boxscore(self, response):
         boxscore_xml = response.xpath('//bbapi/match')
-        print(boxscore_xml.extract_first())
         match_id = response.meta['match_id']
 
-        score_tables = BoxscoreParser.get_scores_by_qtr(
+        bs_all_items = BoxscoreParser.parse(
             self=BoxscoreParser,
-            boxscore_xml=boxscore_xml,
-            match_id=match_id
+            boxscore_xml=boxscore_xml
         )
 
-        for score_table_item in score_tables:
-            self.logger.info('Item in score_tables')
-            yield score_tables[score_table_item]
+        score_table_items = bs_all_items[0]
+        boxscore_item = bs_all_items[1]
+        boxscore_stats_items = bs_all_items[2]
+
+        for score_table_item in score_table_items:
+            self.logger.info('Item in score_table_items')
+            yield score_table_items[score_table_item]
+
+        yield boxscore_item
+
+        for boxscore_stats_item in boxscore_stats_items:
+            self.logger.info('Item in boxscore_stats_items')
+            yield boxscore_stats_item
 
         # Following the link to Play-By-Play page
         pbp_link = 'http://www.buzzerbeater.com/match/' + match_id  + '/pbp.aspx'
