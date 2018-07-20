@@ -76,9 +76,10 @@ class BuzzerbeaterTransfersSpider(scrapy.Spider):
 
             # TODO ugly AF
             try:
-                yield player['player_skills_item']
+                for skill in player['player_skills_items']:
+                    yield skill
             except KeyError:
-                print('No player skills available')
+                print('No player skills available for ', player_item.id)
 
             player_history_link = player['player_history_link']
             yield response.follow(player_history_link, self.parse_player_history)

@@ -5,11 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="44b49686-e162-4ba2-8c95-3e44a55449bf" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/buzzerbeater_scraper/pipelines.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_scraper/pipelines.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/buzzerbeater_scraper/spiders/player_spider.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_scraper/spiders/player_spider.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/buzzerbeater_web/player/templates/player/player_overview.html" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_web/player/templates/player/player_overview.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/buzzerbeater_web/player/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_web/player/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -79,8 +75,8 @@
       <file leaf-file-name="player_spider.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/spiders/player_spider.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-984">
-              <caret line="76" column="12" selection-start-line="76" selection-start-column="12" selection-end-line="76" selection-end-column="12" />
+            <state relative-caret-position="420">
+              <caret line="54" column="30" selection-start-line="54" selection-start-column="30" selection-end-line="54" selection-end-column="30" />
             </state>
           </provider>
         </entry>
@@ -261,7 +257,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="SearchEverywhereHistoryKey" value="pip&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/pipelines.py&#10;pla&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/player_spider.py&#10;pl&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/player_spider.py&#10;tr&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/transfers_spider.py&#10;ite&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/items.py&#10;items&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/items.py" />
+    <property name="SearchEverywhereHistoryKey" value="tra&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/transfers_spider.py&#10;pip&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/pipelines.py&#10;pla&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/player_spider.py&#10;pl&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/player_spider.py&#10;tr&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/transfers_spider.py&#10;ite&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/items.py&#10;items&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/items.py" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../buzzerbeater_scraper" />
     <property name="settings.editor.selected.configurable" value="configurable.group.editor" />
   </component>
@@ -759,8 +755,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/spiders/player_spider.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-984">
-          <caret line="76" column="12" selection-start-line="76" selection-start-column="12" selection-end-line="76" selection-end-column="12" />
+        <state relative-caret-position="420">
+          <caret line="54" column="30" selection-start-line="54" selection-start-column="30" selection-end-line="54" selection-end-column="30" />
         </state>
       </provider>
     </entry>

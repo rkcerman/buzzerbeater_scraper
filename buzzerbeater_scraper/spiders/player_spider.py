@@ -54,7 +54,7 @@ class PlayerSpider(scrapy.Spider):
                 for skill in player['player_skills_items']:
                     yield skill
             except KeyError:
-                print('No player skills available')
+                print('No player skills available for ', player_item.id)
 
             player_history_link = player['player_history_link']
             yield response.follow(player_history_link, self.parse_player_history)
@@ -157,10 +157,10 @@ class PlayerSpider(scrapy.Spider):
                     if skill.xpath('a').extract_first() is not None:
                         skill_name = re.search('<td>\s+(.+):', skill.extract()).group(1)
                         skill_value = skill.xpath('a/@title').extract_first()
-
                         player_skills_item = PlayerSkillsItem(player_id=player_id,
                                                               skill=skill_name,
                                                               value=skill_value)
+
                         yields['player_skills_items'].append(player_skills_item)
 
             player_history_link = response.xpath('//a[@title="Player History"]/@href').extract_first()
