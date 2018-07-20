@@ -93,7 +93,7 @@ class PlayerSpider(scrapy.Spider):
                 team_name = "000000000"
 
             personal_info_text = personal_info.extract_first()
-            weekly_salary = re.search('\$.(.+)<br', personal_info_text).group(1)
+            weekly_salary = re.search('\sWeekly salary:\s+\$.(.+)<br', personal_info_text).group(1)
             weekly_salary = weekly_salary.replace(" ", "").replace('\xa0', '')
             dmi = re.search('DMI:.\s+(\d+)', personal_info_text).group(1)
             age = re.search('Age:.\s+(\d+)', personal_info_text).group(1)
