@@ -1,6 +1,5 @@
+import logging
 from django.shortcuts import render
-from django.http import HttpResponse
-from django.template import loader
 
 from .models import Players, PlayerSkills
 
@@ -46,18 +45,25 @@ def overview(request, player_id):
         skill_name = skill.skill.replace(' ', '_').replace('.', '').lower()
         player_skills[skill_name] = [skill.value, skills_mapping[skill.value]]
 
-    guard_skill_points = player_skills['jump_shot'][0] + player_skills['jump_range'][0] + player_skills['outside_def'][0] \
-                        + player_skills['handling'][0] + player_skills['driving'][0] + player_skills['passing'][0]
-    forward_skill_points = player_skills['inside_shot'][0] + player_skills['inside_def'][0] \
-                           + player_skills['rebounding'][0] + player_skills['shot_blocking'][0]
-    tsp = guard_skill_points + forward_skill_points
-
     context = {
         'player': player,
         'team': team,
         'skills': player_skills,
-        'gsp': guard_skill_points,
-        'fsp': forward_skill_points,
-        'tsp': tsp,
     }
+
+    # Calculating value of TSP
+    try:
+        gsp = player_skills['jump_shot'][0] + player_skills['jump_range'][0] + player_skills['outside_def'][0] \
+              + player_skills['handling'][0] + player_skills['driving'][0] + player_skills['passing'][0]
+        fsp = player_skills['inside_shot'][0] + player_skills['inside_def'][0] \
+              + player_skills['rebounding'][0] + player_skills['shot_blocking'][0]
+        tsp = gsp + fsp
+
+        context[gsp] = gsp
+        context[fsp] = fsp
+        context[tsp] = tsp
+    except KeyError as e:
+        logging.info('Not enough skills available')
+        print(e)
+
     return render(request, 'player/player_overview.html', context)
