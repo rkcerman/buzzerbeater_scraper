@@ -1,4 +1,6 @@
 {% if player %}
+    <link rel="stylesheet" href="http://www.buzzerbeater.com/CSS/main.css" type="text/css" />
+    <link rel="stylesheet" href="http://www.buzzerbeater.com/CSS/contentbox.css?c=2" type="text/css" />
      <table cellpadding="0" cellspacing="0">
                         <tr>
                             <td style="vertical-align: top; width: 160px">
@@ -7,7 +9,7 @@
                                     <tr>
                                         <td id="playerPersonalInfo">
 
-    <p>Team: <a id="ctl00_cphContent_teamName" href="/team/{{ player.team }}/overview.aspx">{{ team.name }}</a><br /> <br /> Weekly salary: $ {{ player.weekly_salary }}<br />
+    <p>Team: <a id="ctl00_cphContent_teamName" href="/team/{{ player.team.id }}/overview.html">{{ team.name }}</a><br /> <br /> Weekly salary: $ {{ player.weekly_salary }}<br />
      </td>
                                     </tr>
                                 </table>
@@ -19,13 +21,13 @@
         <tr style="background: #EFEFEF;">
             <td>
     Jump Shot:
-                <a id="ctl00_cphContent_skillTable_sdJumpShot_linkDen" class="{{ skills.jump_shot }}" title="{{ skills.jump_shot }}">{{ skills.jump_shot }}</a>
+                <a id="ctl00_cphContent_skillTable_sdJumpShot_linkDen" class="lev{{ skills.jump_shot.0 }}" title="{{ skills.jump_shot.0 }}">{{ skills.jump_shot.1 }}</a>
 
 
             </td>
             <td>
                 Jump Range:
-                <a id="ctl00_cphContent_skillTable_sdJumpRange_linkDen" class="{{ skills.jump_range }}" title="{{ skills.jump_shot }}">{{ skills.jump_range }}</a>
+                <a id="ctl00_cphContent_skillTable_sdJumpRange_linkDen" class="lev{{ skills.jump_range.0 }}" title="{{ skills.jump_range }}">{{ skills.jump_range.1 }}</a>
 
 
             </td>
@@ -33,13 +35,13 @@
         <tr style="background: #EFEFEF;">
             <td>
                 Outside Def.:
-                <a id="ctl00_cphContent_skillTable_sdperimDef_linkDen" class="{{ skills.outside_def }}" title="{{ skills.outside_def }}">{{ skills.outside_def }}</a>
+                <a id="ctl00_cphContent_skillTable_sdperimDef_linkDen" class="lev{{ skills.outside_def.0 }}" title="{{ skills.outside_def }}">{{ skills.outside_def.1 }}</a>
 
 
             </td>
             <td>
                 Handling:
-                <a id="ctl00_cphContent_skillTable_sdhandling_linkDen" class="{{ skills.handling }}" title="{{ skills.handling }}">{{ skills.handling }}</a>
+                <a id="ctl00_cphContent_skillTable_sdhandling_linkDen" class="lev{{ skills.handling.0 }}" title="{{ skills.handling }}">{{ skills.handling.1 }}</a>
 
 
             </td>
@@ -47,13 +49,13 @@
         <tr style="background: #EFEFEF;">
             <td>
                 Driving:
-                <a id="ctl00_cphContent_skillTable_sddriving_linkDen" class="{{ skills.driving }}" title="{{ skills.driving }}">{{ skills.driving }}</a>
+                <a id="ctl00_cphContent_skillTable_sddriving_linkDen" class="lev{{ skills.driving.0 }}" title="{{ skills.driving }}">{{ skills.driving.1 }}</a>
 
 
             </td>
             <td>
                 Passing:
-                <a id="ctl00_cphContent_skillTable_sdpassing_linkDen" class="{{ skills.passing }}" title="{{ skills.passing }}">{{ skills.passing }}</a>
+                <a id="ctl00_cphContent_skillTable_sdpassing_linkDen" class="lev{{ skills.passing.0 }}" title="{{ skills.passing }}">{{ skills.passing.1 }}</a>
 
 
             </td>
@@ -61,13 +63,13 @@
         <tr style="background: #EFEFEF;">
             <td>
                 Inside Shot:
-                <a id="ctl00_cphContent_skillTable_sdinsideShot_linkDen" class="{{ skills.inside_shot }}" title="{{ skills.inside_shot }}">{{ skills.inside_shot }}</a>
+                <a id="ctl00_cphContent_skillTable_sdinsideShot_linkDen" class="lev{{ skills.inside_shot.0 }}" title="{{ skills.inside_shot }}">{{ skills.inside_shot.1 }}</a>
 
 
             </td>
             <td>
                 Inside Def.:
-                <a id="ctl00_cphContent_skillTable_sdinsideDef_linkDen" class="{{ skills.inside_def }}" title="{{ skills.inside_def }}">{{ skills.inside_def }}</a>
+                <a id="ctl00_cphContent_skillTable_sdinsideDef_linkDen" class="lev{{ skills.inside_def.0 }}" title="{{ skills.inside_def }}">{{ skills.inside_def.1 }}</a>
 
 
             </td>
@@ -75,13 +77,13 @@
         <tr style="background: #EFEFEF;">
             <td>
                 Rebounding:
-                <a id="ctl00_cphContent_skillTable_sdrebound_linkDen" class="{{ skills.rebounding }}" title="{{ skills.rebounding }}">{{ skills.rebounding }}</a>
+                <a id="ctl00_cphContent_skillTable_sdrebound_linkDen" class="lev{{ skills.rebounding.0 }}" title="{{ skills.rebounding }}">{{ skills.rebounding.1 }}</a>
 
 
             </td>
             <td>
                 Shot Blocking:
-                <a id="ctl00_cphContent_skillTable_sdshotBlock_linkDen" class="{{ skills.shot_blocking }}" title="{{ skills.shot_blocking }}">{{ skills.shot_blocking }}</a>
+                <a id="ctl00_cphContent_skillTable_sdshotBlock_linkDen" class="lev{{ skills.shot_blocking.0 }}" title="{{ skills.shot_blocking }}">{{ skills.shot_blocking.1 }}</a>
 
 
             </td>
@@ -89,13 +91,13 @@
         <tr style="background: #EFEFEF;">
             <td>
                 Stamina:
-                <a id="ctl00_cphContent_skillTable_sdstamina_linkDen" class="{{ skills.stamina }}" title="{{ skills.stamina }}">{{ skills.stamina }}</a>
+                <a id="ctl00_cphContent_skillTable_sdstamina_linkDen" class="lev{{ skills.stamina.0 }}" title="{{ skills.stamina }}">{{ skills.stamina.1 }}</a>
 
 
             </td>
             <td>
                 Free Throw:
-                <a id="ctl00_cphContent_skillTable_sdfreeThrow_linkDen" class="{{ skills.free_throw }}" title="{{ skills.free_throw }}">{{ skills.free_throw }}</a>
+                <a id="ctl00_cphContent_skillTable_sdfreeThrow_linkDen" class="lev{{ skills.free_throw.0 }}" title="{{ skills.free_throw }}">{{ skills.free_throw.1 }}</a>
 
 
             </td>
@@ -109,7 +111,7 @@
             <tr id="ctl00_cphContent_skillTable_trExperience" style="background: #EFEFEF;">
         <td>
                 Experience:
-                <a id="ctl00_cphContent_skillTable_sdexperience_linkDen" class="{{ skills.experience }}" title="{{ skills.experience }}">{{ skills.experience }}</a>
+                <a id="ctl00_cphContent_skillTable_sdexperience_linkDen" class="lev{{ skills.experience.0 }}" title="{{ skills.experience }}">{{ skills.experience.1 }}</a>
 
 
             </td>
