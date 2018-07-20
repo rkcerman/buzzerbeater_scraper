@@ -9,8 +9,13 @@
                                     <tr>
                                         <td id="playerPersonalInfo">
 
-    <p>Team: <a id="ctl00_cphContent_teamName" href="/team/{{ player.team.id }}/overview.html">{{ team.name }}</a><br /> <br /> Weekly salary: $ {{ player.weekly_salary }}<br />
-     </td>
+    <p>Team: <a id="ctl00_cphContent_teamName" href="/team/{{ player.team.id }}/overview.html">{{ team.name }}</a>
+        <br /> <br /> Weekly salary: $ {{ player.weekly_salary }}
+        <br /> <br /> DMI: {{ player.dmi }}
+        <br /> <br /> Age: {{ player.age }}
+        <br /> <br /> Height: {{ player.height }}cm
+    </p>
+                                        </td>
                                     </tr>
                                 </table>
                             </td>

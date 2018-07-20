@@ -1,4 +1,7 @@
 import logging
+
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponse
 from django.shortcuts import render
 
 from .models import Players, PlayerSkills
@@ -35,35 +38,37 @@ def index(request):
 
 # Returns player overview
 def overview(request, player_id):
-    player = Players.objects.get(id=player_id)
-    team = player.team
-    skills = PlayerSkills.objects.filter(player=player_id)
-
-    player_skills = {}
-    nomenclature = []
-    for skill in skills:
-        skill_name = skill.skill.replace(' ', '_').replace('.', '').lower()
-        player_skills[skill_name] = [skill.value, skills_mapping[skill.value]]
-
-    context = {
-        'player': player,
-        'team': team,
-        'skills': player_skills,
-    }
-
-    # Calculating value of TSP
     try:
-        gsp = player_skills['jump_shot'][0] + player_skills['jump_range'][0] + player_skills['outside_def'][0] \
-              + player_skills['handling'][0] + player_skills['driving'][0] + player_skills['passing'][0]
-        fsp = player_skills['inside_shot'][0] + player_skills['inside_def'][0] \
-              + player_skills['rebounding'][0] + player_skills['shot_blocking'][0]
-        tsp = gsp + fsp
+        player = Players.objects.get(id=player_id)
+        team = player.team
+        skills = PlayerSkills.objects.filter(player=player_id)
 
-        context[gsp] = gsp
-        context[fsp] = fsp
-        context[tsp] = tsp
-    except KeyError as e:
-        logging.info('Not enough skills available')
-        print(e)
+        player_skills = {}
+        for skill in skills:
+            skill_name = skill.skill.replace(' ', '_').replace('.', '').lower()
+            player_skills[skill_name] = [skill.value, skills_mapping[skill.value]]
 
-    return render(request, 'player/player_overview.html', context)
+        context = {
+            'player': player,
+            'team': team,
+            'skills': player_skills,
+        }
+
+        # Calculating value of TSP
+        try:
+            gsp = player_skills['jump_shot'][0] + player_skills['jump_range'][0] + player_skills['outside_def'][0] \
+                  + player_skills['handling'][0] + player_skills['driving'][0] + player_skills['passing'][0]
+            fsp = player_skills['inside_shot'][0] + player_skills['inside_def'][0] \
+                  + player_skills['rebounding'][0] + player_skills['shot_blocking'][0]
+            tsp = gsp + fsp
+
+            context[gsp] = gsp
+            context[fsp] = fsp
+            context[tsp] = tsp
+        except KeyError as e:
+            logging.info('Not enough skills available')
+            print(e)
+
+        return render(request, 'player/player_overview.html', context)
+    except ObjectDoesNotExist as e:
+        return HttpResponse('Player ID ', player_id, ' does not exist.')

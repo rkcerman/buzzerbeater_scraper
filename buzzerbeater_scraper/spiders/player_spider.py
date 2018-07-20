@@ -51,7 +51,8 @@ class PlayerSpider(scrapy.Spider):
 
             # TODO ugly AF
             try:
-                yield player['player_skills_item']
+                for skill in player['player_skills_items']:
+                    yield skill
             except KeyError:
                 print('No player skills available')
 
@@ -138,28 +139,29 @@ class PlayerSpider(scrapy.Spider):
 
             # TODO Maybe, um, create a fucking players class?!?!
             yields = {
-                "team_item": team_item,
-                "player_item": player_item,
+                'team_item': team_item,
+                'player_item': player_item,
+                'player_skills_items': []
             }
 
             # Extracting skills (the "right" column)
             skills_div = response.xpath('//div[@id="ctl00_cphContent_faceContainer"]/following-sibling::div[1]')
             skills_td = skills_div.xpath('table/tr/td/following-sibling::td[1]')
 
+            # TODO skills_td.xpath("table") je double asi
+            # Checking if the skills table exists (unless own player or on the market, it never does)
             if skills_td.xpath("table").extract_first() is not None:
                 skills_table = skills_td.xpath('table[1]')
 
                 for skill in skills_table.xpath('tr/td'):
-                    if skill.xpath("a").extract_first() is not None:
+                    if skill.xpath('a').extract_first() is not None:
                         skill_name = re.search('<td>\s+(.+):', skill.extract()).group(1)
                         skill_value = skill.xpath('a/@title').extract_first()
 
                         player_skills_item = PlayerSkillsItem(player_id=player_id,
                                                               skill=skill_name,
                                                               value=skill_value)
-                        yields['player_skills_item'] = player_skills_item
-                    else:
-                        print('Empty row')
+                        yields['player_skills_items'].append(player_skills_item)
 
             player_history_link = response.xpath('//a[@title="Player History"]/@href').extract_first()
             yields['player_history_link'] = player_history_link

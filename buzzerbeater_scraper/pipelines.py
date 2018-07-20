@@ -222,11 +222,11 @@ class BuzzerbeaterScraperPipeline(object):
             return item
         if isinstance(item, PlayerSkillsItem):
             try:
-                self.cur.execute("INSERT INTO player_skills (date,"
-                                 "player_id,"
+                self.cur.execute("INSERT INTO player_skills (player_id,"
+                                 "date,"
                                  "skill,"
                                  "value) "
-                                 "VALUES(current_timestamp, %s, %s, %s) "
+                                 "VALUES(%s, current_timestamp, %s, %s) "
                                  "ON CONFLICT DO NOTHING",
                                  (item['player_id'],
                                   item['skill'],
