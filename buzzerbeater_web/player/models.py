@@ -40,7 +40,7 @@ class BoxscoreStats(models.Model):
 
 
 class Boxscores(models.Model):
-    match = models.ForeignKey('Matches', models.DO_NOTHING, primary_key=True)
+    match = models.OneToOneField('Matches', models.DO_NOTHING, primary_key=True)
     away_prep_focus = models.TextField(blank=True, null=True)  # This field type is a guess.
     away_prep_pace = models.TextField(blank=True, null=True)  # This field type is a guess.
     home_prep_focus = models.TextField(blank=True, null=True)  # This field type is a guess.

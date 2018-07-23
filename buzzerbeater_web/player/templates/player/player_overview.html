@@ -1,26 +1,78 @@
 {% if player %}
+<link rel="stylesheet" href="http://www.buzzerbeater.com/CSS/contentbox.css?c=2" type="text/css" />
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.3.1/dt-1.10.18/rg-1.0.3/datatables.min.css"/>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.3.1/dt-1.10.18/rg-1.0.3/datatables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/3.2.6/js/dataTables.fixedColumns.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+    var groupColumn = 1;
+    var table = $('#matchHistory').DataTable({
+        "columnDefs": [
+            { visible: false, targets: 0},
+            { width: '20%', targets : [2,3,4,5]},
+            { visible: false, targets: groupColumn },
+        ],
+        "order": [[ 2, 'desc' ]],
+        "displayLength": 25,
+        "drawCallback": function ( settings ) {
+            var api = this.api();
+            var rows = api.rows( {page:'current'} ).nodes();
+            var last=null;
+
+            api.column(groupColumn, {page:'current'} ).data().each( function ( group, i ) {
+                if ( last !== group ) {
+                    $(rows).eq( i ).before(
+                        '<tr class="group"><td colspan="16">'+group+'</td></tr>'
+                    );
+
+                    last = group;
+                }
+            } );
+        }
+    } );
+
+    // Order by the grouping
+    $('#matchHistory tbody').on( 'click', 'tr.group', function () {
+        var currentOrder = table.order()[0];
+        if ( currentOrder[0] === groupColumn && currentOrder[1] === 'asc' ) {
+            table.order( [ groupColumn, 'desc' ] ).draw();
+        }
+        else {
+            table.order( [ groupColumn, 'asc' ] ).draw();
+        }
+    } );
+} );
+</script>
+
 
 <style type="text/css">
     body
     {
         text-align: center;
     }
+    div.playerinfobox {
+        margin: auto 15% auto 15%;
+        width: 50%;
+    }
     table.playerinfo {
         margin: 0 auto;
+        width: 100%;
+        clear: both;
+        border-collapse: collapse;
+        table-layout: fixed;
+        word-wrap:normal;
     }
     table.playerinfo tr {
         font-size: 15px;
     }
-    div.playerinfobox {
-        margin: auto 25% auto 25%;
-        width: 50%;
+    tr.group,
+    tr.group:hover {
+        background-color: #ddd !important;
     }
 
 </style>
-<link rel="stylesheet" href="http://www.buzzerbeater.com/CSS/contentbox.css?c=2" type="text/css" />
-<link rel="stylesheet" href="http://www.buzzerbeater.com/CSS/layouts.css" type="text/css" />
 <div class="playerinfobox">
-    <table class='playerinfo' cellpadding="0" cellspacing="0">
+    <table class="playerinfo" cellpadding="0" cellspacing="0">
         <tr>
             <h2> {{ player.name }} </h2>
         </tr>
@@ -163,107 +215,76 @@
                 <select name="ctl00$cphContent$ddlSeasons" onchange="javascript:setTimeout('__doPostBack(\'ctl00$cphContent$ddlSeasons\',\'\')', 0)" id="ctl00_cphContent_ddlSeasons" style="margin-top:-2px">
                     <option selected="selected" value="43">Season 43</option>
                     <option value="42">Season 42</option>
-                    <option value="41">Season 41</option>
-                    <option value="40">Season 40</option>
-                    <option value="39">Season 39</option>
-                    <option value="38">Season 38</option>
-                    <option value="37">Season 37</option>
-                    <option value="36">Season 36</option>
-                    <option value="35">Season 35</option>
-                    <option value="34">Season 34</option>
-                    <option value="33">Season 33</option>
-                    <option value="32">Season 32</option>
-                    <option value="31">Season 31</option>
-                    <option value="30">Season 30</option>
-                    <option value="29">Season 29</option>
-                    <option value="28">Season 28</option>
-                    <option value="27">Season 27</option>
-                    <option value="26">Season 26</option>
-                    <option value="25">Season 25</option>
-                    <option value="24">Season 24</option>
-                    <option value="23">Season 23</option>
-                    <option value="22">Season 22</option>
-                    <option value="21">Season 21</option>
-                    <option value="20">Season 20</option>
-                    <option value="19">Season 19</option>
-                    <option value="18">Season 18</option>
-                    <option value="17">Season 17</option>
-                    <option value="16">Season 16</option>
-                    <option value="15">Season 15</option>
-                    <option value="14">Season 14</option>
-                    <option value="13">Season 13</option>
-                    <option value="12">Season 12</option>
-                    <option value="11">Season 11</option>
-                    <option value="10">Season 10</option>
-                    <option value="9">Season 9</option>
-                    <option value="8">Season 8</option>
-                    <option value="7">Season 7</option>
-                    <option value="6">Season 6</option>
-                    <option value="5">Season 5</option>
-                    <option value="4">Season 4</option>
-                    <option value="3">Season 3</option>
-                    <option value="2">Season 2</option>
-                    <option value="1">Season 1</option>
                 </select>
             </div>
             <div></div>
         </div>
-        <div class="boxcontent" style="
- ">
+        <div class="boxcontent" style="">
             <a name="playerstats"></a>
             <div>
-                <table cellspacing="1" cellpadding="1" border="0" id="ctl00_cphContent_playerStats" style="width:99%;">
-                    <tr class="tableHeader">
-                        <th scope="col">Game</th>
-                        <th scope="col">POS</th>
-                        <th scope="col">MIN</th>
-                        <th scope="col">FG</th>
-                        <th scope="col">3FG</th>
-                        <th scope="col">FT</th>
-                        <th scope="col">OR</th>
-                        <th scope="col">TR</th>
-                        <th scope="col">AST</th>
-                        <th scope="col">TO</th>
-                        <th scope="col">STL</th>
-                        <th scope="col">BLK</th>
-                        <th scope="col">PF</th>
-                        <th scope="col">PTS</th>
-                        <th scope="col">Rating</th>
-                        <th scope="col">Game Type</th>
-                    </tr>
-                    {% for match in matches %}
+                <table id="matchHistory" class="compact" >
+                    <thead>
                         <tr>
+                            <th>match_id</th>
+                            <th>Season</th>
+                            <th style="width: 150px !important">Game</th>
+                            <th>POS</th>
+                            <th>MIN</th>
+                            <th>FG</th>
+                            <th>3FG</th>
+                            <th>FT</th>
+                            <th>OR</th>
+                            <th>TR</th>
+                            <th>AST</th>
+                            <th>TO</th>
+                            <th>STL</th>
+                            <th>BLK</th>
+                            <th>PF</th>
+                            <th>PTS</th>
+                            <th>Rating</th>
+                            <th>Game Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for stat in stats %}
+                        <tr>
+                            <td>{{ stat.match.match.id }}</td>
+                            <td align="center">Season {{ stat.match.match.season }}</td>
                             <td align="center">
-                                <a id="ctl00_cphContent_playerStats_ctl02_HyperLink1" href="http://www.buzzerbeater.com/match/{{ match.match.id }}/boxscore.aspx">{{ match.match.match_date }}</a>
+                                <a id="ctl00_cphContent_playerStats_ctl02_HyperLink1" href="http://www.buzzerbeater.com/match/{{ stat.match.id }}/boxscore.aspx">{{ stat.match.match.match_date|date:"y-m-d" }}</a>
                             </td>
-                            <td align="center">SG</td>
-                            <td align="center">{{ match.pg_min }}, {{ match.sg_min }}</td>
+                            <td align="center">{{ stat.max_minute_key }}</td>
+                            <td align="center">{{ stat.max_minute_value }}</td>
                             <td align="center">
-                                {{ match.fgm }}-{{ match.fga }}
+                                {{ stat.match.fgm }}-{{ stat.match.fga }}
                             </td>
                             <td align="center">
-                                {{ match.tpm }}-{{ match.tpa }}
+                                {{ stat.match.tpm }}-{{ stat.match.tpa }}
                             </td>
                             <td align="center">
-                                {{ match.ftm }}-{{ match.fta }}
+                                {{ stat.match.ftm }}-{{ stat.match.fta }}
                             </td>
-                            <td align="center">0</td>
-                            <td align="center">5</td>
-                            <td align="center">8</td>
-                            <td align="center">3</td>
-                            <td align="center">2</td>
-                            <td align="center">3</td>
-                            <td align="center">2</td>
-                            <td align="center">48</td>
+                            <td align="center">{{ stat.match.oreb }}</td>
+                            <td align="center">{{ stat.match.reb }}</td>
+                            <td align="center">{{ stat.match.ast }}</td>
+                            <td align="center">{{ stat.match.t_o }}</td>
+                            <td align="center">{{ stat.match.stl }}</td>
+                            <td align="center">{{ stat.match.blk }}</td>
+                            <td align="center">{{ stat.match.pf }}</td>
+                            <td align="center">{{ stat.match.pts }}</td>
                             <td align="center">
-                                12.0
+                                {{ stat.match.rating }}
                             </td>
                             <td align="center">
-                                Scrimmage
+                                {{ stat.match_type }}
                             </td>
                         </tr>
                     {% endfor %}
+                    </tbody>
+                    <tfoot>
                         <tr style="background-color:#EEEEEE;">
+                            <td align="center">&nbsp;</td>
+                            <td align="center">&nbsp;</td>
                             <td align="center">
                                 <a id="ctl00_cphContent_playerStats_ctl03_HyperLink1" href="../../match/0/boxscore.aspx"></a>
                             </td>
@@ -293,34 +314,37 @@
                                 SEASON AVG
                             </td>
                         </tr>
-                    <tr>
-                        <td align="center">
-                            <a id="ctl00_cphContent_playerStats_ctl04_HyperLink1" href="../../match/1/boxscore.aspx"></a>
-                        </td>
-                        <td align="center">&nbsp;</td>
-                        <td align="center">0</td>
-                        <td align="center">
-                            0-0
-                        </td>
-                        <td align="center">
-                            0-0
-                        </td>
-                        <td align="center">
-                            0-0
-                        </td>
-                        <td align="center">0</td>
-                        <td align="center">0</td>
-                        <td align="center">0</td>
-                        <td align="center">0</td>
-                        <td align="center">0</td>
-                        <td align="center">0</td>
-                        <td align="center">0</td>
-                        <td align="center">0</td>
-                        <td align="center"></td>
-                        <td align="center">
-                            TOTALS
-                        </td>
-                    </tr>
+                        <tr>
+                            <td align="center">&nbsp;</td>
+                            <td align="center">&nbsp;</td>
+                            <td align="center">
+                                <a id="ctl00_cphContent_playerStats_ctl04_HyperLink1" href="../../match/1/boxscore.aspx"></a>
+                            </td>
+                            <td align="center">&nbsp;</td>
+                            <td align="center">0</td>
+                            <td align="center">
+                                0-0
+                            </td>
+                            <td align="center">
+                                0-0
+                            </td>
+                            <td align="center">
+                                0-0
+                            </td>
+                            <td align="center">0</td>
+                            <td align="center">0</td>
+                            <td align="center">0</td>
+                            <td align="center">0</td>
+                            <td align="center">0</td>
+                            <td align="center">0</td>
+                            <td align="center">0</td>
+                            <td align="center">0</td>
+                            <td align="center"></td>
+                            <td align="center">
+                                TOTALS
+                            </td>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>

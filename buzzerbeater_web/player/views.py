@@ -4,7 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from .models import Players, PlayerSkills, BoxscoreStats
+from .models import Players, PlayerSkills, BoxscoreStats, Boxscores
 
 skills_mapping = {
     1: 'atrocious',
@@ -44,21 +44,41 @@ def overview(request, player_id):
         player = Players.objects.get(id=player_id)
         team = player.team
         skills = PlayerSkills.objects.filter(player=player_id)
-        matches = BoxscoreStats.objects.filter(player_id=player_id).order_by('-match_id')
+        boxscore_stats = BoxscoreStats.objects.filter(player_id=player_id).order_by('-match_id')
 
+        # Creating a map of skills nomenclature with their respective values
         player_skills = {}
         for skill in skills:
             skill_name = skill.skill.replace(' ', '_').replace('.', '').lower()
             player_skills[skill_name] = [skill.value, skills_mapping[skill.value]]
 
-        for match in matches:
-            max_minutes = [match.pg_min, match.sg_min, match.sf_min, match.pf_min, match.c_min]
+        stats = []
+        for match in boxscore_stats:
+            max_minutes = {
+                'PG': match.pg_min,
+                'SG': match.sg_min,
+                'SF': match.sf_min,
+                'PF': match.pf_min,
+                'C': match.c_min
+            }
+
+            max_minute_key = max(max_minutes, key=max_minutes.get)
+            max_minute_value = max(max_minutes.values())
+            match_type = Boxscores.objects.get(match_id=match.match_id).match_type
+            stats.append({
+                'match': match,
+                'max_minute_key': max_minute_key,
+                'max_minute_value': max_minute_value,
+                'match_type': match_type
+            }
+            )
+        print(stats)
 
         context = {
             'player': player,
             'team': team,
             'skills': player_skills,
-            'matches': matches,
+            'stats': stats,
         }
 
         # Calculating value of TSP
