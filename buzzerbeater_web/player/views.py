@@ -74,9 +74,6 @@ def overview(request, player_id):
             }
             )
 
-        totals = get_totals(stats)
-        print(totals)
-
         # Setting up the final context
         context = {
             'player': player,
@@ -103,13 +100,3 @@ def overview(request, player_id):
         return render(request, 'player/player_overview.html', context)
     except ObjectDoesNotExist as e:
         return HttpResponse('Player ID ', player_id, ' does not exist.')
-
-# Returns performance totals for the player
-def get_totals(stats):
-    if isinstance(stats, list):
-        totals = {'min' : 0, 'fgm': 0}
-        for stat in stats:
-            print(stat)
-            totals['min'] += stat['max_minute_value']
-            totals['fgm'] += stat['match'].fgm
-        return totals
