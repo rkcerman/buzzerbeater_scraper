@@ -3,8 +3,10 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.3.1/dt-1.10.18/rg-1.0.3/datatables.min.css"/>
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.3.1/dt-1.10.18/rg-1.0.3/datatables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/3.2.6/js/dataTables.fixedColumns.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.19/api/average().js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.19/api/sum().js"></script>
 <script type="text/javascript">
-    $(document).ready(function() {
+$(document).ready(function() {
     var groupColumn = 1;
     var table = $('#matchHistory').DataTable({
         "columnDefs": [
@@ -13,7 +15,7 @@
             { visible: false, targets: groupColumn },
         ],
         "order": [[ 2, 'desc' ]],
-        "displayLength": 25,
+        "displayLength": 100,
         "drawCallback": function ( settings ) {
             var api = this.api();
             var rows = api.rows( {page:'current'} ).nodes();
@@ -22,14 +24,70 @@
             api.column(groupColumn, {page:'current'} ).data().each( function ( group, i ) {
                 if ( last !== group ) {
                     $(rows).eq( i ).before(
-                        '<tr class="group"><td colspan="16">'+group+'</td></tr>'
+                        '<tr class="group"><td colspan="19">'+group+'</td></tr>'
                     );
 
                     last = group;
                 }
             } );
+
+           },
+        
+        // Creating a Totals row
+         "footerCallback": function ( row, data, start, end, display ) {
+            var api = this.api(), data;
+ 
+            // Remove the formatting to get integer data for summation
+            var intVal = function ( i ) {
+                return typeof i === 'string' ?
+                    i.replace(/[\$,]/g, '')*1 :
+                    typeof i === 'number' ?
+                        i : 0;
+            };
+            
+            // Total over all pages
+            total = function (col) { 
+            return api.column( col )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );}
+ 
+            // Total over this page
+            pageTotal = function (col) { 
+            return api
+                .column( col, { page: 'current'} )
+                .data()
+                .reduce( function (a, b) {
+                    return intVal(a) + intVal(b);
+                }, 0 );}
+ 
+            // Update footer
+            // TODO make this into a loop pls
+            var i;
+            for (i = 4; i < 20; i++) {
+            
+            $( api.column( i ).footer() ).html(
+                Math.round(((api.table().column(i, {page:'current'}).data().average()) + 0.00001) * 100) / 100
+            );
+            $( 'tr:eq(2) td:eq(' + (i-2) + ')', api.table().footer() ).html(
+                Math.round(((total(i)/data.length) + 0.00001) * 100) / 100
+            );
+                if (i != 19) {
+                    $( 'tr:eq(1) td:eq(' + (i-2) + ')', api.table().footer() ).html(
+                        pageTotal(i)
+                    );
+                    $( 'tr:eq(3) td:eq(' + (i-2) + ')', api.table().footer() ).html(
+                        total(i)
+                    );
+                }
+            }
         }
-    } );
+       
+       
+       
+    } );   
+    
 
     // Order by the grouping
     $('#matchHistory tbody').on( 'click', 'tr.group', function () {
@@ -43,7 +101,6 @@
     } );
 } );
 </script>
-
 
 <style type="text/css">
     body
@@ -69,7 +126,7 @@
     tr.group:hover {
         background-color: #ddd !important;
     }
-
+    
 </style>
 <div class="playerinfobox">
     <table class="playerinfo" cellpadding="0" cellspacing="0">
@@ -222,7 +279,7 @@
         <div class="boxcontent" style="">
             <a name="playerstats"></a>
             <div>
-                <table id="matchHistory" class="compact" >
+                <table id="matchHistory" class="compact stripe" >
                     <thead>
                         <tr>
                             <th>match_id</th>
@@ -230,9 +287,12 @@
                             <th style="width: 150px !important">Game</th>
                             <th>POS</th>
                             <th>MIN</th>
-                            <th>FG</th>
-                            <th>3FG</th>
-                            <th>FT</th>
+                            <th>FGM</th>
+                            <th>FGA</th>
+                            <th>3GM</th>
+                            <th>3GA</th>
+                            <th>FTM</th>
+                            <th>FTA</th>
                             <th>OR</th>
                             <th>TR</th>
                             <th>AST</th>
@@ -251,19 +311,16 @@
                             <td>{{ stat.match.match.id }}</td>
                             <td align="center">Season {{ stat.match.match.season }}</td>
                             <td align="center">
-                                <a id="ctl00_cphContent_playerStats_ctl02_HyperLink1" href="http://www.buzzerbeater.com/match/{{ stat.match.id }}/boxscore.aspx">{{ stat.match.match.match_date|date:"y-m-d" }}</a>
+                                <a id="ctl00_cphContent_playerStats_ctl02_HyperLink1" href="http://www.buzzerbeater.com/match/{{ stat.match.match.id }}/boxscore.aspx">{{ stat.match.match.match_date|date:"y-m-d" }}</a>
                             </td>
                             <td align="center">{{ stat.max_minute_key }}</td>
                             <td align="center">{{ stat.max_minute_value }}</td>
-                            <td align="center">
-                                {{ stat.match.fgm }}-{{ stat.match.fga }}
-                            </td>
-                            <td align="center">
-                                {{ stat.match.tpm }}-{{ stat.match.tpa }}
-                            </td>
-                            <td align="center">
-                                {{ stat.match.ftm }}-{{ stat.match.fta }}
-                            </td>
+                            <td align="center">{{ stat.match.fgm }}</td>
+                            <td align="center">{{ stat.match.fga }}</td>
+                            <td align="center">{{ stat.match.tpm }}</td>
+                            <td align="center">{{ stat.match.tpa }}</td>
+                            <td align="center">{{ stat.match.ftm }}</td>
+                            <td align="center">{{ stat.match.fta }}</td>
                             <td align="center">{{ stat.match.oreb }}</td>
                             <td align="center">{{ stat.match.reb }}</td>
                             <td align="center">{{ stat.match.ast }}</td>
@@ -272,76 +329,110 @@
                             <td align="center">{{ stat.match.blk }}</td>
                             <td align="center">{{ stat.match.pf }}</td>
                             <td align="center">{{ stat.match.pts }}</td>
-                            <td align="center">
-                                {{ stat.match.rating }}
-                            </td>
-                            <td align="center">
-                                {{ stat.match_type }}
-                            </td>
+                            <td align="center">{{ stat.match.rating }}</td>
+                            <td align="center">{{ stat.match_type }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>
                     <tfoot>
                         <tr style="background-color:#EEEEEE;">
-                            <td align="center">&nbsp;</td>
-                            <td align="center">&nbsp;</td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
                             <td align="center">
-                                <a id="ctl00_cphContent_playerStats_ctl03_HyperLink1" href="../../match/0/boxscore.aspx"></a>
-                            </td>
-                            <td align="center">&nbsp;</td>
-                            <td align="center">0.0</td>
-                            <td align="center">
-                                0.000
-                            </td>
-                            <td align="center">
-                                0.000
-                            </td>
-                            <td align="center">
-                                0.000
-                            </td>
-                            <td align="center">0.0</td>
-                            <td align="center">0.0</td>
-                            <td align="center">0.0</td>
-                            <td align="center">0.0</td>
-                            <td align="center">0.0</td>
-                            <td align="center">0.0</td>
-                            <td align="center">0.0</td>
-                            <td align="center">0.0</td>
-                            <td align="center">
-                                0.0
-                            </td>
-                            <td align="center">
-                                SEASON AVG
+                                SELECTED AVG
                             </td>
                         </tr>
                         <tr>
-                            <td align="center">&nbsp;</td>
-                            <td align="center">&nbsp;</td>
-                            <td align="center">
-                                <a id="ctl00_cphContent_playerStats_ctl04_HyperLink1" href="../../match/1/boxscore.aspx"></a>
-                            </td>
-                            <td align="center">&nbsp;</td>
-                            <td align="center">0</td>
-                            <td align="center">
-                                0-0
-                            </td>
-                            <td align="center">
-                                0-0
-                            </td>
-                            <td align="center">
-                                0-0
-                            </td>
-                            <td align="center">0</td>
-                            <td align="center">0</td>
-                            <td align="center">0</td>
-                            <td align="center">0</td>
-                            <td align="center">0</td>
-                            <td align="center">0</td>
-                            <td align="center">0</td>
-                            <td align="center">0</td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
                             <td align="center"></td>
                             <td align="center">
-                                TOTALS
+                                SELECTED TOTALS
+                            </td>
+                        </tr>
+                        <tr style="background-color:#EEEEEE;">
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center">
+                                ALL AVG
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center">
+                                ALL TOTALS
                             </td>
                         </tr>
                     </tfoot>

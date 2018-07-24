@@ -52,6 +52,7 @@ def overview(request, player_id):
             skill_name = skill.skill.replace(' ', '_').replace('.', '').lower()
             player_skills[skill_name] = [skill.value, skills_mapping[skill.value]]
 
+        # Creating a list of all matches with their types, stats and minutes
         stats = []
         for match in boxscore_stats:
             max_minutes = {
@@ -72,8 +73,11 @@ def overview(request, player_id):
                 'match_type': match_type
             }
             )
-        print(stats)
 
+        totals = get_totals(stats)
+        print(totals)
+
+        # Setting up the final context
         context = {
             'player': player,
             'team': team,
@@ -99,3 +103,13 @@ def overview(request, player_id):
         return render(request, 'player/player_overview.html', context)
     except ObjectDoesNotExist as e:
         return HttpResponse('Player ID ', player_id, ' does not exist.')
+
+# Returns performance totals for the player
+def get_totals(stats):
+    if isinstance(stats, list):
+        totals = {'min' : 0, 'fgm': 0}
+        for stat in stats:
+            print(stat)
+            totals['min'] += stat['max_minute_value']
+            totals['fgm'] += stat['match'].fgm
+        return totals
