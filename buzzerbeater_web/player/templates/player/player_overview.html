@@ -8,10 +8,24 @@
 <script type="text/javascript">
 $(document).ready(function() {
     var groupColumn = 1;
+    
+    
+    // Setup - add a text input to each header cell
+    /*$('#matchHistory thead th:eq(30)').each( function () {
+        var title = $(this).text();
+        $(this).html( '<input type="text" placeholder="'+title+'" />' );
+    } );
+    
+    $('input[placeholder]').each(function () {
+        $(this).attr('size', $(this).attr('placeholder').length);
+    });*/
+    
     var table = $('#matchHistory').DataTable({
+        
         "columnDefs": [
             { visible: false, targets: 0},
             { visible: false, targets: groupColumn },
+            { orderable: false, targets: '_all'},
             
             // Let's create calculated columns to determine shot percentages (FG, 3P and FT)
             { render: function ( data, type, row) {
@@ -39,6 +53,27 @@ $(document).ready(function() {
         "order": [[ 2, 'desc' ]],
         "displayLength": 100,
         
+        initComplete: function () {
+            this.api().columns().every( function () {
+                var column = this;
+                var select = $('<select><option value=""></option></select>')
+                    .appendTo( $(column.header()).empty() )
+                    .on( 'change', function () {
+                        var val = $.fn.dataTable.util.escapeRegex(
+                            $(this).val()
+                        );
+ 
+                        column
+                            .search( val ? '^'+val+'$' : '', true, false )
+                            .draw();
+                    } );
+ 
+                column.data().unique().sort().each( function ( d, j ) {
+                    select.append( '<option value="'+d+'">'+d+'</option>' )
+                } );
+            } );
+        },
+        
         // Creating the group row, spanning through all columns
         "drawCallback": function ( settings ) {
             var api = this.api();
@@ -48,7 +83,7 @@ $(document).ready(function() {
             api.column(groupColumn, {page:'current'} ).data().each( function ( group, i ) {
                 if ( last !== group ) {
                     $(rows).eq( i ).before(
-                        '<tr class="group"><td colspan="19">'+group+'</td></tr>'
+                        '<tr class="group"><td colspan="5">'+group+'</td></tr>'
                     );
 
                     last = group;
@@ -88,17 +123,22 @@ $(document).ready(function() {
             // Update footer
             // TODO make this into a loop pls
             var i;
+            var dontAverage = [7, 10, 13]
+            var dontTotal = [7,10,13,22]
             for (i = 4; i < 23; i++) {
             
-            $( api.column( i ).footer() ).html(
-                Math.round(((api.table().column(i, {page:'current'}).data().average()) + 0.00001) * 100) / 100
-            );
-            $( 'tr:eq(2) td:eq(' + (i-2) + ')', api.table().footer() ).html(
-                Math.round(((total(i)/data.length) + 0.00001) * 100) / 100
-            );
-                
-            var testArray = [7,10,13,22]
-            if (testArray.indexOf(i) == -1) {
+            // Filling the averages row with averages for columns that can be averaged
+            if (dontAverage.indexOf(i) == -1) {
+                $( api.column( i ).footer() ).html(
+                    Math.round(((api.table().column(i,  {page:'current'}).data().average()) + 0.00001) * 100) / 100
+                );
+                $( 'tr:eq(2) td:eq(' + (i-2) + ')', api.table().footer() ).html(
+                    Math.round(((total(i)/data.length) + 0.00001) * 100) / 100
+                );
+            }
+                        
+            // Filling the totals row with totals for columns that can be totaled
+            if (dontTotal.indexOf(i) == -1) {
                     $( 'tr:eq(1) td:eq(' + (i-2) + ')', api.table().footer() ).html(
                         pageTotal(i)
                     );
@@ -107,7 +147,23 @@ $(document).ready(function() {
                     );
                 }
             }
-        }
+             
+            // Filling the percentages row with percentages
+            var i = 0;
+            for (i; i <3; i++) {
+                var made_cell = $('tr:eq(0) td:eq(' + (dontAverage[i] - 4) + ')', api.table().footer()).html()
+                var made_cell2 = $('tr:eq(2) td:eq(' + (dontAverage[i] - 4) + ')', api.table().footer()).html()
+                var attempt_cell = $('tr:eq(0) td:eq(' + (dontAverage[i] - 3) + ')', api.table().footer()).html()
+                var attempt_cell2 = $('tr:eq(2) td:eq(' + (dontAverage[i] - 3) + ')', api.table().footer()).html()
+                
+                $('tr:eq(0) td:eq(' + (dontAverage[i] - 2)+ ')', api.table().footer()).html(
+                    Math.round(((made_cell/attempt_cell) + 0.00001) * 100) / 100
+                );
+                $('tr:eq(2) td:eq(' + (dontAverage[i] - 2)+ ')', api.table().footer()).html(
+                    Math.round(((made_cell2/attempt_cell2) + 0.00001) * 100) / 100
+                );
+            }
+        }   
        
        
        
@@ -124,6 +180,34 @@ $(document).ready(function() {
             table.order( [ groupColumn, 'asc' ] ).draw();
         }
     } );
+    
+    $('a.toggle-vis').on( 'click', function (e) {
+        e.preventDefault();
+ 
+        // Get the column API object
+        var column = table.columns( $(this).attr('data-column') );
+        console.log(column)
+        // Toggle the visibility
+        column.visible( ! column.visible() );
+    } );
+    
+    /* Apply the search
+    table.columns().eq(30).each( function (index) {
+        var column = table.column(index)
+        var that = this;
+        var inp = $( 'thead', column )
+        var foot = $( 'input', column.header())
+        console.log(that)
+        console.log(inp)
+        console.log(foot)
+ 
+        foot.on( 'keyup change', function () {
+            if ( that.search() !== this.value ) {
+                that.search( this.value ).draw();
+            }
+        } );
+    } );*/
+    
 } );
 </script>
 
@@ -150,6 +234,12 @@ $(document).ready(function() {
     tr.group,
     tr.group:hover {
         background-color: #ddd !important;
+    }
+    thead select {
+        width: 100%;
+        padding: 3px;
+        
+        box-sizing: border-box;
     }
     
 </style>
@@ -296,15 +386,18 @@ $(document).ready(function() {
             </div>
             
         </div>
+        <div>
+					Toggle column: <a class="toggle-vis" data-column="23, 24, 27, 28">Strategies</a> - <a class="toggle-vis" data-column="25, 26, 29, 30">Prep Hits/Misses</a> - 
+				</div>
         <div class="boxcontent" style="">
             <a name="playerstats"></a>
             <div>
                 <table id="matchHistory" class="compact stripe" >
                     <thead>
-                        <tr>
+                        <tr class='search'>
                             <th>match_id</th>
                             <th>Season</th>
-                            <th style="width: 150px !important">Game</th>
+                            <th style="width: 150px !important">Date</th>
                             <th>POS</th>
                             <th>MIN</th>
                             <th>FGM</th>
@@ -333,7 +426,41 @@ $(document).ready(function() {
                             <th>O_DEF</th>
                             <th>O_F_HIT</th>
                             <th>O_P_HIT</th>
-                            <th>Game Type</th>
+                            <th>Type</th>
+                        </tr>
+                        <tr>
+                            <th>match_id</th>
+                            <th>Season</th>
+                            <th style="width: 150px !important">Date</th>
+                            <th>POS</th>
+                            <th>MIN</th>
+                            <th>FGM</th>
+                            <th>FGA</th>
+                            <th>FG%</th>
+                            <th>3GM</th>
+                            <th>3GA</th>
+                            <th>3%</th>
+                            <th>FTM</th>
+                            <th>FTA</th>
+                            <th>FT%</th>
+                            <th>OR</th>
+                            <th>TR</th>
+                            <th>AST</th>
+                            <th>TO</th>
+                            <th>STL</th>
+                            <th>BLK</th>
+                            <th>PF</th>
+                            <th>PTS</th>
+                            <th>Rating</th>
+                            <th>OFF</th>
+                            <th>DEF</th>
+                            <th>F_HIT</th>
+                            <th>P_HIT</th>
+                            <th>O_OFF</th>
+                            <th>O_DEF</th>
+                            <th>O_F_HIT</th>
+                            <th>O_P_HIT</th>
+                            <th>Type</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -521,6 +648,7 @@ $(document).ready(function() {
                                 ALL TOTALS
                             </td>
                         </tr>
+                          
                     </tfoot>
                 </table>
             </div>
