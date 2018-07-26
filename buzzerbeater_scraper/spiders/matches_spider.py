@@ -26,10 +26,20 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
     ]
 
     def __init__(self, team_id='', season='', **kwargs):
-        if team_id != '':
-            self.urls = ['http://www.buzzerbeater.com/team/%s/schedule.aspx' % team_id]
         if season != '':
-            self.urls[0] = self.urls[0] + '?season=' + season
+            season = season.split(',')
+
+        if team_id != '':
+            team_id = team_id.split(',')
+            self.urls = []
+
+            for team in team_id:
+                url = 'http://www.buzzerbeater.com/team/' + team +  '/schedule.aspx'
+                print(url)
+                for s in season:
+                    self.urls.append(url + '?season=' + s)
+        print(self.urls)
+        self.logger.info(self.urls)
         super().__init__(**kwargs)  # python3
 
     def parse(self, response):
