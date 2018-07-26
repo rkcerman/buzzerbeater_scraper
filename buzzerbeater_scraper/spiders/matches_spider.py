@@ -25,6 +25,13 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
         'http://www.buzzerbeater.com/team/58420/schedule.aspx?season=42'
     ]
 
+    def __init__(self, team_id='', season='', **kwargs):
+        if team_id != '':
+            self.urls = ['http://www.buzzerbeater.com/team/%s/schedule.aspx' % team_id]
+        if season != '':
+            self.urls[0] = self.urls[0] + '?season=' + season
+        super().__init__(**kwargs)  # python3
+
     def parse(self, response):
         # Opening a login request
         return scrapy.FormRequest.from_response(
