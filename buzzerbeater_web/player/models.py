@@ -31,7 +31,8 @@ class BoxscoreStats(models.Model):
     pf = models.SmallIntegerField()
     pts = models.SmallIntegerField()
     rating = models.DecimalField(max_digits=3, decimal_places=1, blank=True, null=True)
-    team_id = models.IntegerField()
+    team = models.ForeignKey('Teams', models.DO_NOTHING)
+
 
     class Meta:
         managed = False

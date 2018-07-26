@@ -11,8 +11,6 @@ $(document).ready(function() {
     var table = $('#matchHistory').DataTable({
         "columnDefs": [
             { visible: false, targets: 0},
-            { width: '5%', targets : [2,20]},
-            { width: '2%', targets: [3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19]},
             { visible: false, targets: groupColumn },
             
             // Let's create calculated columns to determine shot percentages (FG, 3P and FT)
@@ -327,6 +325,14 @@ $(document).ready(function() {
                             <th>PF</th>
                             <th>PTS</th>
                             <th>Rating</th>
+                            <th>OFF</th>
+                            <th>DEF</th>
+                            <th>F_HIT</th>
+                            <th>P_HIT</th>
+                            <th>O_OFF</th>
+                            <th>O_DEF</th>
+                            <th>O_F_HIT</th>
+                            <th>O_P_HIT</th>
                             <th>Game Type</th>
                         </tr>
                     </thead>
@@ -358,12 +364,28 @@ $(document).ready(function() {
                             <td align="center">{{ stat.match.pf }}</td>
                             <td align="center">{{ stat.match.pts }}</td>
                             <td align="center">{{ stat.match.rating }}</td>
+                            <td>{{ stat.strategies_preps.player_team_off }}</td>
+                            <td>{{ stat.strategies_preps.player_team_def }}</td>
+                            <td>{{ stat.strategies_preps.player_team_prep_f }}</td>
+                            <td>{{ stat.strategies_preps.player_team_prep_p }}</td>
+                            <td>{{ stat.strategies_preps.opp_team_off }}</td>
+                            <td>{{ stat.strategies_preps.opp_team_def }}</td>
+                            <td>{{ stat.strategies_preps.opp_team_prep_f }}</td>
+                            <td>{{ stat.strategies_preps.opp_team_prep_p }}</td>
                             <td align="center">{{ stat.match_type }}</td>
                         </tr>
                     {% endfor %}
                     </tbody>
                     <tfoot>
                         <tr style="background-color:#EEEEEE;">
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
                             <td align="center"></td>
                             <td align="center"></td>
                             <td align="center"></td>
@@ -415,6 +437,14 @@ $(document).ready(function() {
                             <td align="center"></td>
                             <td align="center"></td>
                             <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
                             <td align="center">
                                 SELECTED TOTALS
                             </td>
@@ -443,11 +473,27 @@ $(document).ready(function() {
                             <td align="center"></td>
                             <td align="center"></td>
                             <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
                             <td align="center">
                                 ALL AVG
                             </td>
                         </tr>
                         <tr>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
+                            <td align="center"></td>
                             <td align="center"></td>
                             <td align="center"></td>
                             <td align="center"></td>

@@ -1,4 +1,5 @@
 import logging
+import re
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
@@ -28,7 +29,6 @@ skills_mapping = {
     19: 'colossal',
     20: 'legendary',
 }
-
 
 def index(request):
     latest_players_list = Players.objects.order_by('-last_update_at')[:10]
@@ -65,12 +65,16 @@ def overview(request, player_id):
 
             max_minute_key = max(max_minutes, key=max_minutes.get)
             max_minute_value = max(max_minutes.values())
-            match_type = Boxscores.objects.get(match_id=match.match_id).match_type
+
+            boxscore = Boxscores.objects.get(match_id=match.match_id)
+            match_type = boxscore.match_type
+
             stats.append({
                 'match': match,
                 'max_minute_key': max_minute_key,
                 'max_minute_value': max_minute_value,
-                'match_type': match_type
+                'match_type': match_type,
+                'strategies_preps': get_strategies_preps(match, boxscore)
             }
             )
 
@@ -100,3 +104,52 @@ def overview(request, player_id):
         return render(request, 'player/player_overview.html', context)
     except ObjectDoesNotExist as e:
         return HttpResponse('Player ID ', player_id, ' does not exist.')
+
+# Get initials of each strategy name for display a shorter version in the table
+def get_initials(string):
+    initials = ''.join(re.findall('(\d?\d?\d?[A-Z])', string))
+
+    if len(initials) == 1:
+        return string
+    else:
+        return initials
+
+# Gets strategies and preps matches used by the player's team in that particular match
+def get_strategies_preps(player_stats, boxscore):
+    if isinstance(player_stats, BoxscoreStats) and isinstance(boxscore, Boxscores):
+        player_team = player_stats.team
+
+        if player_stats.match.home_team_id == player_team.id:
+            away_or_home_str = 'home'
+            player_team_off = get_initials(boxscore.home_off_strategy)
+            player_team_def = get_initials(boxscore.home_def_strategy)
+            player_team_prep_f = boxscore.home_prep_focus_matched
+            player_team_prep_p = boxscore.home_prep_pace_matched
+            opp_team_off = get_initials(boxscore.away_off_strategy)
+            opp_team_def = get_initials(boxscore.away_def_strategy)
+            opp_team_prep_f = boxscore.away_prep_focus_matched
+            opp_team_prep_p = boxscore.away_prep_pace_matched
+        else:
+            away_or_home_str = 'away'
+            player_team_off = get_initials(boxscore.away_off_strategy)
+            player_team_def = get_initials(boxscore.away_def_strategy)
+            player_team_prep_f = boxscore.away_prep_focus_matched
+            player_team_prep_p = boxscore.away_prep_pace_matched
+            opp_team_off = get_initials(boxscore.home_off_strategy)
+            opp_team_def = get_initials(boxscore.home_def_strategy)
+            opp_team_prep_f = boxscore.home_prep_focus_matched
+            opp_team_prep_p = boxscore.home_prep_pace_matched
+
+        strategies_preps = {
+            'away_or_home': away_or_home_str,
+            'player_team_off': player_team_off,
+            'player_team_def': player_team_def,
+            'player_team_prep_f': player_team_prep_f,
+            'player_team_prep_p': player_team_prep_p,
+            'opp_team_off': opp_team_off,
+            'opp_team_def': opp_team_def,
+            'opp_team_prep_f': opp_team_prep_f,
+            'opp_team_prep_p': opp_team_prep_p
+        }
+        print(strategies_preps)
+        return strategies_preps
