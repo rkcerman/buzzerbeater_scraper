@@ -18,6 +18,11 @@ class PlayerSpider(scrapy.Spider):
         'http://www.buzzerbeater.com/player/438493178413/overview.aspx'
     ]
 
+    def __init__(self, player_id='', **kwargs):
+        if player_id != '':
+            self.urls = ['http://www.buzzerbeater.com/player/%s/overview.aspx' % player_id]
+        super().__init__(**kwargs)  # python3
+                            
     def parse(self, response):
         # Opening a login request
         return scrapy.FormRequest.from_response(
@@ -34,6 +39,7 @@ class PlayerSpider(scrapy.Spider):
             self.logger.error("Login failed")
         else:
             self.logger.info("Login successful")
+
             for url in self.urls:
                 self.logger.info(["URL", url])
                 yield scrapy.Request(url, callback=self.parse_player)
