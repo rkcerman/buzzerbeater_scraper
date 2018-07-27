@@ -10,7 +10,7 @@ from psycopg2 import IntegrityError
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 from buzzerbeater_scraper.items import PlayByPlayItem, MatchItem, TeamItem, OnlinePeopleItem, PlayerItem, \
-    PlayerSkillsItem, PlayerHistoryItem, ShotsItem, ScoreTableItem, BoxscoreItem, BoxscoreStatsItem
+    PlayerSkillsItem, PlayerHistoryItem, ShotsItem, ScoreTableItem, BoxscoreItem, BoxscoreStatsItem, GameShapesItem
 
 
 class BuzzerbeaterScraperPipeline(object):
@@ -225,7 +225,8 @@ class BuzzerbeaterScraperPipeline(object):
             return item
         if isinstance(item, PlayerSkillsItem):
             try:
-                self.cur.execute("INSERT INTO player_skills (player_id,"
+                self.cur.execute("INSERT INTO player_skills ("
+                                 "player_id,"
                                  "date,"
                                  "skill,"
                                  "value) "
@@ -233,6 +234,21 @@ class BuzzerbeaterScraperPipeline(object):
                                  "ON CONFLICT DO NOTHING",
                                  (item['player_id'],
                                   item['skill'],
+                                  item['value']))
+                self.conn.commit()
+            except IntegrityError as e:
+                print("Duplicate primary key entry in player_skills, skipping")
+                print(e)
+            return item
+        if isinstance(item, GameShapesItem):
+            try:
+                self.cur.execute("INSERT INTO game_shapes ("
+                                 "player_id,"
+                                 "date,"
+                                 "value) "
+                                 "VALUES(%s, current_timestamp, %s) "
+                                 "ON CONFLICT DO NOTHING",
+                                 (item['player_id'],
                                   item['value']))
                 self.conn.commit()
             except IntegrityError as e:

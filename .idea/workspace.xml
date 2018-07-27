@@ -7,7 +7,6 @@
     <list default="true" id="44b49686-e162-4ba2-8c95-3e44a55449bf" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/buzzerbeater_scraper/items.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_scraper/items.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/buzzerbeater_scraper/pipelines.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_scraper/pipelines.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/buzzerbeater_scraper/spiders/player_spider.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_scraper/spiders/player_spider.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -100,20 +99,20 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="player_spider.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="player_spider.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/spiders/player_spider.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="145" column="55" selection-start-line="145" selection-start-column="55" selection-end-line="145" selection-end-column="55" />
+            <state relative-caret-position="405">
+              <caret line="137" column="65" lean-forward="true" selection-start-line="137" selection-start-column="65" selection-end-line="137" selection-end-column="65" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="pipelines.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="pipelines.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/pipelines.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="540">
-              <caret line="219" column="48" selection-start-line="219" selection-start-column="48" selection-end-line="219" selection-end-column="48" />
+            <state relative-caret-position="450">
+              <caret line="251" selection-start-line="251" selection-end-line="251" />
             </state>
           </provider>
         </entry>
@@ -121,8 +120,8 @@
       <file leaf-file-name="items.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/items.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="291">
-              <caret line="119" column="28" selection-start-line="119" selection-start-column="28" selection-end-line="119" selection-end-column="28" />
+            <state relative-caret-position="351">
+              <caret line="123" column="28" selection-start-line="123" selection-start-column="28" selection-end-line="123" selection-end-column="28" />
             </state>
           </provider>
         </entry>
@@ -191,9 +190,9 @@
         <option value="$PROJECT_DIR$/buzzerbeater_web/player/templatetags/player_extras.py" />
         <option value="$PROJECT_DIR$/buzzerbeater_web/player/views.py" />
         <option value="$PROJECT_DIR$/buzzerbeater_web/player/templates/player/player_overview.html" />
-        <option value="$PROJECT_DIR$/buzzerbeater_scraper/pipelines.py" />
-        <option value="$PROJECT_DIR$/buzzerbeater_scraper/items.py" />
         <option value="$PROJECT_DIR$/buzzerbeater_scraper/spiders/player_spider.py" />
+        <option value="$PROJECT_DIR$/buzzerbeater_scraper/items.py" />
+        <option value="$PROJECT_DIR$/buzzerbeater_scraper/pipelines.py" />
       </list>
     </option>
   </component>
@@ -298,7 +297,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="SearchEverywhereHistoryKey" value="items&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/items.py&#10;pipe&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/pipelines.py&#10;players&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/player_spider.py&#10;transfer&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/transfers_spider.py&#10;test&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/tests/test_boxscore_parser.py&#10;tests&#9;null&#9;null&#10;models&#9;null&#9;null&#10;tra&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/transfers_spider.py&#10;pip&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/pipelines.py&#10;pla&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/player_spider.py&#10;pl&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/player_spider.py&#10;tr&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/transfers_spider.py&#10;ite&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/items.py" />
+    <property name="SearchEverywhereHistoryKey" value="ite&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/items.py&#10;items&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/items.py&#10;pipe&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/pipelines.py&#10;players&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/player_spider.py&#10;transfer&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/transfers_spider.py&#10;test&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/tests/test_boxscore_parser.py&#10;tests&#9;null&#9;null&#10;models&#9;null&#9;null&#10;tra&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/transfers_spider.py&#10;pip&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/pipelines.py&#10;pla&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/player_spider.py&#10;pl&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/player_spider.py&#10;tr&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/transfers_spider.py" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../buzzerbeater_scraper" />
     <property name="settings.editor.selected.configurable" value="configurable.group.editor" />
   </component>
@@ -762,24 +761,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/spiders/player_spider.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="137" column="65" lean-forward="true" selection-start-line="137" selection-start-column="65" selection-end-line="137" selection-end-column="65" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/items.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="291">
-          <caret line="119" column="28" selection-start-line="119" selection-start-column="28" selection-end-line="119" selection-end-column="28" />
+        <state relative-caret-position="351">
+          <caret line="123" column="28" selection-start-line="123" selection-start-column="28" selection-end-line="123" selection-end-column="28" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/pipelines.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="219" column="48" selection-start-line="219" selection-start-column="48" selection-end-line="219" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/spiders/player_spider.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="145" column="55" selection-start-line="145" selection-start-column="55" selection-end-line="145" selection-end-column="55" />
+        <state relative-caret-position="450">
+          <caret line="251" selection-start-line="251" selection-end-line="251" />
         </state>
       </provider>
     </entry>

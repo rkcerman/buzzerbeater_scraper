@@ -2,7 +2,7 @@ import scrapy
 from datetime import datetime
 import re
 
-from buzzerbeater_scraper.items import PlayerItem, TeamItem, PlayerSkillsItem, PlayerHistoryItem
+from buzzerbeater_scraper.items import PlayerItem, TeamItem, PlayerSkillsItem, PlayerHistoryItem, GameShapesItem
 from buzzerbeater_scraper.formdata import BB_LOGIN
 
 
@@ -51,9 +51,11 @@ class PlayerSpider(scrapy.Spider):
         if player is not None:
             player_item = player['player_item']
             team_item = player['team_item']
+            game_shape_item = player['game_shape_item']
 
             yield team_item
             yield player_item
+            yield game_shape_item
 
             # TODO ugly AF
             try:
@@ -134,21 +136,28 @@ class PlayerSpider(scrapy.Spider):
 
             team_item = TeamItem(id=team_id,
                                  name=team_name)
-            player_item = PlayerItem(id=player_id,
-                                     weekly_salary=weekly_salary,
-                                     dmi=dmi,
-                                     age=age,
-                                     height=height,
-                                     position=position,
-                                     name=player_name,
-                                     team_id=team_id,
-                                     transfer_estimate=transfer_estimate,
-                                     potential=potential)
+            player_item = PlayerItem(
+                id=player_id,
+                weekly_salary=weekly_salary,
+                dmi=dmi,
+                age=age,
+                height=height,
+                position=position,
+                name=player_name,
+                team_id=team_id,
+                transfer_estimate=transfer_estimate,
+                potential=potential
+            )
+            game_shape_item = GameShapesItem(
+                player_id=player_id,
+                value=game_shape
+            )
 
             # TODO Maybe, um, create a fucking players class?!?!
             yields = {
                 'team_item': team_item,
                 'player_item': player_item,
+                'game_shape_item': game_shape_item,
                 'player_skills_items': []
             }
 
