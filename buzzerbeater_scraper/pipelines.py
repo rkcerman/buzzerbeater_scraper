@@ -195,8 +195,9 @@ class BuzzerbeaterScraperPipeline(object):
                                  "height,"
                                  "position,"
                                  "name,"
-                                 "transfer_estimate) "
-                                 "VALUES(%s, current_timestamp, current_timestamp, %s, %s, %s, %s, %s, %s, %s, %s) "
+                                 "transfer_estimate,"
+                                 "potential) "
+                                 "VALUES(%s, current_timestamp, current_timestamp, %s, %s, %s, %s, %s, %s, %s, %s, %s) "
                                  "ON CONFLICT (id) DO UPDATE SET "
                                  "last_update_at=current_timestamp,"
                                  "team_id=EXCLUDED.team_id,"
@@ -205,7 +206,8 @@ class BuzzerbeaterScraperPipeline(object):
                                  "age=EXCLUDED.age,"
                                  "height=EXCLUDED.height,"
                                  "position=EXCLUDED.position,"
-                                 "transfer_estimate=EXCLUDED.transfer_estimate",
+                                 "transfer_estimate=EXCLUDED.transfer_estimate,"
+                                 "potential=EXCLUDED.potential",
                                  (item['id'],
                                   item['team_id'],
                                   item['weekly_salary'],
@@ -214,7 +216,8 @@ class BuzzerbeaterScraperPipeline(object):
                                   item['height'],
                                   item['position'],
                                   item['name'],
-                                  item['transfer_estimate']))
+                                  item['transfer_estimate'],
+                                  item['potential']))
                 self.conn.commit()
             except IntegrityError as e:
                 print("Duplicate primary key entry in players, skipping")
