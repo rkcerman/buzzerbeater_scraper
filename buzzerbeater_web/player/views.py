@@ -53,12 +53,16 @@ def default_overview(request, player_id):
 # Returns player overview
 def overview(request, player_id, season):
     try:
-        print('season: ', season)
         player = Players.objects.get(id=player_id)
-        team = player.team
         skills = PlayerSkills.objects.filter(player=player_id)
-        boxscore_stats = BoxscoreStats.objects.filter(player_id=player_id).order_by('-match_id')
-        shots = Shots.objects.filter(shooter=player_id)
+        boxscore_stats = BoxscoreStats.objects.filter(
+            player_id=player_id,
+            match__season=season
+        ).order_by('-match_id')
+        shots = Shots.objects.filter(
+            shooter=player_id,
+            pbp__match__season=season
+        )
 
         # Creating a map of skills nomenclature with their respective values
         player_skills = {}
@@ -96,7 +100,6 @@ def overview(request, player_id, season):
         # Setting up the final context
         context = {
             'player': player,
-            'team': team,
             'skills': player_skills,
             'stats': stats,
         }
