@@ -189,7 +189,7 @@ class Shots(models.Model):
         db_table = 'shots'
 
     def __str__(self):
-        return self.outcome + ' by ' + self.shooter
+        return self.outcome + ' by ' + str(self.shooter)
 
 class Teams(models.Model):
     id = models.IntegerField(primary_key=True)
