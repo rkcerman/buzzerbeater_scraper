@@ -7,7 +7,7 @@ from buzzerbeater_scraper.formdata import BB_LOGIN
 
 
 class PlayerSpider(scrapy.Spider):
-    name = "players_spider"
+    name = "player_spider"
     allowed_domains = ["buzzerbeater.com"]
     start_urls = (
         'http://www.buzzerbeater.com/default.aspx',

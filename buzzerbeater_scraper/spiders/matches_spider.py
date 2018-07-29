@@ -1,8 +1,13 @@
 # -*- coding: utf-8 -*-
 import scrapy
 import re
+
+from twisted.internet import reactor
 from datetime import datetime
 from bs4 import BeautifulSoup
+from scrapy.crawler import CrawlerProcess, CrawlerRunner
+from scrapy.utils.project import get_project_settings
+from scrapy.utils.log import configure_logging
 
 from buzzerbeater_scraper import pbp_parser
 from buzzerbeater_scraper import boxscore_parser
@@ -12,6 +17,7 @@ from buzzerbeater_scraper.items import PlayByPlayItem, TeamItem, MatchItem
 from buzzerbeater_scraper.pbp_parser import PlayByPlayParser
 from buzzerbeater_scraper.formdata import BB_LOGIN
 from buzzerbeater_scraper.boxscore_parser import BoxscoreParser
+from buzzerbeater_scraper.spiders import player_spider
 
 
 class BuzzerbeaterMatchesSpider(scrapy.Spider):
@@ -24,11 +30,12 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
     urls = [
         'http://www.buzzerbeater.com/team/58420/schedule.aspx?season=42'
     ]
+    parse_players = False
+    parse_pbps = True
 
-    def __init__(self, team_id='', season='', **kwargs):
+    def __init__(self, team_id='', season='', parse_players=False, parse_pbps=True, **kwargs):
         if season != '':
             season = season.split(',')
-
         if team_id != '':
             team_id = team_id.split(',')
             self.urls = []
@@ -38,7 +45,11 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
                 print(url)
                 for s in season:
                     self.urls.append(url + '?season=' + s)
+        self.parse_players = parse_players
+        self.parse_pbps = parse_pbps
         print(self.urls)
+        print(self.parse_players)
+        print(self.parse_pbps)
         self.logger.info(self.urls)
         super().__init__(**kwargs)  # python3
 
@@ -70,6 +81,7 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
             self.logger.info(["URL", url])
             yield scrapy.Request(url, callback=self.parse_schedule)
 
+    # TODO better to move this into boxscore_parser
     # Parses the Schedule page
     def parse_schedule(self, response):
         season = response.xpath('//option[@selected="selected"]/@value').extract_first()
@@ -141,21 +153,30 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
         score_table_items = bs_all_items[0]
         boxscore_item = bs_all_items[1]
         boxscore_stats_items = bs_all_items[2]
+        team_items = bs_all_items[3]
+
+        for team_item in team_items:
+            yield team_item
 
         for score_table_item in score_table_items:
-            self.logger.info('Item in score_table_items')
             yield score_table_items[score_table_item]
 
         yield boxscore_item
 
         for boxscore_stats_item in boxscore_stats_items:
-            self.logger.info('Item in boxscore_stats_items')
+
+            if self.parse_players:
+                player_id = boxscore_stats_item['player_id']
+                url = 'http://www.buzzerbeater.com/player/' + str(player_id) + '/overview.aspx'
+                yield response.follow(url, self.parse_player)
+
             yield boxscore_stats_item
 
         # Following the link to Play-By-Play page
-        pbp_link = 'http://www.buzzerbeater.com/match/' + match_id  + '/pbp.aspx'
+        pbp_link = 'http://www.buzzerbeater.com/match/' + match_id + '/pbp.aspx'
 
-        yield response.follow(pbp_link, self.parse_pbp)
+        if self.parse_pbps is True:
+            yield response.follow(pbp_link, self.parse_pbp)
 
     # TODO Try to find a way to use scrapy's native parsing here
     # Parses the Play-by-Play page
@@ -218,3 +239,30 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
 
             i += 1
 
+    # Parses individual player overviews
+    def parse_player(self, response):
+        player = player_spider.PlayerSpider.parse_player_html(response=response)
+
+        if player is not None:
+            player_item = player['player_item']
+            team_item = player['team_item']
+
+            yield team_item
+            yield player_item
+
+            # TODO ugly AF
+            try:
+                for skill in player['player_skills_items']:
+                    yield skill
+            except KeyError:
+                print('No player skills available for ', player_item.id)
+
+            player_history_link = player['player_history_link']
+            yield response.follow(player_history_link, self.parse_player_history)
+
+    # Parses the player history page
+    def parse_player_history(self, response):
+        player_history_items = player_spider.PlayerSpider.parse_player_history_html(response=response)
+
+        for item in player_history_items:
+            yield item

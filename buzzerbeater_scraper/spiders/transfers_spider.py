@@ -62,7 +62,6 @@ class BuzzerbeaterTransfersSpider(scrapy.Spider):
             self.logger.info(msg="Next Page button present")
             yield FormRequest(url=self.urls[0], formdata=formdata, callback=self.parse_transfers)
 
-    # TODO add potential and role scraping
     # Parses individual player overviews
     def parse_player(self, response):
         player = player_spider.PlayerSpider.parse_player_html(response=response)

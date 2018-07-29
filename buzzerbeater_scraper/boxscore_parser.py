@@ -1,7 +1,7 @@
 import logging
 import traceback
 
-from buzzerbeater_scraper.items import ScoreTableItem, BoxscoreItem, BoxscoreStatsItem
+from buzzerbeater_scraper.items import ScoreTableItem, BoxscoreItem, BoxscoreStatsItem, TeamItem
 
 
 class BoxscoreParser:
@@ -23,12 +23,20 @@ class BoxscoreParser:
         )
 
         boxscore_stats_items = []
+        team_items = []
         for i, team_xml in enumerate([away_team_xml, home_team_xml]):
             if i == 0:
                 team = 'away'
             else:
                 team = 'home'
             team_id = int(team_xml.xpath('@id').extract_first())
+            team_name = team_xml.xpath('teamName/text()').extract_first()
+            team_item = TeamItem(
+                id=team_id,
+                name=team_name
+            )
+            team_items.append(team_item)
+
             boxscore_item = self.get_strategies(
                 self=self,
                 team_xml=team_xml,
@@ -54,7 +62,12 @@ class BoxscoreParser:
                 team_id=team_id
             )
 
-        items = [score_table_items, boxscore_item, boxscore_stats_items]
+        items = [
+            score_table_items,
+            boxscore_item,
+            boxscore_stats_items,
+            team_items
+        ]
         return items
 
     # Parses the final score table
