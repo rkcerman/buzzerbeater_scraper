@@ -5,7 +5,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from .models import Players, PlayerSkills, BoxscoreStats, Boxscores
+from .models import Players, PlayerSkills, BoxscoreStats, Boxscores, Shots
+
+default_season = 43
 
 skills_mapping = {
     1: 'atrocious',
@@ -30,6 +32,7 @@ skills_mapping = {
     20: 'legendary',
 }
 
+
 def index(request):
     latest_players_list = Players.objects.order_by('-last_update_at')[:10]
     context = {
@@ -38,13 +41,24 @@ def index(request):
     return render(request, 'player/index.html', context)
 
 
+# Returns player overview with the default season
+def default_overview(request, player_id):
+    return overview(
+        request=request,
+        player_id=player_id,
+        season=default_season
+    )
+
+
 # Returns player overview
-def overview(request, player_id):
+def overview(request, player_id, season):
     try:
+        print('season: ', season)
         player = Players.objects.get(id=player_id)
         team = player.team
         skills = PlayerSkills.objects.filter(player=player_id)
         boxscore_stats = BoxscoreStats.objects.filter(player_id=player_id).order_by('-match_id')
+        shots = Shots.objects.filter(shooter=player_id)
 
         # Creating a map of skills nomenclature with their respective values
         player_skills = {}
@@ -74,7 +88,8 @@ def overview(request, player_id):
                 'max_minute_key': max_minute_key,
                 'max_minute_value': max_minute_value,
                 'match_type': match_type,
-                'strategies_preps': get_strategies_preps(match, boxscore)
+                'strategies_preps': get_strategies_preps(match, boxscore),
+                'shots': shots
             }
             )
 
@@ -151,5 +166,4 @@ def get_strategies_preps(player_stats, boxscore):
             'opp_team_prep_f': opp_team_prep_f,
             'opp_team_prep_p': opp_team_prep_p
         }
-        print(strategies_preps)
         return strategies_preps

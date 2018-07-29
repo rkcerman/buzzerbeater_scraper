@@ -209,6 +209,11 @@ $(document).ready(function() {
     } );*/
     
 } );
+    
+// Table with shot types
+$(document).ready(function() {
+    $('#shotTypes').DataTable();
+} );
 </script>
 
 <style type="text/css">
@@ -218,6 +223,17 @@ $(document).ready(function() {
     }
     div.playerinfobox {
         margin: 0 auto;
+        width: 50%;
+    }
+    div.statsTableDiv {
+        margin-top: 3%;
+        margin-bottom: 3%;
+    }
+    div.playerShotTypes {
+        margin: 0 auto;
+        width: 60%;
+    }
+    table.shotTypes {
         width: 50%;
     }
     table.playerinfo {
@@ -379,7 +395,7 @@ $(document).ready(function() {
     </table>
     </div>
     <p><b>Transfer estimate</b>: {{ player.transfer_estimate }}</p>
-    <div id="playerhistory" class="widebox" style=" ">
+    <div id="playerhistory" class="widebox statsTableDiv" style=" ">
         <div class="boxheader" style="border-top-left-radius:4px;border-top-right-radius:4px;padding-left:6px;padding-right:6px; ">
             <div style="float: left">
                 Player history for {{ player.name }}
@@ -389,7 +405,7 @@ $(document).ready(function() {
         <div>
 					Toggle column: <a class="toggle-vis" data-column="23, 24, 27, 28">Strategies</a> - <a class="toggle-vis" data-column="25, 26, 29, 30">Prep Hits/Misses</a> - 
 				</div>
-        <div class="boxcontent" style="">
+        <div class="boxcontent">
             <a name="playerstats"></a>
             <div>
                 <table id="matchHistory" class="compact stripe" >
@@ -654,7 +670,65 @@ $(document).ready(function() {
             </div>
         </div>
     </div>
-
+    <div id="playerShotTypes" class="widebox statsTableDiv" style=" ">
+        <div class="boxheader" style="border-top-left-radius:4px;border-top-right-radius:4px;padding-left:6px;padding-right:6px; ">
+            <div style="float: left">
+                Shot types for {{ player.name }}
+            </div>
+            
+        </div>
+        <div class="boxcontent">
+            <a name="playerstats"></a>
+            <div>
+                <table id="shotTypes" class="compact stripe" >
+                    <thead>
+                        <tr>
+                            <th rowspan="2">Shot type</th>
+                            <th colspan="3">Field goals</th>
+                            <th colspan="3">Guarded</th>
+                            <th colspan="3">Passed</th>
+                        </tr>
+                        <tr>
+                            <th>Made</th>
+                            <th>Att.</th>
+                            <th>%</th>
+                            <th>Made</th>
+                            <th>Att.</th>
+                            <th>%</th>
+                            <th>Made</th>
+                            <th>Att.</th>
+                            <th>%</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for shot in shots %}
+                        <tr>
+                            <td></td>                    
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tfoot>
+                    
 {% else %}
 
 <p>Player ID not in the database</p>

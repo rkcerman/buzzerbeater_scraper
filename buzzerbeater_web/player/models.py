@@ -188,6 +188,8 @@ class Shots(models.Model):
         managed = False
         db_table = 'shots'
 
+    def __str__(self):
+        return self.outcome + ' by ' + self.player.name
 
 class Teams(models.Model):
     id = models.IntegerField(primary_key=True)
