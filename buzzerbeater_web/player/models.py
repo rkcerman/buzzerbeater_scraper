@@ -9,7 +9,7 @@ from django.db import models
 
 
 class BoxscoreStats(models.Model):
-    match = models.ForeignKey('Matches', models.DO_NOTHING, primary_key=True)
+    boxscore = models.ForeignKey('Boxscores', models.DO_NOTHING, primary_key=True)
     player_id = models.IntegerField()
     pg_min = models.SmallIntegerField()
     sg_min = models.SmallIntegerField()
@@ -37,7 +37,7 @@ class BoxscoreStats(models.Model):
     class Meta:
         managed = False
         db_table = 'boxscore_stats'
-        unique_together = (('match', 'player_id'),)
+        unique_together = (('boxscore', 'player_id'),)
 
 
 class Boxscores(models.Model):
@@ -101,7 +101,7 @@ class PlayByPlays(models.Model):
     clock = models.CharField(max_length=6)
     score = models.CharField(max_length=10)
     event = models.TextField()
-    match = models.ForeignKey(Boxscores, models.DO_NOTHING)
+    boxscore = models.ForeignKey(Boxscores, models.DO_NOTHING)
     play_tags = models.TextField(blank=True, null=True)  # This field type is a guess.
 
     class Meta:

@@ -4,6 +4,7 @@ import re
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.db.models import Q
 
 from .models import Players, PlayerSkills, BoxscoreStats, Boxscores, Shots
 
@@ -46,23 +47,47 @@ def default_overview(request, player_id):
     return overview(
         request=request,
         player_id=player_id,
-        season=default_season
+        season=default_season,
+        match_type='standard',
+    )
+
+
+def season_overview(request, player_id, season):
+    return overview(
+        request=request,
+        player_id=player_id,
+        season=season,
+        match_type='standard',
     )
 
 
 # Returns player overview
-def overview(request, player_id, season):
+def overview(request, player_id, season, match_type):
     try:
-        player = Players.objects.get(id=player_id)
-        skills = PlayerSkills.objects.filter(player=player_id)
+        # Defining and looking up key objects from the DB
+        player = Players.objects.get(
+            id=player_id
+        )
+        skills = PlayerSkills.objects.filter(
+            player=player_id
+        )
         boxscore_stats = BoxscoreStats.objects.filter(
             player_id=player_id,
-            match__season=season
-        ).order_by('-match_id')
+            boxscore__match__season=season
+        ).order_by('-boxscore_id')
         shots = Shots.objects.filter(
             shooter=player_id,
-            pbp__match__season=season
+            pbp__boxscore__match__season=season
         )
+
+        # Further filtering based on match_types if they are defined
+        if match_type == 'standard':
+            boxscore_stats = boxscore_stats.filter(
+                Q(boxscore__match_type__contains='league') | Q(boxscore__match_type__contains='cup')
+            )
+            shots = shots.filter(
+                Q(pbp__boxscore__match_type__contains='league') | Q(pbp__boxscore__match_type__contains='cup')
+            )
 
         # Creating a map of skills nomenclature with their respective values
         player_skills = {}
@@ -72,36 +97,39 @@ def overview(request, player_id, season):
 
         # Creating a list of all matches with their types, stats and minutes
         stats = []
-        for match in boxscore_stats:
+        for stat in boxscore_stats:
             max_minutes = {
-                'PG': match.pg_min,
-                'SG': match.sg_min,
-                'SF': match.sf_min,
-                'PF': match.pf_min,
-                'C': match.c_min
+                'PG': stat.pg_min,
+                'SG': stat.sg_min,
+                'SF': stat.sf_min,
+                'PF': stat.pf_min,
+                'C': stat.c_min
             }
 
             max_minute_key = max(max_minutes, key=max_minutes.get)
             max_minute_value = max(max_minutes.values())
 
-            boxscore = Boxscores.objects.get(match_id=match.match_id)
+            boxscore = stat.boxscore
             match_type = boxscore.match_type
 
             stats.append({
-                'match': match,
+                'match': stat,
                 'max_minute_key': max_minute_key,
                 'max_minute_value': max_minute_value,
                 'match_type': match_type,
-                'strategies_preps': get_strategies_preps(match, boxscore),
+                'strategies_preps': get_strategies_preps(stat, stat.boxscore),
                 'shots': shots
             }
             )
+
+        shot_performances = get_shot_performances(shots)
 
         # Setting up the final context
         context = {
             'player': player,
             'skills': player_skills,
             'stats': stats,
+            'shot_performances': shot_performances
         }
 
         # Calculating value of TSP
@@ -123,6 +151,58 @@ def overview(request, player_id, season):
     except ObjectDoesNotExist as e:
         return HttpResponse('Player ID ', player_id, ' does not exist.')
 
+
+# Get aggregates for each unique shot type
+def get_shot_performances(shots):
+    distinct_shot_types = shots\
+        .values_list('pbp__event_type')\
+        .distinct()\
+        .order_by('pbp__event_type')
+    shot_performances = []
+
+    # Performing the actual aggregates, with the exclusion of fouled shots
+    for shot_type in distinct_shot_types:
+        shot_type = shot_type[0]
+        shot_type_query = shots.filter(pbp__event_type=shot_type).exclude(outcome='fouled')
+
+        attempted_fg = shot_type_query.count()
+        made_fg = shot_type_query.filter(outcome='scored').count()
+        fg_per = round(safe_div(made_fg, attempted_fg), 2)
+
+        # Guarded
+        attempted_guarded = shot_type_query.filter(defender__isnull=False).count()
+        made_guarded = shot_type_query.filter(defender__isnull=False, outcome='scored').count()
+        guarded_per = round(safe_div(made_guarded, attempted_guarded), 2)
+
+        # Passed
+        attempted_passed = shot_type_query.filter(passer__isnull=False).count()
+        made_passed = shot_type_query.filter(passer__isnull=False, outcome='scored').count()
+        passed_per = round(safe_div(made_passed, attempted_passed), 2)
+
+        shot_performances.append(
+            {
+                'shot_type': shot_type,
+                'attempted_fg': attempted_fg,
+                'made_fg': made_fg,
+                'fg_per': fg_per,
+                'attempted_guarded': attempted_guarded,
+                'made_guarded': made_guarded,
+                'guarded_per': guarded_per,
+                'attempted_passed': attempted_passed,
+                'made_passed': made_passed,
+                'passed_per': passed_per,
+            }
+        )
+
+    return shot_performances
+
+
+def safe_div(x,y):
+    if y == 0:
+        return 0
+    return x / y
+
+
 # Get initials of each strategy name for display a shorter version in the table
 def get_initials(string):
     initials = ''.join(re.findall('(\d?\d?\d?[A-Z])', string))
@@ -132,12 +212,13 @@ def get_initials(string):
     else:
         return initials
 
+
 # Gets strategies and preps matches used by the player's team in that particular match
 def get_strategies_preps(player_stats, boxscore):
     if isinstance(player_stats, BoxscoreStats) and isinstance(boxscore, Boxscores):
         player_team = player_stats.team
 
-        if player_stats.match.home_team_id == player_team.id:
+        if player_stats.boxscore.match.home_team_id == player_team.id:
             away_or_home_str = 'home'
             player_team_off = get_initials(boxscore.home_off_strategy)
             player_team_def = get_initials(boxscore.home_def_strategy)
