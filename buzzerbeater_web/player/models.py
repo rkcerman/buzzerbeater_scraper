@@ -101,7 +101,7 @@ class PlayByPlays(models.Model):
     clock = models.CharField(max_length=6)
     score = models.CharField(max_length=10)
     event = models.TextField()
-    match = models.ForeignKey(Matches, models.DO_NOTHING)
+    match = models.ForeignKey(Boxscores, models.DO_NOTHING)
     play_tags = models.TextField(blank=True, null=True)  # This field type is a guess.
 
     class Meta:
@@ -189,7 +189,7 @@ class Shots(models.Model):
         db_table = 'shots'
 
     def __str__(self):
-        return self.outcome + ' by ' + self.player.name
+        return self.outcome + ' by ' + self.shooter
 
 class Teams(models.Model):
     id = models.IntegerField(primary_key=True)
