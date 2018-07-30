@@ -33,6 +33,21 @@ skills_mapping = {
     20: 'legendary',
 }
 
+potentials_mapping = {
+0: {'announcer': 'lev5'},
+1: {'bench warmer': 'lev6'},
+2: {'role player': 'lev7'},
+3: {'6th man': 'lev8'},
+4: {'starter': 'lev9'},
+5: {'star': 'lev10'},
+6: {'allstar': 'lev11'},
+7: {'perennial allstar': 'lev12'},
+8: {'superstar': 'lev13'},
+9: {'MVP': 'lev15'},
+10: {'hall of famer': 'lev16'},
+11: {'all-time great': 'lev17'},
+}
+
 
 def index(request):
     latest_players_list = Players.objects.order_by('-last_update_at')[:10]
@@ -42,7 +57,7 @@ def index(request):
     return render(request, 'player/index.html', context)
 
 
-# Returns player overview with the default season
+# Returns player overview with the default season and all league and cup matches
 def default_overview(request, player_id):
     return overview(
         request=request,
@@ -52,6 +67,7 @@ def default_overview(request, player_id):
     )
 
 
+# Returns player overview with the specified season and all league and cup matches
 def season_overview(request, player_id, season):
     return overview(
         request=request,
@@ -95,6 +111,15 @@ def overview(request, player_id, season, match_type):
             skill_name = skill.skill.replace(' ', '_').replace('.', '').lower()
             player_skills[skill_name] = [skill.value, skills_mapping[skill.value]]
 
+        # Returns styling class and nomeclature for potential
+        potential_nomenc = potentials_mapping[player.potential]
+        potenial_name = list(potential_nomenc)[0]
+        potential = {
+            'value': player.potential,
+            'name': potenial_name,
+            'lev': potential_nomenc[potenial_name],
+        }
+
         # Creating a list of all matches with their types, stats and minutes
         stats = []
         for stat in boxscore_stats:
@@ -127,6 +152,7 @@ def overview(request, player_id, season, match_type):
         # Setting up the final context
         context = {
             'player': player,
+            'potential': potential,
             'skills': player_skills,
             'stats': stats,
             'shot_performances': shot_performances

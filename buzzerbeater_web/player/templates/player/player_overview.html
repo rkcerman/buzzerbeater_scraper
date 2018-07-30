@@ -1,197 +1,226 @@
 {% if player %}
 <link rel="stylesheet" href="http://www.buzzerbeater.com/CSS/contentbox.css?c=2" type="text/css" />
-<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.3.1/dt-1.10.18/rg-1.0.3/datatables.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.3.1/dt-1.10.18/rg-1.0.3/datatables.min.css" />
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.3.1/dt-1.10.18/rg-1.0.3/datatables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/3.2.6/js/dataTables.fixedColumns.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.19/api/average().js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.19/api/sum().js"></script>
 <script type="text/javascript">
-$(document).ready(function() {
-    var groupColumn = 1;
+    $(document).ready(function() {
+        var groupColumn = 1;
+
+
+        // Setup - add a text input to each header cell
+        /*$('#matchHistory thead th:eq(30)').each( function () {
+            var title = $(this).text();
+            $(this).html( '<input type="text" placeholder="'+title+'" />' );
+        } );
     
-    
-    // Setup - add a text input to each header cell
-    /*$('#matchHistory thead th:eq(30)').each( function () {
-        var title = $(this).text();
-        $(this).html( '<input type="text" placeholder="'+title+'" />' );
-    } );
-    
-    $('input[placeholder]').each(function () {
-        $(this).attr('size', $(this).attr('placeholder').length);
-    });*/
-    
-    var table = $('#matchHistory').DataTable({
-        
-        "columnDefs": [
-            { visible: false, targets: 0},
-            { visible: false, targets: groupColumn },
-            { orderable: false, targets: '_all'},
-            
-            // Let's create calculated columns to determine shot percentages (FG, 3P and FT)
-            { render: function ( data, type, row) {
-                var result = 0
-                if (row[6] > 0) {
-                    result = Math.round(((row[5]/row[6]) + 0.00001) * 100) / 100
-                }
-                return result
-            }, targets: [7]},
-            { render: function ( data, type, row) {
-                var result = 0
-                if (row[9] > 0) {
-                    result = Math.round(((row[8]/row[9]) + 0.00001) * 100) / 100
-                }
-                return result
-            }, targets: [10]},
-            { render: function ( data, type, row) {
-                var result = 0
-                if (row[12] > 0) {
-                    result = Math.round(((row[11]/row[12]) + 0.00001) * 100) / 100
-                }
-                return result
-            }, targets: [13]},
-        ],
-        "order": [[ 2, 'desc' ]],
-        "displayLength": 100,
-        
-        initComplete: function () {
-            this.api().columns().every( function () {
-                var column = this;
-                var select = $('<select><option value=""></option></select>')
-                    .appendTo( $(column.header()).empty() )
-                    .on( 'change', function () {
-                        var val = $.fn.dataTable.util.escapeRegex(
-                            $(this).val()
+        $('input[placeholder]').each(function () {
+            $(this).attr('size', $(this).attr('placeholder').length);
+        });*/
+
+        var table = $('#matchHistory').DataTable({
+
+            "columnDefs": [{
+                    visible: false,
+                    targets: 0
+                },
+                {
+                    visible: false,
+                    targets: groupColumn
+                },
+                {
+                    orderable: false,
+                    targets: '_all'
+                },
+
+                // Let's create calculated columns to determine shot percentages (FG, 3P and FT)
+                {
+                    render: function(data, type, row) {
+                        var result = 0
+                        if (row[6] > 0) {
+                            result = Math.round(((row[5] / row[6]) + 0.00001) * 100) / 100
+                        }
+                        return result
+                    },
+                    targets: [7]
+                },
+                {
+                    render: function(data, type, row) {
+                        var result = 0
+                        if (row[9] > 0) {
+                            result = Math.round(((row[8] / row[9]) + 0.00001) * 100) / 100
+                        }
+                        return result
+                    },
+                    targets: [10]
+                },
+                {
+                    render: function(data, type, row) {
+                        var result = 0
+                        if (row[12] > 0) {
+                            result = Math.round(((row[11] / row[12]) + 0.00001) * 100) / 100
+                        }
+                        return result
+                    },
+                    targets: [13]
+                },
+            ],
+            "order": [
+                [2, 'desc']
+            ],
+            "displayLength": 100,
+
+            initComplete: function() {
+                this.api().columns().every(function() {
+                    var column = this;
+                    var select = $('<select><option value=""></option></select>')
+                        .appendTo($(column.header()).empty())
+                        .on('change', function() {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+
+                            column
+                                .search(val ? '^' + val + '$' : '', true, false)
+                                .draw();
+                        });
+
+                    column.data().unique().sort().each(function(d, j) {
+                        select.append('<option value="' + d + '">' + d + '</option>')
+                    });
+                });
+            },
+
+            // Creating the group row, spanning through all columns
+            "drawCallback": function(settings) {
+                var api = this.api();
+                var rows = api.rows({
+                    page: 'current'
+                }).nodes();
+                var last = null;
+
+                api.column(groupColumn, {
+                    page: 'current'
+                }).data().each(function(group, i) {
+                    if (last !== group) {
+                        $(rows).eq(i).before(
+                            '<tr class="group"><td colspan="5">' + group + '</td></tr>'
                         );
- 
-                        column
-                            .search( val ? '^'+val+'$' : '', true, false )
-                            .draw();
-                    } );
- 
-                column.data().unique().sort().each( function ( d, j ) {
-                    select.append( '<option value="'+d+'">'+d+'</option>' )
-                } );
-            } );
-        },
-        
-        // Creating the group row, spanning through all columns
-        "drawCallback": function ( settings ) {
-            var api = this.api();
-            var rows = api.rows( {page:'current'} ).nodes();
-            var last=null;
 
-            api.column(groupColumn, {page:'current'} ).data().each( function ( group, i ) {
-                if ( last !== group ) {
-                    $(rows).eq( i ).before(
-                        '<tr class="group"><td colspan="5">'+group+'</td></tr>'
-                    );
+                        last = group;
+                    }
+                });
+            },
 
-                    last = group;
-                }
-            } );
-        },
-        
-        // Creating a Totals row
-         "footerCallback": function ( row, data, start, end, display ) {
-            var api = this.api(), data;
- 
-            // Remove the formatting to get integer data for summation
-            var intVal = function ( i ) {
-                return typeof i === 'string' ?
-                    i.replace(/[\$,]/g, '')*1 :
-                    typeof i === 'number' ?
+            // Creating a Totals row
+            "footerCallback": function(row, data, start, end, display) {
+                var api = this.api(),
+                    data;
+
+                // Remove the formatting to get integer data for summation
+                var intVal = function(i) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '') * 1 :
+                        typeof i === 'number' ?
                         i : 0;
-            };
-            
-            // Total over all pages
-            total = function (col) { 
-            return api.column( col )
-                .data()
-                .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0 );}
- 
-            // Total over this page
-            pageTotal = function (col) { 
-            return api
-                .column( col, { page: 'current'} )
-                .data()
-                .reduce( function (a, b) {
-                    return intVal(a) + intVal(b);
-                }, 0 );}
- 
-            // Update footer
-            // TODO make this into a loop pls
-            var i;
-            var dontAverage = [7, 10, 13]
-            var dontTotal = [7,10,13,22]
-            for (i = 4; i < 23; i++) {
-            
-            // Filling the averages row with averages for columns that can be averaged
-            if (dontAverage.indexOf(i) == -1) {
-                $( api.column( i ).footer() ).html(
-                    Math.round(((api.table().column(i,  {page:'current'}).data().average()) + 0.00001) * 100) / 100
-                );
-                $( 'tr:eq(2) td:eq(' + (i-2) + ')', api.table().footer() ).html(
-                    Math.round(((total(i)/data.length) + 0.00001) * 100) / 100
-                );
-            }
-                        
-            // Filling the totals row with totals for columns that can be totaled
-            if (dontTotal.indexOf(i) == -1) {
-                    $( 'tr:eq(1) td:eq(' + (i-2) + ')', api.table().footer() ).html(
-                        pageTotal(i)
+                };
+
+                // Total over all pages
+                total = function(col) {
+                    return api.column(col)
+                        .data()
+                        .reduce(function(a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+                }
+
+                // Total over this page
+                pageTotal = function(col) {
+                    return api
+                        .column(col, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function(a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+                }
+
+                // Update footer
+                // TODO make this into a loop pls
+                var i;
+                var dontAverage = [7, 10, 13]
+                var dontTotal = [7, 10, 13, 22]
+                for (i = 4; i < 23; i++) {
+
+                    // Filling the averages row with averages for columns that can be averaged
+                    if (dontAverage.indexOf(i) == -1) {
+                        $(api.column(i).footer()).html(
+                            Math.round(((api.table().column(i, {
+                                page: 'current'
+                            }).data().average()) + 0.00001) * 100) / 100
+                        );
+                        $('tr:eq(2) td:eq(' + (i - 2) + ')', api.table().footer()).html(
+                            Math.round(((total(i) / data.length) + 0.00001) * 100) / 100
+                        );
+                    }
+
+                    // Filling the totals row with totals for columns that can be totaled
+                    if (dontTotal.indexOf(i) == -1) {
+                        $('tr:eq(1) td:eq(' + (i - 2) + ')', api.table().footer()).html(
+                            pageTotal(i)
+                        );
+                        $('tr:eq(3) td:eq(' + (i - 2) + ')', api.table().footer()).html(
+                            total(i)
+                        );
+                    }
+                }
+
+                // Filling the percentages row with percentages
+                var i = 0;
+                for (i; i < 3; i++) {
+                    var made_cell = $('tr:eq(0) td:eq(' + (dontAverage[i] - 4) + ')', api.table().footer()).html()
+                    var made_cell2 = $('tr:eq(2) td:eq(' + (dontAverage[i] - 4) + ')', api.table().footer()).html()
+                    var attempt_cell = $('tr:eq(0) td:eq(' + (dontAverage[i] - 3) + ')', api.table().footer()).html()
+                    var attempt_cell2 = $('tr:eq(2) td:eq(' + (dontAverage[i] - 3) + ')', api.table().footer()).html()
+
+                    $('tr:eq(0) td:eq(' + (dontAverage[i] - 2) + ')', api.table().footer()).html(
+                        Math.round(((made_cell / attempt_cell) + 0.00001) * 100) / 100
                     );
-                    $( 'tr:eq(3) td:eq(' + (i-2) + ')', api.table().footer() ).html(
-                        total(i)
+                    $('tr:eq(2) td:eq(' + (dontAverage[i] - 2) + ')', api.table().footer()).html(
+                        Math.round(((made_cell2 / attempt_cell2) + 0.00001) * 100) / 100
                     );
                 }
             }
-             
-            // Filling the percentages row with percentages
-            var i = 0;
-            for (i; i <3; i++) {
-                var made_cell = $('tr:eq(0) td:eq(' + (dontAverage[i] - 4) + ')', api.table().footer()).html()
-                var made_cell2 = $('tr:eq(2) td:eq(' + (dontAverage[i] - 4) + ')', api.table().footer()).html()
-                var attempt_cell = $('tr:eq(0) td:eq(' + (dontAverage[i] - 3) + ')', api.table().footer()).html()
-                var attempt_cell2 = $('tr:eq(2) td:eq(' + (dontAverage[i] - 3) + ')', api.table().footer()).html()
-                
-                $('tr:eq(0) td:eq(' + (dontAverage[i] - 2)+ ')', api.table().footer()).html(
-                    Math.round(((made_cell/attempt_cell) + 0.00001) * 100) / 100
-                );
-                $('tr:eq(2) td:eq(' + (dontAverage[i] - 2)+ ')', api.table().footer()).html(
-                    Math.round(((made_cell2/attempt_cell2) + 0.00001) * 100) / 100
-                );
-            }
-        }   
-       
-       
-       
-    } );   
-    
 
-    // Order by the grouping
-    $('#matchHistory tbody').on( 'click', 'tr.group', function () {
-        var currentOrder = table.order()[0];
-        if ( currentOrder[0] === groupColumn && currentOrder[1] === 'asc' ) {
-            table.order( [ groupColumn, 'desc' ] ).draw();
-        }
-        else {
-            table.order( [ groupColumn, 'asc' ] ).draw();
-        }
-    } );
-    
-    $('a.toggle-vis').on( 'click', function (e) {
-        e.preventDefault();
- 
-        // Get the column API object
-        var column = table.columns( $(this).attr('data-column') );
-        console.log(column)
-        // Toggle the visibility
-        column.visible( ! column.visible() );
-    } );
-    
-    /* Apply the search
+
+
+        });
+
+
+        // Order by the grouping
+        $('#matchHistory tbody').on('click', 'tr.group', function() {
+            var currentOrder = table.order()[0];
+            if (currentOrder[0] === groupColumn && currentOrder[1] === 'asc') {
+                table.order([groupColumn, 'desc']).draw();
+            } else {
+                table.order([groupColumn, 'asc']).draw();
+            }
+        });
+
+        $('a.toggle-vis').on('click', function(e) {
+            e.preventDefault();
+
+            // Get the column API object
+            var column = table.columns($(this).attr('data-column'));
+            console.log(column)
+            // Toggle the visibility
+            column.visible(!column.visible());
+        });
+
+        /* Apply the search
     table.columns().eq(30).each( function (index) {
         var column = table.column(index)
         var that = this;
@@ -207,59 +236,67 @@ $(document).ready(function() {
             }
         } );
     } );*/
-    
-} );
-    
-// Table with shot types
-$(document).ready(function() {
-    $('#shotTypes').DataTable( {
-    "displayLength": 100,
-    } );
-} );
+
+    });
+
+    // Table with shot types
+    $(document).ready(function() {
+        $('#shotTypes').DataTable({
+            "displayLength": 100,
+        });
+    });
+
 </script>
 
 <style type="text/css">
-    body
-    {
+    body {
         text-align: center;
     }
+
     div.playerinfobox {
         margin: 0 auto;
         width: 50%;
     }
+
     div.statsTableDiv {
         margin-top: 3%;
         margin-bottom: 3%;
     }
+
     div.playerShotTypes {
         margin: 0 auto;
         width: 60%;
     }
+
     #shotTypes {
         width: 50%;
     }
+
     table.playerinfo {
         margin: 0 auto;
         width: 100%;
         clear: both;
         border-collapse: collapse;
         table-layout: fixed;
-        word-wrap:normal;
+        word-wrap: normal;
     }
+
     table.playerinfo tr {
         font-size: 15px;
     }
+
     tr.group,
     tr.group:hover {
         background-color: #ddd !important;
     }
+
     thead select {
         width: 100%;
         padding: 3px;
-        
+
         box-sizing: border-box;
     }
-    
+
 </style>
 <div class="playerinfobox">
     <table class="playerinfo" cellpadding="0" cellspacing="0">
@@ -278,16 +315,12 @@ $(document).ready(function() {
                                 <a id="ctl00_cphContent_teamName" href="/team/{{ player.team.id }}/overview.html">{{ player.team.name }}</a>
                                 <br />
                                 <br /> Weekly salary: $ {{ player.weekly_salary }}
-
-                                <br />
                                 <br /> DMI: {{ player.dmi }}
-
-                                <br />
                                 <br /> Age: {{ player.age }}
-
-                                <br />
                                 <br /> Height: {{ player.height }}cm
-
+                                <br /> Potential: <span class="{{ potential.lev }}" title="{{ potential.value }}">{{ potential.name }}</span>
+                                <br /> Last update at: {{ player.last_update_at }}
+                                <br /> Created at: {{ player.created_at }}
                             </p>
                         </td>
                     </tr>
@@ -395,345 +428,345 @@ $(document).ready(function() {
         </tr>
 
     </table>
-    </div>
-    <p><b>Transfer estimate</b>: {{ player.transfer_estimate }}</p>
-    <div id="playerhistory" class="widebox statsTableDiv" style=" ">
-        <div class="boxheader" style="border-top-left-radius:4px;border-top-right-radius:4px;padding-left:6px;padding-right:6px; ">
-            <div style="float: left">
-                Player history for {{ player.name }}
-            </div>
-            
+</div>
+<p><b>Transfer estimate</b>: {{ player.transfer_estimate }}</p>
+<div id="playerhistory" class="widebox statsTableDiv" style=" ">
+    <div class="boxheader" style="border-top-left-radius:4px;border-top-right-radius:4px;padding-left:6px;padding-right:6px; ">
+        <div style="float: left">
+            Player history for {{ player.name }}
         </div>
-        <div>
-					Toggle column: <a class="toggle-vis" data-column="23, 24, 27, 28">Strategies</a> - <a class="toggle-vis" data-column="25, 26, 29, 30">Prep Hits/Misses</a> - 
-				</div>
-        <div class="boxcontent">
-            <a name="playerstats"></a>
-            <div>
-                <table id="matchHistory" class="compact stripe cell-border" >
-                    <thead>
-                        <tr class='search'>
-                            <th>match_id</th>
-                            <th>Season</th>
-                            <th style="width: 150px !important">Date</th>
-                            <th>POS</th>
-                            <th>MIN</th>
-                            <th>FGM</th>
-                            <th>FGA</th>
-                            <th>FG%</th>
-                            <th>3GM</th>
-                            <th>3GA</th>
-                            <th>3%</th>
-                            <th>FTM</th>
-                            <th>FTA</th>
-                            <th>FT%</th>
-                            <th>OR</th>
-                            <th>TR</th>
-                            <th>AST</th>
-                            <th>TO</th>
-                            <th>STL</th>
-                            <th>BLK</th>
-                            <th>PF</th>
-                            <th>PTS</th>
-                            <th>Rating</th>
-                            <th>OFF</th>
-                            <th>DEF</th>
-                            <th>F_HIT</th>
-                            <th>P_HIT</th>
-                            <th>O_OFF</th>
-                            <th>O_DEF</th>
-                            <th>O_F_HIT</th>
-                            <th>O_P_HIT</th>
-                            <th>Type</th>
-                        </tr>
-                        <tr>
-                            <th>match_id</th>
-                            <th>Season</th>
-                            <th style="width: 150px !important">Date</th>
-                            <th>POS</th>
-                            <th>MIN</th>
-                            <th>FGM</th>
-                            <th>FGA</th>
-                            <th>FG%</th>
-                            <th>3GM</th>
-                            <th>3GA</th>
-                            <th>3%</th>
-                            <th>FTM</th>
-                            <th>FTA</th>
-                            <th>FT%</th>
-                            <th>OR</th>
-                            <th>TR</th>
-                            <th>AST</th>
-                            <th>TO</th>
-                            <th>STL</th>
-                            <th>BLK</th>
-                            <th>PF</th>
-                            <th>PTS</th>
-                            <th>Rating</th>
-                            <th>OFF</th>
-                            <th>DEF</th>
-                            <th>F_HIT</th>
-                            <th>P_HIT</th>
-                            <th>O_OFF</th>
-                            <th>O_DEF</th>
-                            <th>O_F_HIT</th>
-                            <th>O_P_HIT</th>
-                            <th>Type</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {% for stat in stats %}
-                        <tr>
-                            <td>{{ stat.match.boxscore.id }}</td>
-                            <td align="center">Season {{ stat.match.boxscore.match.season }}</td>
-                            <td align="center">
-                                <a id="ctl00_cphContent_playerStats_ctl02_HyperLink1" href="http://www.buzzerbeater.com/match/{{ stat.match.boxscore.id }}/boxscore.aspx">{{ stat.match.boxscore.match.match_date|date:"y-m-d" }}</a>
-                            </td>
-                            <td align="center">{{ stat.max_minute_key }}</td>
-                            <td align="center">{{ stat.max_minute_value }}</td>
-                            <td align="center">{{ stat.match.fgm }}</td>
-                            <td align="center">{{ stat.match.fga }}</td>
-                            <td align="center"></td>
-                            <td align="center">{{ stat.match.tpm }}</td>
-                            <td align="center">{{ stat.match.tpa }}</td>
-                            <td align="center"></td>
-                            <td align="center">{{ stat.match.ftm }}</td>
-                            <td align="center">{{ stat.match.fta }}</td>
-                            <td align="center"></td>
-                            <td align="center">{{ stat.match.oreb }}</td>
-                            <td align="center">{{ stat.match.reb }}</td>
-                            <td align="center">{{ stat.match.ast }}</td>
-                            <td align="center">{{ stat.match.t_o }}</td>
-                            <td align="center">{{ stat.match.stl }}</td>
-                            <td align="center">{{ stat.match.blk }}</td>
-                            <td align="center">{{ stat.match.pf }}</td>
-                            <td align="center">{{ stat.match.pts }}</td>
-                            <td align="center">{{ stat.match.rating }}</td>
-                            <td>{{ stat.strategies_preps.player_team_off }}</td>
-                            <td>{{ stat.strategies_preps.player_team_def }}</td>
-                            <td>{{ stat.strategies_preps.player_team_prep_f }}</td>
-                            <td>{{ stat.strategies_preps.player_team_prep_p }}</td>
-                            <td>{{ stat.strategies_preps.opp_team_off }}</td>
-                            <td>{{ stat.strategies_preps.opp_team_def }}</td>
-                            <td>{{ stat.strategies_preps.opp_team_prep_f }}</td>
-                            <td>{{ stat.strategies_preps.opp_team_prep_p }}</td>
-                            <td align="center">{{ stat.match_type }}</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                    <tfoot>
-                        <tr style="background-color:#EEEEEE;">
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center">
-                                SELECTED AVG
-                            </td>
-                        </tr>
-                        <tr>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center">
-                                SELECTED TOTALS
-                            </td>
-                        </tr>
-                        <tr style="background-color:#EEEEEE;">
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center">
-                                ALL AVG
-                            </td>
-                        </tr>
-                        <tr>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center">
-                                ALL TOTALS
-                            </td>
-                        </tr>
-                          
-                    </tfoot>
-                </table>
-            </div>
-        </div>
-    </div>
-    <div id="playerShotTypes" class="widebox statsTableDiv" style="width:50%; margin: 0 auto;">
-        <div class="boxheader" style="border-top-left-radius:4px;border-top-right-radius:4px;padding-left:6px;padding-right:6px; ">
-            <div style="float: left">
-                Shot types for {{ player.name }}
-            </div>
-            
-        </div>
-        <div class="boxcontent">
-            <a name="playerstats"></a>
-            <div>
-                <table id="shotTypes" class="cell-border stripe" style="width: 50%;">
-                    <thead>
-                        <tr>
-                            <th rowspan="2">Shot type</th>
-                            <th colspan="3">Field goals</th>
-                            <th colspan="3">Guarded</th>
-                            <th colspan="3">Passed</th>
-                        </tr>
-                        <tr>
-                            <th>Made</th>
-                            <th>Att.</th>
-                            <th>%</th>
-                            <th>Made</th>
-                            <th>Att.</th>
-                            <th>%</th>
-                            <th>Made</th>
-                            <th>Att.</th>
-                            <th>%</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for shot_type in shot_performances %}
-                        <tr>
-                            <td>{{ shot_type.shot_type }}</td>                    
-                            <td>{{ shot_type.made_fg }}</td>
-                            <td>{{ shot_type.attempted_fg }}</td>
-                            <td>{{ shot_type.fg_per }}</td>
-                            <td>{{ shot_type.made_guarded }}</td>
-                            <td>{{ shot_type.attempted_guarded }}</td>
-                            <td>{{ shot_type.guarded_per }}</td>
-                            <td>{{ shot_type.made_passed }}</td>
-                            <td>{{ shot_type.attempted_passed }}</td>
-                            <td>{{ shot_type.passed_per }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </tfoot>
-                    
-{% else %}
 
-<p>Player ID not in the database</p>
-{% endif %}
+    </div>
+    <div>
+        Toggle column: <a class="toggle-vis" data-column="23, 24, 27, 28">Strategies</a> - <a class="toggle-vis" data-column="25, 26, 29, 30">Prep Hits/Misses</a> -
+    </div>
+    <div class="boxcontent">
+        <a name="playerstats"></a>
+        <div>
+            <table id="matchHistory" class="compact stripe cell-border">
+                <thead>
+                    <tr class='search'>
+                        <th>match_id</th>
+                        <th>Season</th>
+                        <th style="width: 150px !important">Date</th>
+                        <th>POS</th>
+                        <th>MIN</th>
+                        <th>FGM</th>
+                        <th>FGA</th>
+                        <th>FG%</th>
+                        <th>3GM</th>
+                        <th>3GA</th>
+                        <th>3%</th>
+                        <th>FTM</th>
+                        <th>FTA</th>
+                        <th>FT%</th>
+                        <th>OR</th>
+                        <th>TR</th>
+                        <th>AST</th>
+                        <th>TO</th>
+                        <th>STL</th>
+                        <th>BLK</th>
+                        <th>PF</th>
+                        <th>PTS</th>
+                        <th>Rating</th>
+                        <th>OFF</th>
+                        <th>DEF</th>
+                        <th>F_HIT</th>
+                        <th>P_HIT</th>
+                        <th>O_OFF</th>
+                        <th>O_DEF</th>
+                        <th>O_F_HIT</th>
+                        <th>O_P_HIT</th>
+                        <th>Type</th>
+                    </tr>
+                    <tr>
+                        <th>match_id</th>
+                        <th>Season</th>
+                        <th style="width: 150px !important">Date</th>
+                        <th>POS</th>
+                        <th>MIN</th>
+                        <th>FGM</th>
+                        <th>FGA</th>
+                        <th>FG%</th>
+                        <th>3GM</th>
+                        <th>3GA</th>
+                        <th>3%</th>
+                        <th>FTM</th>
+                        <th>FTA</th>
+                        <th>FT%</th>
+                        <th>OR</th>
+                        <th>TR</th>
+                        <th>AST</th>
+                        <th>TO</th>
+                        <th>STL</th>
+                        <th>BLK</th>
+                        <th>PF</th>
+                        <th>PTS</th>
+                        <th>Rating</th>
+                        <th>OFF</th>
+                        <th>DEF</th>
+                        <th>F_HIT</th>
+                        <th>P_HIT</th>
+                        <th>O_OFF</th>
+                        <th>O_DEF</th>
+                        <th>O_F_HIT</th>
+                        <th>O_P_HIT</th>
+                        <th>Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for stat in stats %}
+                    <tr>
+                        <td>{{ stat.match.boxscore.id }}</td>
+                        <td align="center">Season {{ stat.match.boxscore.match.season }}</td>
+                        <td align="center">
+                            <a id="ctl00_cphContent_playerStats_ctl02_HyperLink1" href="http://www.buzzerbeater.com/match/{{ stat.match.boxscore.id }}/boxscore.aspx">{{ stat.match.boxscore.match.match_date|date:"y-m-d" }}</a>
+                        </td>
+                        <td align="center">{{ stat.max_minute_key }}</td>
+                        <td align="center">{{ stat.max_minute_value }}</td>
+                        <td align="center">{{ stat.match.fgm }}</td>
+                        <td align="center">{{ stat.match.fga }}</td>
+                        <td align="center"></td>
+                        <td align="center">{{ stat.match.tpm }}</td>
+                        <td align="center">{{ stat.match.tpa }}</td>
+                        <td align="center"></td>
+                        <td align="center">{{ stat.match.ftm }}</td>
+                        <td align="center">{{ stat.match.fta }}</td>
+                        <td align="center"></td>
+                        <td align="center">{{ stat.match.oreb }}</td>
+                        <td align="center">{{ stat.match.reb }}</td>
+                        <td align="center">{{ stat.match.ast }}</td>
+                        <td align="center">{{ stat.match.t_o }}</td>
+                        <td align="center">{{ stat.match.stl }}</td>
+                        <td align="center">{{ stat.match.blk }}</td>
+                        <td align="center">{{ stat.match.pf }}</td>
+                        <td align="center">{{ stat.match.pts }}</td>
+                        <td align="center">{{ stat.match.rating }}</td>
+                        <td>{{ stat.strategies_preps.player_team_off }}</td>
+                        <td>{{ stat.strategies_preps.player_team_def }}</td>
+                        <td>{{ stat.strategies_preps.player_team_prep_f }}</td>
+                        <td>{{ stat.strategies_preps.player_team_prep_p }}</td>
+                        <td>{{ stat.strategies_preps.opp_team_off }}</td>
+                        <td>{{ stat.strategies_preps.opp_team_def }}</td>
+                        <td>{{ stat.strategies_preps.opp_team_prep_f }}</td>
+                        <td>{{ stat.strategies_preps.opp_team_prep_p }}</td>
+                        <td align="center">{{ stat.match_type }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr style="background-color:#EEEEEE;">
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center">
+                            SELECTED AVG
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center">
+                            SELECTED TOTALS
+                        </td>
+                    </tr>
+                    <tr style="background-color:#EEEEEE;">
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center">
+                            ALL AVG
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center"></td>
+                        <td align="center">
+                            ALL TOTALS
+                        </td>
+                    </tr>
+
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<div id="playerShotTypes" class="widebox statsTableDiv" style="width:50%; margin: 0 auto;">
+    <div class="boxheader" style="border-top-left-radius:4px;border-top-right-radius:4px;padding-left:6px;padding-right:6px; ">
+        <div style="float: left">
+            Shot types for {{ player.name }}
+        </div>
+
+    </div>
+    <div class="boxcontent">
+        <a name="playerstats"></a>
+        <div>
+            <table id="shotTypes" class="cell-border stripe" style="width: 50%;">
+                <thead>
+                    <tr>
+                        <th rowspan="2">Shot type</th>
+                        <th colspan="3">Field goals</th>
+                        <th colspan="3">Guarded</th>
+                        <th colspan="3">Passed</th>
+                    </tr>
+                    <tr>
+                        <th>Made</th>
+                        <th>Att.</th>
+                        <th>%</th>
+                        <th>Made</th>
+                        <th>Att.</th>
+                        <th>%</th>
+                        <th>Made</th>
+                        <th>Att.</th>
+                        <th>%</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for shot_type in shot_performances %}
+                    <tr>
+                        <td>{{ shot_type.shot_type }}</td>
+                        <td>{{ shot_type.made_fg }}</td>
+                        <td>{{ shot_type.attempted_fg }}</td>
+                        <td>{{ shot_type.fg_per }}</td>
+                        <td>{{ shot_type.made_guarded }}</td>
+                        <td>{{ shot_type.attempted_guarded }}</td>
+                        <td>{{ shot_type.guarded_per }}</td>
+                        <td>{{ shot_type.made_passed }}</td>
+                        <td>{{ shot_type.attempted_passed }}</td>
+                        <td>{{ shot_type.passed_per }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+
+                {% else %}
+
+                <p>Player ID not in the database</p>
+                {% endif %}

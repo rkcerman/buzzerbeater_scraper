@@ -155,6 +155,7 @@ class Players(models.Model):
     name = models.CharField(max_length=80, blank=True, null=True)
     team = models.ForeignKey('Teams', models.DO_NOTHING)
     transfer_estimate = models.TextField(blank=True, null=True)
+    potential = models.SmallIntegerField()
 
     class Meta:
         managed = False

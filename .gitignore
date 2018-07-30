@@ -4,3 +4,4 @@ buzzerbeater_scraper/config.py
 *.pyo
 buzzerbeater_scraper/__pycache__
 buzzerbeater_scraper/spiders/__pycache__/
+buzzerbeater_scraper/spiders/__pycache__/*.pyc
