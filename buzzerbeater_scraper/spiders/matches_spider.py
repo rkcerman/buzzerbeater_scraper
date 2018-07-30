@@ -33,18 +33,22 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
     parse_players = False
     parse_pbps = True
 
-    def __init__(self, team_id='', season='', parse_players=False, parse_pbps=True, **kwargs):
+    def __init__(self, team_id, season='', parse_players=False, parse_pbps=True, **kwargs):
         if season != '':
             season = season.split(',')
-        if team_id != '':
+        if team_id is not None:
             team_id = team_id.split(',')
+            print(team_id)
             self.urls = []
 
             for team in team_id:
-                url = 'http://www.buzzerbeater.com/team/' + team +  '/schedule.aspx'
+                url = 'http://www.buzzerbeater.com/team/' + team + '/schedule.aspx'
                 print(url)
-                for s in season:
-                    self.urls.append(url + '?season=' + s)
+                if season:
+                    for s in season:
+                        self.urls.append(url + '?season=' + s)
+                else:
+                    self.urls.append(url)
         self.parse_players = parse_players
         self.parse_pbps = parse_pbps
         print(self.urls)
