@@ -2,12 +2,10 @@
 <project version="4">
   <component name="BookmarkManager">
     <bookmark url="file://$PROJECT_DIR$/tests/test_boxscore_parser.py" line="68" />
-    <bookmark url="file://$PROJECT_DIR$/buzzerbeater_web/player/views.py" line="194" />
+    <bookmark url="file://$PROJECT_DIR$/buzzerbeater_web/player/views.py" line="200" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="44b49686-e162-4ba2-8c95-3e44a55449bf" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/buzzerbeater_web/player/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_web/player/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/buzzerbeater_web/player/templates/player/player_overview.html" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_web/player/templates/player/player_overview.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/buzzerbeater_web/player/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_web/player/views.py" afterDir="false" />
     </list>
@@ -20,13 +18,35 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/buzzerbeater_web/player/views.py">
+      <file leaf-file-name="player_overview.html" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/buzzerbeater_web/player/templates/player/player_overview.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="468">
-              <caret line="154" column="33" selection-start-line="154" selection-start-column="33" selection-end-line="154" selection-end-column="33" />
+            <state relative-caret-position="630">
+              <caret line="783" column="24" selection-start-line="783" selection-start-column="24" selection-end-line="783" selection-end-column="24" />
               <folding>
-                <element signature="e#0#14#0" expanded="true" />
+                <element signature="n#style#0;n#td#0;n#tr#1;n#table#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#table#0;n#td#0;n#tr#1;n#table#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#td#1;n#tr#1;n#table#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#table#0;n#td#1;n#tr#1;n#table#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#tr#0;n#table#0;n#td#1;n#tr#1;n#table#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#tr#1;n#table#0;n#td#1;n#tr#1;n#table#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#tr#2;n#table#0;n#td#1;n#tr#1;n#table#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#tr#3;n#table#0;n#td#1;n#tr#1;n#table#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#tr#4;n#table#0;n#td#1;n#tr#1;n#table#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#tr#5;n#table#0;n#td#1;n#tr#1;n#table#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#td#0;n#tr#6;n#table#0;n#td#1;n#tr#1;n#table#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#td#1;n#tr#6;n#table#0;n#td#1;n#tr#1;n#table#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#tr#7;n#table#0;n#td#1;n#tr#1;n#table#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#th#2;n#tr#0;n#thead#0;n#table#0;n#div#0;n#div#2;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#th#2;n#tr#1;n#thead#0;n#table#0;n#div#0;n#div#2;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#tr#0;n#tfoot#0;n#table#0;n#div#0;n#div#2;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#tr#2;n#tfoot#0;n#table#0;n#div#0;n#div#2;n#div#1;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#2;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#div#2;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#div#0;n#div#0;n#div#2;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#table#0;n#div#0;n#div#1;n#div#2;n#!!top" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -191,7 +211,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="SearchEverywhereHistoryKey" value="tra&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/transfers_spider.py&#10;ite&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/items.py&#10;players&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/player_spider.py&#10;items&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/items.py&#10;pipe&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/pipelines.py&#10;transfer&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/transfers_spider.py&#10;test&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/tests/test_boxscore_parser.py&#10;tests&#9;null&#9;null&#10;models&#9;null&#9;null&#10;pip&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/pipelines.py&#10;pla&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/player_spider.py&#10;pl&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/player_spider.py&#10;tr&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/transfers_spider.py" />
+    <property name="SearchEverywhereHistoryKey" value="pla&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_web/player/templates/player/player_overview.html&#10;tra&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/transfers_spider.py&#10;ite&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/items.py&#10;players&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/player_spider.py&#10;items&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/items.py&#10;pipe&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/pipelines.py&#10;transfer&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/transfers_spider.py&#10;test&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/tests/test_boxscore_parser.py&#10;tests&#9;null&#9;null&#10;models&#9;null&#9;null&#10;pip&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/pipelines.py&#10;pl&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/player_spider.py&#10;tr&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/transfers_spider.py" />
     <property name="full.screen.before.presentation.mode" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../buzzerbeater_scraper" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
@@ -664,10 +684,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/buzzerbeater_web/player/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="248" selection-start-line="248" selection-end-line="248" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/buzzerbeater_web/player/templates/player/player_overview.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="658" column="42" lean-forward="true" selection-start-line="658" selection-start-column="42" selection-end-line="658" selection-end-column="42" />
+        <state relative-caret-position="630">
+          <caret line="783" column="24" selection-start-line="783" selection-start-column="24" selection-end-line="783" selection-end-column="24" />
           <folding>
             <element signature="n#style#0;n#td#0;n#tr#1;n#table#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#table#0;n#td#0;n#tr#1;n#table#0;n#div#0;n#!!top" expanded="true" />
@@ -680,9 +710,7 @@
             <element signature="n#style#0;n#tr#4;n#table#0;n#td#1;n#tr#1;n#table#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#tr#5;n#table#0;n#td#1;n#tr#1;n#table#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#td#0;n#tr#6;n#table#0;n#td#1;n#tr#1;n#table#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="e#15886#15892#0" expanded="true" />
             <element signature="n#style#0;n#td#1;n#tr#6;n#table#0;n#td#1;n#tr#1;n#table#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="e#15998#16004#0" expanded="true" />
             <element signature="n#style#0;n#tr#7;n#table#0;n#td#1;n#tr#1;n#table#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#div#1;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#div#0;n#div#1;n#!!top" expanded="true" />
@@ -694,16 +722,6 @@
             <element signature="n#style#0;n#div#0;n#div#2;n#!!top" expanded="true" />
             <element signature="n#style#0;n#div#0;n#div#0;n#div#2;n#!!top" expanded="true" />
             <element signature="n#style#0;n#table#0;n#div#0;n#div#1;n#div#2;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/buzzerbeater_web/player/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="468">
-          <caret line="154" column="33" selection-start-line="154" selection-start-column="33" selection-end-line="154" selection-end-column="33" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
           </folding>
         </state>
       </provider>

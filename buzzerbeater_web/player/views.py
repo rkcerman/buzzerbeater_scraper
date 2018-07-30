@@ -91,8 +91,12 @@ def overview(request, player_id, season, match_type):
             player_id=player_id,
             boxscore__match__season=season
         ).order_by('-boxscore_id')
-        shots = Shots.objects.filter(
+        player_shots = Shots.objects.filter(
             shooter=player_id,
+            pbp__boxscore__match__season=season
+        )
+        player_defended_shots = Shots.objects.filter(
+            defender=player_id,
             pbp__boxscore__match__season=season
         )
 
@@ -101,7 +105,7 @@ def overview(request, player_id, season, match_type):
             boxscore_stats = boxscore_stats.filter(
                 Q(boxscore__match_type__contains='league') | Q(boxscore__match_type__contains='cup')
             )
-            shots = shots.filter(
+            player_shots = player_shots.filter(
                 Q(pbp__boxscore__match_type__contains='league') | Q(pbp__boxscore__match_type__contains='cup')
             )
 
@@ -143,11 +147,12 @@ def overview(request, player_id, season, match_type):
                 'max_minute_value': max_minute_value,
                 'match_type': match_type,
                 'strategies_preps': get_strategies_preps(stat, stat.boxscore),
-                'shots': shots
+                'shots': player_shots
             }
             )
 
-        shot_performances = get_shot_performances(shots)
+        shot_performances = get_shot_performances(player_shots)
+        defense_performances = get_defense_performances(player_defended_shots)
 
         # Setting up the final context
         context = {
@@ -155,7 +160,8 @@ def overview(request, player_id, season, match_type):
             'potential': potential,
             'skills': player_skills,
             'stats': stats,
-            'shot_performances': shot_performances
+            'shot_performances': shot_performances,
+            'defense_performances': defense_performances,
         }
 
         # Calculating value of TSP
@@ -221,6 +227,44 @@ def get_shot_performances(shots):
         )
 
     return shot_performances
+
+
+# TODO look into combining these aggregate functions into one
+# Get aggregates for each shot types and player's ability to defend them
+def get_defense_performances(defended_shots):
+    distinct_shot_types = defended_shots \
+        .values_list('pbp__event_type') \
+        .distinct() \
+        .order_by('pbp__event_type')
+    defense_performances = []
+
+    # Performing the actual aggregates, with the exclusion of fouled shots
+    for shot_type in distinct_shot_types:
+        shot_type = shot_type[0]
+        shot_type_query = defended_shots.filter(pbp__event_type=shot_type).exclude(outcome='fouled')
+
+        opp_attempted_fg = shot_type_query.count()
+        opp_made_fg = shot_type_query.filter(outcome='scored').count()
+        opp_fg_per = round(safe_div(opp_made_fg, opp_attempted_fg), 2)
+
+        # Passed
+        opp_attempted_passed = shot_type_query.filter(passer__isnull=False).count()
+        opp_made_passed = shot_type_query.filter(passer__isnull=False, outcome='scored').count()
+        opp_passed_per = round(safe_div(opp_made_passed, opp_attempted_passed), 2)
+
+        defense_performances.append(
+            {
+                'shot_type': shot_type,
+                'opp_attempted_fg': opp_attempted_fg,
+                'opp_made_fg': opp_made_fg,
+                'opp_fg_per': opp_fg_per,
+                'opp_attempted_passed': opp_attempted_passed,
+                'opp_made_passed': opp_made_passed,
+                'opp_passed_per': opp_passed_per,
+            }
+        )
+
+    return defense_performances
 
 
 def safe_div(x,y):

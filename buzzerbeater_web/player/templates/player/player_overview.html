@@ -246,6 +246,13 @@
         });
     });
 
+    // Table with defense performance
+    $(document).ready(function() {
+        $('#defensePerf').DataTable({
+            "displayLength": 100,
+        });
+    });
+
 </script>
 
 <style type="text/css">
@@ -575,7 +582,7 @@
                         <td align="center"></td>
                         <td align="center"></td>
                         <td align="center"></td>
-                        <td align="center"></td>
+                        <td alikgn="center"></td>
                         <td align="center"></td>
                         <td align="center"></td>
                         <td align="center"></td>
@@ -765,7 +772,63 @@
                         <td></td>
                     </tr>
                 </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+<div id="playerDefensePerf" class="widebox defenseTableDiv" style="width:50%; margin: 0 auto;">
+    <div class="boxheader" style="border-top-left-radius:4px;border-top-right-radius:4px;padding-left:6px;padding-right:6px; ">
+        <div style="float: left">
+            Defensive performance for {{ player.name }}. The lower % the better
+        </div>
 
+    </div>
+    <div class="boxcontent">
+        <div>
+            <table id="defensePerf" class="cell-border stripe" style="width: 50%;">
+                <thead>
+                    <tr>
+                        <th rowspan="2">Shot type</th>
+                        <th colspan="3">Field goals</th>
+                        <th colspan="3">Passed</th>
+                    </tr>
+                    <tr>
+                        <th>Opp Made</th>
+                        <th>Opp Att.</th>
+                        <th>Opp %</th>
+                        <th>Opp Made</th>
+                        <th>Opp Att.</th>
+                        <th>Opp %</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for shot_type in defense_performances %}
+                    <tr>
+                        <td>{{ shot_type.shot_type }}</td>
+                        <td>{{ shot_type.opp_made_fg }}</td>
+                        <td>{{ shot_type.opp_attempted_fg }}</td>
+                        <td>{{ shot_type.opp_fg_per }}</td>
+                        <td>{{ shot_type.opp_made_passed }}</td>
+                        <td>{{ shot_type.opp_attempted_passed }}</td>
+                        <td>{{ shot_type.opp_passed_per }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
                 {% else %}
 
                 <p>Player ID not in the database</p>
