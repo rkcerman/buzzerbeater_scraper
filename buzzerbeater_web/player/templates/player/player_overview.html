@@ -6,6 +6,14 @@
 <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.19/api/average().js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.19/api/sum().js"></script>
 <script type="text/javascript">
+    var percentageColumn = function(row, colA, colB) {
+                        var result = 0
+                        if (row[colB] > 0) {
+                            result = Math.round(((row[colA] / row[colB]) + 0.00001) * 100) / 100
+                        }
+                        return result
+                    };
+        
     $(document).ready(function() {
         var groupColumn = 1;
 
@@ -19,9 +27,11 @@
         $('input[placeholder]').each(function () {
             $(this).attr('size', $(this).attr('placeholder').length);
         });*/
-
+        
+            
         var table = $('#matchHistory').DataTable({
-
+            
+            
             "columnDefs": [{
                     visible: false,
                     targets: 0
@@ -38,31 +48,19 @@
                 // Let's create calculated columns to determine shot percentages (FG, 3P and FT)
                 {
                     render: function(data, type, row) {
-                        var result = 0
-                        if (row[6] > 0) {
-                            result = Math.round(((row[5] / row[6]) + 0.00001) * 100) / 100
-                        }
-                        return result
+                        return percentageColumn(row, 5, 6)
                     },
                     targets: [7]
                 },
                 {
                     render: function(data, type, row) {
-                        var result = 0
-                        if (row[9] > 0) {
-                            result = Math.round(((row[8] / row[9]) + 0.00001) * 100) / 100
-                        }
-                        return result
+                        return percentageColumn(row, 8, 9)
                     },
                     targets: [10]
                 },
                 {
                     render: function(data, type, row) {
-                        var result = 0
-                        if (row[12] > 0) {
-                            result = Math.round(((row[11] / row[12]) + 0.00001) * 100) / 100
-                        }
-                        return result
+                        return percentageColumn(row, 11, 12)
                     },
                     targets: [13]
                 },
@@ -128,7 +126,7 @@
                 };
 
                 // Total over all pages
-                total = function(col) {
+                var total = function(col) {
                     return api.column(col)
                         .data()
                         .reduce(function(a, b) {
@@ -137,7 +135,7 @@
                 }
 
                 // Total over this page
-                pageTotal = function(col) {
+                var pageTotal = function(col) {
                     return api
                         .column(col, {
                             page: 'current'
@@ -220,29 +218,91 @@
             column.visible(!column.visible());
         });
 
-        /* Apply the search
-    table.columns().eq(30).each( function (index) {
-        var column = table.column(index)
-        var that = this;
-        var inp = $( 'thead', column )
-        var foot = $( 'input', column.header())
-        console.log(that)
-        console.log(inp)
-        console.log(foot)
- 
-        foot.on( 'keyup change', function () {
-            if ( that.search() !== this.value ) {
-                that.search( this.value ).draw();
-            }
-        } );
-    } );*/
-
     });
 
     // Table with shot types
     $(document).ready(function() {
         $('#shotTypes').DataTable({
+            
             "displayLength": 100,
+            
+            // Creating a Totals row
+            "footerCallback": function(row, data, start, end, display) {
+                var api = this.api(),
+                    data;
+
+                // Remove the formatting to get integer data for summation
+                var intVal = function(i) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '') * 1 :
+                        typeof i === 'number' ?
+                        i : 0;
+                };
+
+                // Total over all pages
+                total = function(col) {
+                    return api.column(col)
+                        .data()
+                        .reduce(function(a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+                }
+
+                // Total over this page
+                pageTotal = function(col) {
+                    return api
+                        .column(col, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function(a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+                }
+
+                // Update footer
+                // TODO make this into a loop pls
+                var i;
+                var dontAgg = [3, 6, 9]
+                // var dontTotal = [3, , 13, 22]
+                
+                for (i = 1; i < 10; i++) {
+                    // Filling the averages row with averages for columns that can be averaged
+                    if (dontAgg.indexOf(i) == -1) {
+                        $(api.column(i).footer()).html(
+                            Math.round(((api.table().column(i, {
+                                page: 'current'
+                            }).data().average()) + 0.00001) * 100) / 100
+                        );
+                        /*$('tr:eq(2) td:eq(' + (i - 2) + ')', api.table().footer()).html(
+                            Math.round(((total(i) / data.length) + 0.00001) * 100) / 100
+                        );*/
+                    }
+
+                    // Filling the totals row with totals for columns that can be totaled
+                    if (dontAgg.indexOf(i) == -1) {
+                        $('tr:eq(1) td:eq(' + (i) + ')', api.table().footer()).html(
+                            pageTotal(i)
+                        );
+                        /*$('tr:eq(3) td:eq(' + (i - 2) + ')', api.table().footer()).html(
+                            total(i)
+                        );*/
+                    }
+                }
+
+                // Filling the percentages row with percentages
+                var i = 0;
+                for (i; i < 3; i++) {
+                    var made_cell = $('tr:eq(0) td:eq(' + (dontAgg[i] - 2) + ')', api.table().footer()).html()
+                    var attempt_cell = $('tr:eq(0) td:eq(' + (dontAgg[i] - 1) + ')', api.table().footer()).html()
+                    
+                    $('tr:eq(0) td:eq(' + (dontAgg[i]) + ')', api.table().footer()).html(
+                        '<strong>'
+                        + Math.round(((made_cell / attempt_cell) + 0.00001) * 100) / 100
+                        + '</strong>'
+                    );
+                }
+            }
         });
     });
 
@@ -250,6 +310,77 @@
     $(document).ready(function() {
         $('#defensePerf').DataTable({
             "displayLength": 100,
+            
+        // Creating a Totals row
+            "footerCallback": function(row, data, start, end, display) {
+                var api = this.api(),
+                    data;
+
+                // Remove the formatting to get integer data for summation
+                var intVal = function(i) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '') * 1 :
+                        typeof i === 'number' ?
+                        i : 0;
+                };
+
+                // Total over all pages
+                total = function(col) {
+                    return api.column(col)
+                        .data()
+                        .reduce(function(a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+                }
+
+                // Total over this page
+                pageTotal = function(col) {
+                    return api
+                        .column(col, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function(a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+                }
+
+                // Update footer
+                // TODO make this into a loop pls
+                var i;
+                var dontAgg = [3, 6]
+                                
+                for (i = 1; i < 7; i++) {
+                    // Filling the averages row with averages for columns that can be averaged
+                    if (dontAgg.indexOf(i) == -1) {
+                        $(api.column(i).footer()).html(
+                            Math.round(((api.table().column(i, {
+                                page: 'current'
+                            }).data().average()) + 0.00001) * 100) / 100
+                        );
+                    }
+
+                    // Filling the totals row with totals for columns that can be totaled
+                    if (dontAgg.indexOf(i) == -1) {
+                        $('tr:eq(1) td:eq(' + (i) + ')', api.table().footer()).html(
+                            pageTotal(i)
+                        );
+                    }
+                }
+
+                // Filling the percentages row with percentages
+                var i = 0;
+                for (i; i < 2; i++) {
+                    var made_cell = $('tr:eq(0) td:eq(' + (dontAgg[i] - 2) + ')', api.table().footer()).html()
+                    var attempt_cell = $('tr:eq(0) td:eq(' + (dontAgg[i] - 1) + ')', api.table().footer()).html()
+                    
+                    $('tr:eq(0) td:eq(' + (dontAgg[i]) + ')', api.table().footer()).html(
+                        '<strong>'
+                        + Math.round(((made_cell / attempt_cell) + 0.00001) * 100) / 100
+                        + '</strong>'
+                    );
+                }
+            }
         });
     });
 
@@ -760,7 +891,19 @@
                 </tbody>
                 <tfoot>
                     <tr>
+                        <td>AVERAGE</td>
                         <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>TOTAL</td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -816,7 +959,16 @@
                 </tbody>
                 <tfoot>
                     <tr>
+                        <td>AVERAGE</td>
                         <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>TOTAL</td>
                         <td></td>
                         <td></td>
                         <td></td>
