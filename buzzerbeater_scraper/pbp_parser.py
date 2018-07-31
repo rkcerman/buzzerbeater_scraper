@@ -1,4 +1,5 @@
 import re
+import logging
 
 from buzzerbeater_scraper.items import ShotsItem
 from buzzerbeater_scraper.regex_patterns import PASSER_PATTERNS, DEFENDER_PATTERNS
@@ -17,6 +18,7 @@ class PlayByPlayParser:
 
     def parse_shots(self, shot_play):
         if 'shot' in shot_play['play_tags']:
+            logging.info('PARSING SHOTS')
 
             # Turn all the Goaltends into Scores because noone cares
             shot_play['event'] = shot_play['event'].replace('Goaltending called', 'Scored')

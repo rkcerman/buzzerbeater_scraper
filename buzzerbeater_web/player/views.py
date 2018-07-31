@@ -116,13 +116,16 @@ def overview(request, player_id, season, match_type):
             player_skills[skill_name] = [skill.value, skills_mapping[skill.value]]
 
         # Returns styling class and nomeclature for potential
-        potential_nomenc = potentials_mapping[player.potential]
-        potenial_name = list(potential_nomenc)[0]
-        potential = {
-            'value': player.potential,
-            'name': potenial_name,
-            'lev': potential_nomenc[potenial_name],
-        }
+        try:
+            potential_nomenc = potentials_mapping[player.potential]
+            potenial_name = list(potential_nomenc)[0]
+            potential = {
+                'value': player.potential,
+                'name': potenial_name,
+                'lev': potential_nomenc[potenial_name],
+            }
+        except KeyError:
+            potential = {}
 
         # Creating a list of all matches with their types, stats and minutes
         stats = []

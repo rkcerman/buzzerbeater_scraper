@@ -69,9 +69,11 @@ class BuzzerbeaterTransfersSpider(scrapy.Spider):
         if player is not None:
             player_item = player['player_item']
             team_item = player['team_item']
+            game_shape_item = player['game_shape_item']
 
             yield team_item
             yield player_item
+            yield game_shape_item
 
             # TODO ugly AF
             try:
