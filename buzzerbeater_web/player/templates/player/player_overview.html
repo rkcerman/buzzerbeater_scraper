@@ -383,6 +383,84 @@
             }
         });
     });
+    
+    // Table with passing performance
+    $(document).ready(function() {
+        $('#passingPerf').DataTable({
+            "displayLength": 100,
+            
+        // Creating a Totals row
+            "footerCallback": function(row, data, start, end, display) {
+                var api = this.api(),
+                    data;
+
+                // Remove the formatting to get integer data for summation
+                var intVal = function(i) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '') * 1 :
+                        typeof i === 'number' ?
+                        i : 0;
+                };
+
+                // Total over all pages
+                total = function(col) {
+                    return api.column(col)
+                        .data()
+                        .reduce(function(a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+                }
+
+                // Total over this page
+                pageTotal = function(col) {
+                    return api
+                        .column(col, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function(a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+                }
+
+                // Update footer
+                // TODO make this into a loop pls
+                var i;
+                var dontAgg = [3, 6]
+                                
+                for (i = 1; i < 7; i++) {
+                    // Filling the averages row with averages for columns that can be averaged
+                    if (dontAgg.indexOf(i) == -1) {
+                        $(api.column(i).footer()).html(
+                            Math.round(((api.table().column(i, {
+                                page: 'current'
+                            }).data().average()) + 0.00001) * 100) / 100
+                        );
+                    }
+
+                    // Filling the totals row with totals for columns that can be totaled
+                    if (dontAgg.indexOf(i) == -1) {
+                        $('tr:eq(1) td:eq(' + (i) + ')', api.table().footer()).html(
+                            pageTotal(i)
+                        );
+                    }
+                }
+
+                // Filling the percentages row with percentages
+                var i = 0;
+                for (i; i < 2; i++) {
+                    var made_cell = $('tr:eq(0) td:eq(' + (dontAgg[i] - 2) + ')', api.table().footer()).html()
+                    var attempt_cell = $('tr:eq(0) td:eq(' + (dontAgg[i] - 1) + ')', api.table().footer()).html()
+                    
+                    $('tr:eq(0) td:eq(' + (dontAgg[i]) + ')', api.table().footer()).html(
+                        '<strong>'
+                        + Math.round(((made_cell / attempt_cell) + 0.00001) * 100) / 100
+                        + '</strong>'
+                    );
+                }
+            }
+        });
+    });
 
 </script>
 
@@ -980,6 +1058,70 @@
             </table>
         </div>
     </div>
+    
+</div>
+<div id="playerPassingPerf" class="widebox passingTableDiv" style="width:50%; margin: 0 auto;">
+    <div class="boxheader" style="border-top-left-radius:4px;border-top-right-radius:4px;padding-left:6px;padding-right:6px; ">
+        <div style="float: left">
+            Passing performance for {{ player.name }}. The higher % the better
+        </div>
+
+    </div>
+    <div class="boxcontent">
+        <div>
+            <table id="passingPerf" class="cell-border stripe" style="width: 50%;">
+                <thead>
+                    <tr>
+                        <th rowspan="2">Shot type</th>
+                        <th colspan="3">Field goals</th>
+                        <th colspan="3">Defended</th>
+                    </tr>
+                    <tr>
+                        <th>Made</th>
+                        <th>Att.</th>
+                        <th>%</th>
+                        <th>Made</th>
+                        <th>Att.</th>
+                        <th>%</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for shot_type in passing_performances %}
+                    <tr>
+                        <td>{{ shot_type.shot_type }}</td>
+                        <td>{{ shot_type.mate_made_fg }}</td>
+                        <td>{{ shot_type.mate_attempted_fg }}</td>
+                        <td>{{ shot_type.mate_fg_per }}</td>
+                        <td>{{ shot_type.mate_made_guarded }}</td>
+                        <td>{{ shot_type.mate_attempted_guarded }}</td>
+                        <td>{{ shot_type.mate_guarded_per }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>AVERAGE</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>TOTAL</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    
 </div>
                 {% else %}
 

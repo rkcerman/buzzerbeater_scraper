@@ -99,6 +99,10 @@ def overview(request, player_id, season, match_type):
             defender=player_id,
             pbp__boxscore__match__season=season
         )
+        player_passed_shots = Shots.objects.filter(
+            passer=player_id,
+            pbp__boxscore__match__season=season
+        )
 
         # Further filtering based on match_types if they are defined
         if match_type == 'standard':
@@ -156,6 +160,7 @@ def overview(request, player_id, season, match_type):
 
         shot_performances = get_shot_performances(player_shots)
         defense_performances = get_defense_performances(player_defended_shots)
+        passing_performances = get_passing_performances(player_passed_shots)
 
         # Setting up the final context
         context = {
@@ -165,6 +170,7 @@ def overview(request, player_id, season, match_type):
             'stats': stats,
             'shot_performances': shot_performances,
             'defense_performances': defense_performances,
+            'passing_performances': passing_performances,
         }
 
         # Calculating value of TSP
@@ -268,6 +274,45 @@ def get_defense_performances(defended_shots):
         )
 
     return defense_performances
+
+
+# TODO look into combining these aggregate functions into one
+# Get aggregates for each shot types the player passed to
+def get_passing_performances(passed_shots):
+    distinct_shot_types = passed_shots \
+        .values_list('pbp__event_type') \
+        .distinct() \
+        .order_by('pbp__event_type')
+    passing_performances = []
+
+    # Performing the actual aggregates, with the exclusion of fouled shots
+    for shot_type in distinct_shot_types:
+        shot_type = shot_type[0]
+        shot_type_query = passed_shots.filter(pbp__event_type=shot_type).exclude(outcome='fouled')
+
+        # All
+        mate_attempted_fg = shot_type_query.count()
+        mate_made_fg = shot_type_query.filter(outcome='scored').count()
+        mate_fg_per = round(safe_div(mate_made_fg, mate_attempted_fg), 2)
+
+        # Guarded
+        mate_attempted_guarded = shot_type_query.filter(defender__isnull=False).count()
+        mate_made_guarded = shot_type_query.filter(defender__isnull=False, outcome='scored').count()
+        mate_guarded_per = round(safe_div(mate_made_guarded, mate_attempted_guarded), 2)
+
+        passing_performances.append(
+            {
+                'shot_type': shot_type,
+                'mate_attempted_fg': mate_attempted_fg,
+                'mate_made_fg': mate_made_fg,
+                'mate_fg_per': mate_fg_per,
+                'mate_attempted_guarded': mate_attempted_guarded,
+                'mate_made_guarded': mate_made_guarded,
+                'mate_guarded_per': mate_guarded_per,
+            }
+        )
+
+    return passing_performances
 
 
 def safe_div(x,y):
