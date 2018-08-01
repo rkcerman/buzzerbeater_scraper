@@ -7,18 +7,7 @@
   <component name="ChangeListManager">
     <list default="true" id="44b49686-e162-4ba2-8c95-3e44a55449bf" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/buzzerbeater_web/buzzerbeater_web/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_web/buzzerbeater_web/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/buzzerbeater_web/buzzerbeater_web/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_web/buzzerbeater_web/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/buzzerbeater_web/player/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_web/bbstats/migrations/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/buzzerbeater_web/player/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_web/bbstats/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/buzzerbeater_web/player/apps.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_web/bbstats/apps.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/buzzerbeater_web/player/migrations/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_web/bbstats/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/buzzerbeater_web/player/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_web/bbstats/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/buzzerbeater_web/player/templates/player/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_web/bbstats/templates/bbstats/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/buzzerbeater_web/player/templates/player/player_overview.html" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_web/bbstats/templates/bbstats/player_overview.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/buzzerbeater_web/player/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_web/bbstats/tests.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/buzzerbeater_web/player/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_web/bbstats/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/buzzerbeater_web/player/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_web/bbstats/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/buzzerbeater_web/bbstats/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_web/bbstats/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -32,8 +21,8 @@
       <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/buzzerbeater_web/bbstats/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5">
-              <caret line="51" column="18" selection-start-line="51" selection-start-column="18" selection-end-line="51" selection-end-column="18" />
+            <state relative-caret-position="260">
+              <caret line="54" column="17" selection-start-line="54" selection-start-column="17" selection-end-line="54" selection-end-column="17" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -87,7 +76,7 @@
         <entry file="file://$PROJECT_DIR$/buzzerbeater_web/bbstats/models.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="319">
-              <caret line="192" column="26" selection-start-line="192" selection-start-column="26" selection-end-line="192" selection-end-column="26" />
+              <caret line="205" column="26" selection-start-line="205" selection-start-column="26" selection-end-line="205" selection-end-column="26" />
             </state>
           </provider>
         </entry>
@@ -440,13 +429,6 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/buzzerbeater_web/bbstats/views.py</url>
-          <line>52</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
       <option name="time" value="2" />
     </breakpoint-manager>
   </component>
@@ -770,14 +752,14 @@
     <entry file="file://$PROJECT_DIR$/buzzerbeater_web/bbstats/models.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="319">
-          <caret line="192" column="26" selection-start-line="192" selection-start-column="26" selection-end-line="192" selection-end-column="26" />
+          <caret line="205" column="26" selection-start-line="205" selection-start-column="26" selection-end-line="205" selection-end-column="26" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/buzzerbeater_web/bbstats/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5">
-          <caret line="51" column="18" selection-start-line="51" selection-start-column="18" selection-end-line="51" selection-end-column="18" />
+        <state relative-caret-position="260">
+          <caret line="54" column="17" selection-start-line="54" selection-start-column="17" selection-end-line="54" selection-end-column="17" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
           </folding>

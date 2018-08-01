@@ -1,9 +1,9 @@
-{% if latest_players_list %}
+{% if all_teams %}
 	<ul>
-		{% for player in latest_players_list %}
-		<li><a href="/player/{{ player.id }}/">{{ player.name }}</a></li>
+		{% for team in all_teams %}
+		<li><a href="/bbstats/team/{{ team.id }}/">{{ team.name }}</a></li>
 		{% endfor %}
 	</ul>
 {% else %}
-	<p>No players are available.</p>
+	<p>No teams are available.</p>
 {% endif %}

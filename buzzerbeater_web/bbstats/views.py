@@ -50,9 +50,9 @@ potentials_mapping = {
 
 
 def index(request):
-    latest_players_list = Players.objects.order_by('-last_update_at')[:10]
+    all_teams = Teams.objects.order_by('name')
     context = {
-        'latest_players_list': latest_players_list,
+        'all_teams': all_teams,
     }
     return render(request, 'bbstats/index.html', context)
 
