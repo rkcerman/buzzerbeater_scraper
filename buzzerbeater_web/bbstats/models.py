@@ -73,6 +73,19 @@ class Boxscores(models.Model):
         db_table = 'boxscores'
 
 
+class GameShapes(models.Model):
+    player = models.ForeignKey('Players', models.DO_NOTHING, primary_key=True)
+    date = models.DateTimeField(primary_key=True)
+    value = models.SmallIntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'game_shapes'
+
+    def __str__(self):
+        return self.player.name + ' ' + str(self.value)
+
+
 class Matches(models.Model):
     id = models.IntegerField(primary_key=True)
     match_date = models.DateField()

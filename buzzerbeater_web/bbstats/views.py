@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.db.models import Q
 
-from .models import Players, PlayerSkills, BoxscoreStats, Boxscores, Shots
+from .models import Players, PlayerSkills, BoxscoreStats, Boxscores, Shots, Teams
 
 default_season = 43
 
@@ -54,12 +54,23 @@ def index(request):
     context = {
         'latest_players_list': latest_players_list,
     }
-    return render(request, 'player/index.html', context)
+    return render(request, 'bbstats/index.html', context)
+
+
+def team_overview(request, team_id):
+    team = Teams.objects.get(id=team_id)
+    team_players = Players.objects.filter(team_id=team_id)
+
+    context = {
+        'team': team,
+        'team_players': team_players,
+    }
+    return render(request, 'bbstats/team_overview.html', context)
 
 
 # Returns player overview with the default season and all league and cup matches
-def default_overview(request, player_id):
-    return overview(
+def player_default_overview(request, player_id):
+    return player_overview(
         request=request,
         player_id=player_id,
         season=default_season,
@@ -68,8 +79,8 @@ def default_overview(request, player_id):
 
 
 # Returns player overview with the specified season and all league and cup matches
-def season_overview(request, player_id, season):
-    return overview(
+def player_season_overview(request, player_id, season):
+    return player_overview(
         request=request,
         player_id=player_id,
         season=season,
@@ -78,7 +89,7 @@ def season_overview(request, player_id, season):
 
 
 # Returns player overview
-def overview(request, player_id, season, match_type):
+def player_overview(request, player_id, season, match_type):
     try:
         # Defining and looking up key objects from the DB
         player = Players.objects.get(
@@ -188,7 +199,7 @@ def overview(request, player_id, season, match_type):
             logging.info('Not enough skills available')
             print(e)
 
-        return render(request, 'player/player_overview.html', context)
+        return render(request, 'bbstats/player_overview.html', context)
     except ObjectDoesNotExist as e:
         return HttpResponse('Player ID ', player_id, ' does not exist.')
 
