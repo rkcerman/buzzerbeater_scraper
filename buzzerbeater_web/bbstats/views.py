@@ -57,14 +57,15 @@ def index(request):
     return render(request, 'bbstats/index.html', context)
 
 
+# Returns team overview with the list of players and their skills
 def team_overview(request, team_id):
     team = Teams.objects.get(id=team_id)
     team_players = Players.objects.filter(team_id=team_id)
-    team_players = get_game_shapes(team_players)
+    team_players_skills = get_team_players_skills(team_players)
 
     context = {
         'team': team,
-        'team_players': team_players,
+        'players_skills': team_players_skills,
     }
     return render(request, 'bbstats/team_overview.html', context)
 
@@ -98,8 +99,7 @@ def player_overview(request, player_id, season, match_type):
         )
         skills = PlayerSkills.objects.filter(
             player=player_id
-        )
-        game_shape = GameShapes.objects.filter(player_id=player.id).order_by('-date')[:1][0].value
+        ).distinct('skill').order_by('-skill')
         boxscore_stats = BoxscoreStats.objects.filter(
             player_id=player_id,
             boxscore__match__season=season
@@ -108,8 +108,6 @@ def player_overview(request, player_id, season, match_type):
             shooter=player_id,
             pbp__boxscore__match__season=season
         )
-        print('shots: ', player_shots.count())
-        print('shots excl fouled: ', player_shots.count())
         player_defended_shots = Shots.objects.filter(
             defender=player_id,
             pbp__boxscore__match__season=season
@@ -176,7 +174,6 @@ def player_overview(request, player_id, season, match_type):
         # Setting up the final context
         context = {
             'player': player,
-            'game_shape': game_shape,
             'potential': potential,
             'skills': player_skills,
             'stats': stats,
@@ -203,25 +200,6 @@ def player_overview(request, player_id, season, match_type):
         return render(request, 'bbstats/player_overview.html', context)
     except ObjectDoesNotExist as e:
         return HttpResponse('Player ID ', player_id, ' does not exist.')
-
-
-# Create a list of dicts for each players with the game shape info as an extra key
-def get_game_shapes(team_players):
-    team_players_list = []
-    for player in team_players:
-
-        # Retrieving the game shape with the latest scrape date
-        try:
-            game_shape = GameShapes.objects.filter(player_id=player.id).order_by('-date')[:1][0].value
-        except IndexError:
-            game_shape = 0
-        player_context = {
-            'player': player,
-            'game_shape': game_shape
-        }
-        team_players_list.append(player_context)
-
-    return team_players_list
 
 
 # Get aggregates for each unique shot type
@@ -369,6 +347,26 @@ def get_initials(string):
         return string
     else:
         return initials
+
+
+# Creates a list of dicts per player ID, containing the player object and skills
+def get_team_players_skills(players):
+    team_players_skills = []
+    for player in players:
+        try:
+            player_skills = PlayerSkills.objects.filter(player_id=player.id)
+        except AttributeError as e:
+            logging.error(e)
+            logging.error('Only accepting Players as a model')
+        else:
+            player_skills = player_skills.distinct('skill').order_by('-skill')
+            player_skills = get_skills_nomenclature(player_skills)
+            player_dict = {
+                    'info': player,
+                    'skills': player_skills,
+            }
+            team_players_skills.append(player_dict)
+    return team_players_skills
 
 
 # Gets strategies and preps matches used by the player's team in that particular match

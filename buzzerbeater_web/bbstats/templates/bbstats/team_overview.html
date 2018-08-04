@@ -12,8 +12,27 @@
     <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.19/api/sum().js"></script>
     <script>
         var teamPlayersData = [
-            {% for player in team_players %}
-                ['<a href="/bbstats/player/{{ player.player.id }}/">{{ player.player.name }}</a>', '{{ player.player.age }}', '{{ player.player.weekly_salary }}, '{{ player.player.dmi }}', '{{ player.player.potential }}', '{{ player.game_shape }}'],
+            {% for player in players_skills %}
+                ['<a href="/bbstats/player/{{ player.info.id }}/">{{ player.info.name }}</a>',
+                 '{{ player.info.age }}',
+                 '${{ player.info.weekly_salary }}',
+                 '{{ player.info.dmi }}',
+                 '{{ player.info.potential }}',
+                 '{{ player.skills.game_shape.0 }}',
+                 '{{ player.skills.jump_shot.0 }}',
+                 '{{ player.skills.jump_range.0 }}',
+                 '{{ player.skills.outside_def.0 }}',
+                 '{{ player.skills.handling.0 }}',
+                 '{{ player.skills.driving.0 }}',
+                 '{{ player.skills.passing.0 }}',
+                 '{{ player.skills.inside_shot.0 }}',
+                 '{{ player.skills.inside_def.0 }}',
+                 '{{ player.skills.rebounding.0 }}',
+                 '{{ player.skills.shot_blocking.0 }}',
+                 '{{ player.skills.stamina.0 }}',
+                 '{{ player.skills.free_throw.0 }}',
+                 '{{ player.skills.experience.0 }}'
+                ],
             {% endfor %}
         ];
         
@@ -21,12 +40,12 @@
             $('#teamPlayers').DataTable( {
                 data: teamPlayersData,   
                 columns: [
-                    { title: 'Name'},
+                    { title: 'Name', width:'8%'},
                     { title: 'Age'},
                     { title: 'Salary'},
                     { title: 'DMI'},
-                    { title: 'Potential'},
-                    { title: 'Game shape'},
+                    { title: 'Pot'},
+                    { title: 'GS'},
                     { title: 'JS'},
                     { title: 'JR'},
                     { title: 'OD'},
@@ -54,23 +73,25 @@
         }
         .teamPlayersDiv {
             margin: 0 auto;
-            width: 50%;
+            width: 60%;
+        }
+        .teamPlayersDiv table{
+            table-layout: fixed;
+            width: 100%;
+            text-align: center;
         }
 
     </style>
-    <title>{{ team.id }} - {{ team.name }}</title>
+    <title>{{ team.name }}</title>
 </head>
-
 <body>
     <div class="teamInfo">
         <h1>{{ team.name }}</h1>
         <h3>ID: {{ team.id }}</h3>
     </div>
     <div class="teamPlayersDiv">
-        <table id="teamPlayers" class="display stripe" style="width:100%">            
+        <table id="teamPlayers" class="display stripe">            
         </table>
-
-
     </div>
 </body>
 {% endif %}
