@@ -1,8 +1,13 @@
-from buzzerbeater_scraper.config import BB_USERNAME, BB_PASSWORD
+from buzzerbeater_scraper.config import BB_USERNAME, BB_PASSWORD, BB_API_PASSWORD
 
 BB_LOGIN = {
     'ctl00$txtLoginName': BB_USERNAME,
     'ctl00$txtPassword': BB_PASSWORD
+}
+
+BB_API_LOGIN = {
+    'login': BB_USERNAME,
+    'code': BB_API_PASSWORD
 }
 
 BB_TRANSFER_SEARCH_FORMDATA = {

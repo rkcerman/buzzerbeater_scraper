@@ -12,7 +12,7 @@ from buzzerbeater_scraper import pbp_parser
 from buzzerbeater_scraper.pbp_tags import PLAY_TYPE_CATEGORIES
 from buzzerbeater_scraper.items import PlayByPlayItem, TeamItem, MatchItem
 from buzzerbeater_scraper.pbp_parser import PlayByPlayParser
-from buzzerbeater_scraper.formdata import BB_LOGIN
+from buzzerbeater_scraper.formdata import BB_LOGIN, BB_API_LOGIN
 from buzzerbeater_scraper.boxscore_parser import BoxscoreParser
 from buzzerbeater_scraper.spiders import player_spider
 
@@ -72,9 +72,9 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
             self.logger.error("Login failed")
         else:
             self.logger.info("Login successful")
-            # TODO put API login into config!!!!!
+            api_url = self.base_login_url + '?{}'.format(urllib.parse.urlencode(BB_API_LOGIN))
             yield scrapy.Request(
-                url=self.base_login_url + '?login=rkcerman&code=konzola2',
+                url=api_url,
                 callback=self.after_api_login
             )
 
