@@ -120,11 +120,6 @@ class PlayerItem(scrapy.Item):
     potential = scrapy.Field()
 
 
-class GameShapesItem(scrapy.Item):
-    player_id = scrapy.Field()
-    value = scrapy.Field()
-
-
 class PlayerHistoryItem(scrapy.Item):
     player_id = scrapy.Field()
     event = scrapy.Field()

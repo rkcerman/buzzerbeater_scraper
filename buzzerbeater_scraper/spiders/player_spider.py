@@ -2,7 +2,7 @@ import scrapy
 from datetime import datetime
 import re
 
-from buzzerbeater_scraper.items import PlayerItem, TeamItem, PlayerSkillsItem, PlayerHistoryItem, GameShapesItem
+from buzzerbeater_scraper.items import PlayerItem, TeamItem, PlayerSkillsItem, PlayerHistoryItem
 from buzzerbeater_scraper.formdata import BB_LOGIN
 
 
@@ -51,18 +51,12 @@ class PlayerSpider(scrapy.Spider):
         if player is not None:
             player_item = player['player_item']
             team_item = player['team_item']
-            game_shape_item = player['game_shape_item']
 
             yield team_item
             yield player_item
-            yield game_shape_item
 
-            # TODO ugly AF
-            try:
-                for skill in player['player_skills_items']:
-                    yield skill
-            except KeyError:
-                print('No player skills available for ', player_item.id)
+            for skill in player['player_skills_items']:
+                yield skill
 
             player_history_link = player['player_history_link']
             yield response.follow(player_history_link, self.parse_player_history)
@@ -88,7 +82,7 @@ class PlayerSpider(scrapy.Spider):
         player_name = response.xpath('//h1/text()').extract_first()
 
         # Extracting basic info (the "left" column) available about all players
-        if player_name not in ("Player Not Found", None) :
+        if player_name not in ("Player Not Found", None):
 
             personal_info = response.xpath('//td[@id="playerPersonalInfo"]')
 
@@ -148,17 +142,17 @@ class PlayerSpider(scrapy.Spider):
                 transfer_estimate=transfer_estimate,
                 potential=potential
             )
-            game_shape_item = GameShapesItem(
+            game_shape_item = PlayerSkillsItem(
                 player_id=player_id,
-                value=game_shape
+                skill='Game Shape',
+                value=game_shape,
             )
 
             # TODO Maybe, um, create a fucking players class?!?!
             yields = {
                 'team_item': team_item,
                 'player_item': player_item,
-                'game_shape_item': game_shape_item,
-                'player_skills_items': []
+                'player_skills_items': [game_shape_item],
             }
 
             # Extracting skills (the "right" column)

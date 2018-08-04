@@ -69,18 +69,12 @@ class BuzzerbeaterTransfersSpider(scrapy.Spider):
         if player is not None:
             player_item = player['player_item']
             team_item = player['team_item']
-            game_shape_item = player['game_shape_item']
 
             yield team_item
             yield player_item
-            yield game_shape_item
 
-            # TODO ugly AF
-            try:
-                for skill in player['player_skills_items']:
-                    yield skill
-            except KeyError:
-                print('No player skills available for ', player_item.id)
+            for skill in player['player_skills_items']:
+                yield skill
 
             player_history_link = player['player_history_link']
             yield response.follow(player_history_link, self.parse_player_history)
