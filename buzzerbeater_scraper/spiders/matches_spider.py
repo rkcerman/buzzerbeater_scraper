@@ -24,13 +24,13 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
     start_urls = (
         'http://www.buzzerbeater.com/default.aspx',
     )
-    urls = [
-        'http://www.buzzerbeater.com/team/58420/schedule.aspx?season=42'
-    ]
     teams_seasons = []
     parse_players = False
     parse_pbps = False
-    base_url = 'http://bbapi.buzzerbeater.com/schedule.aspx'
+    base_url = 'http://bbapi.buzzerbeater.com'
+    base_login_url = base_url + '/login.aspx'
+    base_schedule_url = base_url + '/schedule.aspx'
+    base_boxscore_url = base_url + '/boxscore.aspx'
 
     def __init__(self, team_ids='58420', seasons='43', parse_players=False, parse_pbps=False, **kwargs):
         seasons = seasons.split(',')
@@ -41,7 +41,7 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
         )
         self.parse_players = parse_players
         self.parse_pbps = parse_pbps
-        super().__init__(**kwargs)  # python3
+        super().__init__(**kwargs)
 
     # Creates a list of dicts, each containing a team_id and season to scrape
     def get_teams_seasons(self, team_ids, seasons):
@@ -74,7 +74,7 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
             self.logger.info("Login successful")
             # TODO put API login into config!!!!!
             yield scrapy.Request(
-                url='http://bbapi.buzzerbeater.com/login.aspx?login=rkcerman&code=konzola2',
+                url=self.base_login_url + '?login=rkcerman&code=konzola2',
                 callback=self.after_api_login
             )
 
@@ -85,7 +85,7 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
                 'team_id': team_season['team_id'],
                 'season': team_season['season'],
             }
-            url = self.base_url + '?{}'.format(urllib.parse.urlencode(args))
+            url = self.base_schedule_url + '?{}'.format(urllib.parse.urlencode(args))
 
             self.logger.debug("Current URL: {}".format(url))
             yield scrapy.Request(
@@ -130,8 +130,9 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
             yield home_team_item
             yield match_item
 
+            # Let's make sure we don't request not-yet-existing boxscore pages
             if datetime.datetime.now() > match_date:
-                boxscore_api_link = 'http://bbapi.buzzerbeater.com/boxscore.aspx?matchid=' + match_id
+                boxscore_api_link = self.base_boxscore_url + '?matchid=' + match_id
 
                 yield response.follow(
                     url=boxscore_api_link,
@@ -139,7 +140,6 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
                     meta={'match_id': match_id}
                 )
 
-    # TODO parse the actual box score
     # Parses the Boxscore page
     def parse_boxscore(self, response):
         boxscore_xml = response.xpath('//bbapi/match')
