@@ -1,16 +1,13 @@
 # -*- coding: utf-8 -*-
+import datetime
+import urllib.parse
+
 import scrapy
 import re
 
-from twisted.internet import reactor
-from datetime import datetime
 from bs4 import BeautifulSoup
-from scrapy.crawler import CrawlerProcess, CrawlerRunner
-from scrapy.utils.project import get_project_settings
-from scrapy.utils.log import configure_logging
 
 from buzzerbeater_scraper import pbp_parser
-from buzzerbeater_scraper import boxscore_parser
 
 from buzzerbeater_scraper.pbp_tags import PLAY_TYPE_CATEGORIES
 from buzzerbeater_scraper.items import PlayByPlayItem, TeamItem, MatchItem
@@ -30,32 +27,33 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
     urls = [
         'http://www.buzzerbeater.com/team/58420/schedule.aspx?season=42'
     ]
+    teams_seasons = []
     parse_players = False
-    parse_pbps = True
+    parse_pbps = False
+    base_url = 'http://bbapi.buzzerbeater.com/schedule.aspx'
 
-    def __init__(self, team_id, season='', parse_players=False, parse_pbps=True, **kwargs):
-        if season != '':
-            season = season.split(',')
-        if team_id is not None:
-            team_id = team_id.split(',')
-            print(team_id)
-            self.urls = []
-
-            for team in team_id:
-                url = 'http://www.buzzerbeater.com/team/' + team + '/schedule.aspx'
-                print(url)
-                if season:
-                    for s in season:
-                        self.urls.append(url + '?season=' + s)
-                else:
-                    self.urls.append(url)
+    def __init__(self, team_ids='58420', seasons='43', parse_players=False, parse_pbps=False, **kwargs):
+        seasons = seasons.split(',')
+        team_ids = team_ids.split(',')
+        self.teams_seasons = self.get_teams_seasons(
+            team_ids=team_ids,
+            seasons=seasons
+        )
         self.parse_players = parse_players
         self.parse_pbps = parse_pbps
-        print(self.urls)
-        print(self.parse_players)
-        print(self.parse_pbps)
-        self.logger.info(self.urls)
         super().__init__(**kwargs)  # python3
+
+    # Creates a list of dicts, each containing a team_id and season to scrape
+    def get_teams_seasons(self, team_ids, seasons):
+        teams_seasons = []
+        for team_id in team_ids:
+            for season in seasons:
+                args = {
+                    'team_id': team_id,
+                    'season': season,
+                }
+                teams_seasons.append(args)
+        return teams_seasons
 
     def parse(self, response):
         # Opening a login request
@@ -74,6 +72,7 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
             self.logger.error("Login failed")
         else:
             self.logger.info("Login successful")
+            # TODO put API login into config!!!!!
             yield scrapy.Request(
                 url='http://bbapi.buzzerbeater.com/login.aspx?login=rkcerman&code=konzola2',
                 callback=self.after_api_login
@@ -81,62 +80,59 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
 
     # After API login method that calls the boxscore API link before parsing it
     def after_api_login(self, response):
-        for url in self.urls:
-            self.logger.info(["URL", url])
-            yield scrapy.Request(url, callback=self.parse_schedule)
+        for team_season in self.teams_seasons:
+            args = {
+                'team_id': team_season['team_id'],
+                'season': team_season['season'],
+            }
+            url = self.base_url + '?{}'.format(urllib.parse.urlencode(args))
 
-    # TODO better to move this into boxscore_parser
-    # Parses the Schedule page
+            self.logger.debug("Current URL: {}".format(url))
+            yield scrapy.Request(
+                url=url,
+                callback=self.parse_schedule,
+                meta=args,
+            )
+
+    # Parses the schedule from the API response
     def parse_schedule(self, response):
-        season = response.xpath('//option[@selected="selected"]/@value').extract_first()
+        schedule_xml = response.xpath('//bbapi/schedule')
+        season = response.meta['season']
 
-        # Iterating through each row
-        for row in response.xpath('//table[@class="schedule"]/tr'):
-            boxscore_link = row.xpath('td[4]/a[@id="matchBoxscoreLink"]/@href').extract_first()
-            away_team_name = row.xpath('td[3]//a/text()').extract_first()
-            home_team_name = row.xpath('td[6]//a/text()').extract_first()
+        for match in schedule_xml.xpath('match'):
+            match_id = match.xpath('@id').extract_first()
+            match_date = match.xpath('@start').extract_first()
+            match_date = datetime.datetime.strptime(match_date, '%Y-%m-%dT%H:%M:%SZ')
+            # type = match.xpath('@type') <- For some other time
 
-            # To prevent table headers and all star games from getting scraped
-            if boxscore_link and away_team_name and home_team_name is not None:
-                match_date = row.xpath('td[1]//text()').extract_first().split()[0]
-                match_date = datetime.strptime(match_date, '%m/%d/%Y')
+            # Gathering data for away and home teams and yielding it
+            away_team_id = match.xpath('awayTeam/@id').extract_first()
+            away_team_name = match.xpath('awayTeam/teamName/text()').extract_first()
+            away_team_item = TeamItem(
+                id=away_team_id,
+                name=away_team_name
+            )
+            home_team_id = match.xpath('homeTeam/@id').extract_first()
+            home_team_name = match.xpath('homeTeam/teamName/text()').extract_first()
+            home_team_item = TeamItem(
+                id=home_team_id,
+                name=home_team_name
+            )
+            match_item = MatchItem(
+                id=match_id,
+                match_date=match_date,
+                away_team_id=away_team_id,
+                home_team_id=home_team_id,
+                season=season
+            )
 
-                # Creating the Away Team item
-                away_team_id = row.xpath('td[3]//a/@href').extract_first().replace("/team/", "")
-                away_team_id = away_team_id.replace("/overview.aspx", "")
-                away_team_item = TeamItem(
-                    id=away_team_id,
-                    name=away_team_name
-                )
+            yield away_team_item
+            yield home_team_item
+            yield match_item
 
-                yield away_team_item
-
-                # Creating the Home Team item
-                home_team_id = row.xpath('td[6]//a/@href').extract_first().replace("/team/", "")
-                home_team_id = home_team_id.replace("/overview.aspx", "")
-                home_team_item = TeamItem(
-                    id=home_team_id,
-                    name=home_team_name
-                )
-
-                yield home_team_item
-
-                # Extracting the Match ID
-                match_id = boxscore_link.replace("/match/", "").replace("/boxscore.aspx", "")
-
-                match_item = MatchItem(
-                    id=match_id,
-                    match_date=match_date,
-                    away_team_id=away_team_id,
-                    home_team_id=home_team_id,
-                    season=season
-                )
-                yield match_item
-
+            if datetime.datetime.now() > match_date:
                 boxscore_api_link = 'http://bbapi.buzzerbeater.com/boxscore.aspx?matchid=' + match_id
 
-                # Login to API before scraping box scores
-                meta={'match_id': match_id, 'boxscore_api_link': boxscore_api_link}
                 yield response.follow(
                     url=boxscore_api_link,
                     callback=self.parse_boxscore,

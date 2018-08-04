@@ -13,7 +13,7 @@
     <script>
         var teamPlayersData = [
             {% for player in team_players %}
-                ['<a href="/bbstats/player/{{ player.id }}/">{{ player.name }}</a>', {{ player.age }}, {{ player.weekly_salary }}, {{ player.dmi }}, '{{ player.potential }}'],
+                ['<a href="/bbstats/player/{{ player.player.id }}/">{{ player.player.name }}</a>', '{{ player.player.age }}', '{{ player.player.weekly_salary }}, '{{ player.player.dmi }}', '{{ player.player.potential }}', '{{ player.game_shape }}'],
             {% endfor %}
         ];
         
@@ -26,6 +26,20 @@
                     { title: 'Salary'},
                     { title: 'DMI'},
                     { title: 'Potential'},
+                    { title: 'Game shape'},
+                    { title: 'JS'},
+                    { title: 'JR'},
+                    { title: 'OD'},
+                    { title: 'Ha'},
+                    { title: 'Dr'},
+                    { title: 'Pa'},
+                    { title: 'IS'},
+                    { title: 'ID'},
+                    { title: 'Re'},
+                    { title: 'BS'},
+                    { title: 'St'},
+                    { title: 'FT'},
+                    { title: 'Ex'},
                 ]
             }               
             );
