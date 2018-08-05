@@ -72,6 +72,8 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
             self.logger.error("Login failed")
         else:
             self.logger.info("Login successful")
+            self.logger.info('Parse Players: ' + self.parse_players)
+            self.logger.info('Parse Play-by-plays: ' + self.parse_pbps)
             api_url = self.base_login_url + '?{}'.format(urllib.parse.urlencode(BB_API_LOGIN))
             yield scrapy.Request(
                 url=api_url,
@@ -175,7 +177,7 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
         # Following the link to Play-By-Play page
         pbp_link = 'http://www.buzzerbeater.com/match/' + match_id + '/pbp.aspx'
 
-        if self.parse_pbps is True:
+        if self.parse_pbps:
             yield response.follow(pbp_link, self.parse_pbp)
 
     # TODO Try to find a way to use scrapy's native parsing here
