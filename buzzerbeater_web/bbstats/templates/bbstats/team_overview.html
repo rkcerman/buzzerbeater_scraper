@@ -18,20 +18,20 @@
                  '${{ player.info.weekly_salary }}',
                  '{{ player.info.dmi }}',
                  '{{ player.info.potential }}',
-                 '{{ player.skills.game_shape.0 }}',
-                 '{{ player.skills.jump_shot.0 }}',
-                 '{{ player.skills.jump_range.0 }}',
-                 '{{ player.skills.outside_def.0 }}',
-                 '{{ player.skills.handling.0 }}',
-                 '{{ player.skills.driving.0 }}',
-                 '{{ player.skills.passing.0 }}',
-                 '{{ player.skills.inside_shot.0 }}',
-                 '{{ player.skills.inside_def.0 }}',
-                 '{{ player.skills.rebounding.0 }}',
-                 '{{ player.skills.shot_blocking.0 }}',
-                 '{{ player.skills.stamina.0 }}',
-                 '{{ player.skills.free_throw.0 }}',
-                 '{{ player.skills.experience.0 }}'
+                 '<span class="lev{{ player.skills.game_shape.0 }}">   {{ player.skills.game_shape.0 }} </span>',
+                 '<span class="lev{{ player.skills.jump_shot.0 }}">    {{ player.skills.jump_shot.0 }} </span>',
+                 '<span class="lev{{ player.skills.jump_range.0 }}">   {{ player.skills.jump_range.0 }} </span>',
+		 '<span class="lev{{ player.skills.outside_def.0 }}">  {{ player.skills.outside_def.0 }} </span>',
+                 '<span class="lev{{ player.skills.handling.0 }}">     {{ player.skills.handling.0 }} </span>',
+                 '<span class="lev{{ player.skills.driving.0 }}">      {{ player.skills.driving.0 }} </span>',
+                 '<span class="lev{{ player.skills.passing.0 }}">      {{ player.skills.passing.0 }} </span>',
+		 '<span class="lev{{ player.skills.inside_shot.0 }}">  {{ player.skills.inside_shot.0 }} </span>',
+                 '<span class="lev{{ player.skills.inside_def.0 }}">   {{ player.skills.inside_def.0 }} </span>',
+                 '<span class="lev{{ player.skills.rebounding.0 }}">   {{ player.skills.rebounding.0 }} </span>',
+		 '<span class="lev{{ player.skills.shot_blocking.0 }}">{{ player.skills.shot_blocking.0 }} </span>',
+                 '<span class="lev{{ player.skills.stamina.0 }}">      {{ player.skills.stamina.0 }} </span>',
+                 '<span class="lev{{ player.skills.free_throw.0 }}">   {{ player.skills.free_throw.0 }} </span>',
+                 '<span class="lev{{ player.skills.experience.0 }}">   {{ player.skills.experience.0 }} </span>'
                 ],
             {% endfor %}
         ];
@@ -59,7 +59,8 @@
                     { title: 'St'},
                     { title: 'FT'},
                     { title: 'Ex'},
-                ]
+                ],
+                displayLength: 30,
             }               
             );
             
