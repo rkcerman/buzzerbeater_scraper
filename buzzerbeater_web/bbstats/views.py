@@ -1,14 +1,16 @@
 import logging
 import re
+import redis
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.db.models import Q
 
-from .models import Players, PlayerSkills, BoxscoreStats, Boxscores, Shots, Teams, GameShapes
+from .models import Players, PlayerSkills, BoxscoreStats, Boxscores, Shots, Teams, Matches
 
 default_season = 43
+r = redis.Redis(host='localhost', port=6379, db=0)
 
 skills_mapping = {
     1: 'atrocious',
@@ -63,9 +65,13 @@ def team_overview(request, team_id):
     team_players = Players.objects.filter(team_id=team_id)
     team_players_skills = get_players_skills_potential(team_players)
 
+    # TODO change season
+    schedule = get_schedule(team, 43)
+
     context = {
         'team': team,
         'players_skills': team_players_skills,
+        'schedule': schedule,
     }
     return render(request, 'bbstats/team_overview.html', context)
 
@@ -195,6 +201,30 @@ def player_overview(request, player_id, season, match_type):
         return render(request, 'bbstats/player_overview.html', context)
     except ObjectDoesNotExist as e:
         return HttpResponse('Player ID ', player_id, ' does not exist.')
+
+
+# Fetches the schedule from the DB, or if available from redis
+def get_schedule(team, season):
+    redis_schedule_key = 'team:{}:schedule'.format(team.id)
+    team_id = team.id
+
+    # Let's check if there is an existing schedule in redis
+    # TODO not robust - passes even if only one match fetched
+    redis_schedule = r.lrange(redis_schedule_key, 0, -1)
+    if not redis_schedule:
+        matches = Matches.objects.filter(season=season)\
+            .filter(Q(away_team_id=team_id) | Q(home_team_id=team_id))\
+            .order_by('match_date')
+        matches_ids = [match['id'] for match in matches.values('id')]
+        r.rpush(redis_schedule_key, *matches_ids)
+        return matches
+    else:
+        matches = []
+        for match_id in redis_schedule:
+            match_id = match_id.decode('utf-8')
+            match = Matches.objects.get(id=match_id)
+            matches.append(match)
+        return matches
 
 
 # Get aggregates for each unique shot type
