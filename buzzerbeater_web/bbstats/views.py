@@ -61,7 +61,7 @@ def index(request):
 def team_overview(request, team_id):
     team = Teams.objects.get(id=team_id)
     team_players = Players.objects.filter(team_id=team_id)
-    team_players_skills = get_team_players_skills(team_players)
+    team_players_skills = get_players_skills_potential(team_players)
 
     context = {
         'team': team,
@@ -126,18 +126,13 @@ def player_overview(request, player_id, season, match_type):
                 Q(pbp__boxscore__match_type__contains='league') | Q(pbp__boxscore__match_type__contains='cup')
             )
 
+        # Returns styling class and nomenclature for skills
         player_skills = get_skills_nomenclature(skills)
 
-        # Returns styling class and nomeclature for potential
+        # Returns styling class and nomenclature for potential
         try:
-            potential_nomenc = potentials_mapping[player.potential]
-            potenial_name = list(potential_nomenc)[0]
-            potential = {
-                'value': player.potential,
-                'name': potenial_name,
-                'lev': potential_nomenc[potenial_name],
-            }
-        except KeyError:
+            potential = get_potential_nomenclature(player)
+        except ValueError:
             potential = {}
 
         # Creating a list of all matches with their types, stats and minutes
@@ -333,6 +328,22 @@ def get_skills_nomenclature(skills):
     return player_skills
 
 
+# Creating a dict containing highlight info and nomenc. for the potential
+def get_potential_nomenclature(player):
+    try:
+        potential_nomenc = potentials_mapping[player.potential]
+    except KeyError:
+        raise ValueError
+    else:
+        potenial_name = list(potential_nomenc)[0]
+        potential = {
+            'value': player.potential,
+            'name': potenial_name,
+            'lev': potential_nomenc[potenial_name],
+        }
+        return potential
+
+
 def safe_div(x,y):
     if y == 0:
         return 0
@@ -350,7 +361,7 @@ def get_initials(string):
 
 
 # Creates a list of dicts per player ID, containing the player object and skills
-def get_team_players_skills(players):
+def get_players_skills_potential(players):
     team_players_skills = []
     for player in players:
         try:
@@ -361,9 +372,14 @@ def get_team_players_skills(players):
         else:
             player_skills = player_skills.distinct('skill').order_by('-skill')
             player_skills = get_skills_nomenclature(player_skills)
+            try:
+                player_potential = get_potential_nomenclature(player)
+            except ValueError:
+                player_potential = {}
             player_dict = {
                     'info': player,
                     'skills': player_skills,
+                    'potential': player_potential,
             }
             team_players_skills.append(player_dict)
     return team_players_skills

@@ -7,6 +7,7 @@
   <component name="ChangeListManager">
     <list default="true" id="44b49686-e162-4ba2-8c95-3e44a55449bf" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/buzzerbeater_web/bbstats/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_web/bbstats/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -22,8 +23,8 @@
           <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/buzzerbeater_web/bbstats/views.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="476">
-                  <caret line="127" selection-start-line="127" selection-end-line="127" />
+                <state relative-caret-position="561">
+                  <caret line="381" column="49" selection-start-line="381" selection-start-column="49" selection-end-line="381" selection-end-column="49" />
                   <folding>
                     <element signature="e#0#14#0" expanded="true" />
                   </folding>
@@ -357,6 +358,7 @@
       <window_info content_ui="combo" x="604" y="70" width="158" height="655" id="Project" order="0" weight="0.20863836" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32917318" />
       <window_info anchor="bottom" id="Version Control" order="9" weight="0.32917318" />
       <window_info anchor="bottom" id="Python Console" order="7" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.49141964" />
@@ -370,7 +372,6 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32917318" />
     </layout>
     <layout-to-restore>
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -668,8 +669,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/buzzerbeater_web/bbstats/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="127" selection-start-line="127" selection-end-line="127" />
+        <state relative-caret-position="561">
+          <caret line="381" column="49" selection-start-line="381" selection-start-column="49" selection-end-line="381" selection-end-column="49" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
           </folding>

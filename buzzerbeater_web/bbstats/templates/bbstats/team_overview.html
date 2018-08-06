@@ -17,7 +17,7 @@
                  '{{ player.info.age }}',
                  '${{ player.info.weekly_salary }}',
                  '{{ player.info.dmi }}',
-                 '{{ player.info.potential }}',
+                 '<span class="{{ player.potential.lev}}"> {{ player.potential.value }} </span>',
                  '<span class="lev{{ player.skills.game_shape.0 }}">   {{ player.skills.game_shape.0 }} </span>',
                  '<span class="lev{{ player.skills.jump_shot.0 }}">    {{ player.skills.jump_shot.0 }} </span>',
                  '<span class="lev{{ player.skills.jump_range.0 }}">   {{ player.skills.jump_range.0 }} </span>',
