@@ -1,54 +1,15 @@
 import logging
-import re
-import redis
 
-from django.core.exceptions import ObjectDoesNotExist
-from django.http import HttpResponse
 from django.shortcuts import render
 from django.db.models import Q
 
-from .models import Players, PlayerSkills, BoxscoreStats, Boxscores, Shots, Teams, Matches
+from .processors.process import calculate_skill_points, get_skills_nomenclature, \
+    get_potential_nomenclature, get_strategies_preps
+
+from .processors.query import get_schedule
+from .models import Players, PlayerSkills, BoxscoreStats, Shots, Teams
 
 default_season = 43
-r = redis.Redis(host='localhost', port=6379, db=0)
-
-skills_mapping = {
-    1: 'atrocious',
-    2: 'pitiful',
-    3: 'awful',
-    4: 'inept',
-    5: 'mediocre',
-    6: 'average',
-    7: 'respectable',
-    8: 'strong',
-    9: 'proficient',
-    10: 'prominent',
-    11: 'prolific',
-    12: 'sensational',
-    13: 'tremendous',
-    14: 'wondrous',
-    15: 'marvelous',
-    16: 'prodigious',
-    17: 'stupendous',
-    18: 'phenomenal',
-    19: 'colossal',
-    20: 'legendary',
-}
-
-potentials_mapping = {
-    0: {'announcer': 'lev5'},
-    1: {'bench warmer': 'lev6'},
-    2: {'role player': 'lev7'},
-    3: {'6th man': 'lev8'},
-    4: {'starter': 'lev9'},
-    5: {'star': 'lev10'},
-    6: {'allstar': 'lev11'},
-    7: {'perennial allstar': 'lev12'},
-    8: {'superstar': 'lev13'},
-    9: {'MVP': 'lev15'},
-    10: {'hall of famer': 'lev16'},
-    11: {'all-time great': 'lev17'},
-}
 
 
 def index(request):
@@ -98,140 +59,104 @@ def player_season_overview(request, player_id, season):
 
 # Returns player overview
 def player_overview(request, player_id, season, match_type):
+    # Defining and looking up key objects from the DB
+    player = Players.objects.get(
+        id=player_id
+    )
+    skills = PlayerSkills.objects.filter(
+        player=player_id
+    ).distinct('skill').order_by('-skill')
+    boxscore_stats = BoxscoreStats.objects.filter(
+        player_id=player_id,
+        boxscore__match__season=season
+    ).order_by('-boxscore_id')
+    player_shots = Shots.objects.filter(
+        shooter=player_id,
+        pbp__boxscore__match__season=season
+    )
+    player_defended_shots = Shots.objects.filter(
+        defender=player_id,
+        pbp__boxscore__match__season=season
+    )
+    player_passed_shots = Shots.objects.filter(
+        passer=player_id,
+        pbp__boxscore__match__season=season
+    )
+
+    # Further filtering based on match_types if they are defined
+    if match_type == 'standard':
+        boxscore_stats = boxscore_stats.filter(
+            Q(boxscore__match_type__contains='league') | Q(boxscore__match_type__contains='cup')
+        )
+        player_shots = player_shots.filter(
+            Q(pbp__boxscore__match_type__contains='league') | Q(pbp__boxscore__match_type__contains='cup')
+        )
+
+    # Returns styling class and nomenclature for skills
+    player_skills = get_skills_nomenclature(skills)
+
     try:
-        # Defining and looking up key objects from the DB
-        player = Players.objects.get(
-            id=player_id
-        )
-        skills = PlayerSkills.objects.filter(
-            player=player_id
-        ).distinct('skill').order_by('-skill')
-        boxscore_stats = BoxscoreStats.objects.filter(
-            player_id=player_id,
-            boxscore__match__season=season
-        ).order_by('-boxscore_id')
-        player_shots = Shots.objects.filter(
-            shooter=player_id,
-            pbp__boxscore__match__season=season
-        )
-        player_defended_shots = Shots.objects.filter(
-            defender=player_id,
-            pbp__boxscore__match__season=season
-        )
-        player_passed_shots = Shots.objects.filter(
-            passer=player_id,
-            pbp__boxscore__match__season=season
-        )
+        skill_points = calculate_skill_points(player_skills)
+    except ValueError:
+        skill_points = {}
 
-        # Further filtering based on match_types if they are defined
-        if match_type == 'standard':
-            boxscore_stats = boxscore_stats.filter(
-                Q(boxscore__match_type__contains='league') | Q(boxscore__match_type__contains='cup')
-            )
-            player_shots = player_shots.filter(
-                Q(pbp__boxscore__match_type__contains='league') | Q(pbp__boxscore__match_type__contains='cup')
-            )
+    # Returns styling class and nomenclature for potential
+    try:
+        potential = get_potential_nomenclature(player)
+    except ValueError:
+        potential = {}
 
-        # Returns styling class and nomenclature for skills
-        player_skills = get_skills_nomenclature(skills)
-
-        # Returns styling class and nomenclature for potential
-        try:
-            potential = get_potential_nomenclature(player)
-        except ValueError:
-            potential = {}
-
-        # Creating a list of all matches with their types, stats and minutes
-        stats = []
-        for stat in boxscore_stats:
-            max_minutes = {
-                'PG': stat.pg_min,
-                'SG': stat.sg_min,
-                'SF': stat.sf_min,
-                'PF': stat.pf_min,
-                'C': stat.c_min
-            }
-
-            max_minute_key = max(max_minutes, key=max_minutes.get)
-            max_minute_value = max(max_minutes.values())
-
-            boxscore = stat.boxscore
-            match_type = boxscore.match_type
-
-            stats.append({
-                'match': stat,
-                'max_minute_key': max_minute_key,
-                'max_minute_value': max_minute_value,
-                'match_type': match_type,
-                'strategies_preps': get_strategies_preps(stat, stat.boxscore),
-                'shots': player_shots
-            }
-            )
-
-        shot_performances = get_shot_performances(player_shots)
-        defense_performances = get_defense_performances(player_defended_shots)
-        passing_performances = get_passing_performances(player_passed_shots)
-
-        # Setting up the final context
-        context = {
-            'player': player,
-            'potential': potential,
-            'skills': player_skills,
-            'stats': stats,
-            'shot_performances': shot_performances,
-            'defense_performances': defense_performances,
-            'passing_performances': passing_performances,
+    # Creating a list of all matches with their types, stats and minutes
+    stats = []
+    for stat in boxscore_stats:
+        max_minutes = {
+            'PG': stat.pg_min,
+            'SG': stat.sg_min,
+            'SF': stat.sf_min,
+            'PF': stat.pf_min,
+            'C': stat.c_min
         }
 
-        # Calculating value of TSP
-        try:
-            gsp = player_skills['jump_shot'][0] + player_skills['jump_range'][0] + player_skills['outside_def'][0] \
-                  + player_skills['handling'][0] + player_skills['driving'][0] + player_skills['passing'][0]
-            fsp = player_skills['inside_shot'][0] + player_skills['inside_def'][0] \
-                  + player_skills['rebounding'][0] + player_skills['shot_blocking'][0]
-            tsp = gsp + fsp
+        max_minute_key = max(max_minutes, key=max_minutes.get)
+        max_minute_value = max(max_minutes.values())
 
-            context['gsp'] = gsp
-            context['fsp'] = fsp
-            context['tsp'] = tsp
-        except KeyError as e:
-            logging.info('Not enough skills available')
-            print(e)
+        boxscore = stat.boxscore
+        match_type = boxscore.match_type
 
-        return render(request, 'bbstats/player_overview.html', context)
-    except ObjectDoesNotExist as e:
-        return HttpResponse('Player ID ', player_id, ' does not exist.')
+        stats.append({
+            'match': stat,
+            'max_minute_key': max_minute_key,
+            'max_minute_value': max_minute_value,
+            'match_type': match_type,
+            'strategies_preps': get_strategies_preps(stat, stat.boxscore),
+            'shots': player_shots
+        }
+        )
 
+    shot_performances = get_shot_performances(player_shots)
+    defense_performances = get_defense_performances(player_defended_shots)
+    passing_performances = get_passing_performances(player_passed_shots)
 
-# Fetches the schedule from the DB, or if available from redis
-def get_schedule(team, season):
-    redis_schedule_key = 'team:{}:schedule'.format(team.id)
-    team_id = team.id
+    # Setting up the final context
+    context = {
+        'player': player,
+        'potential': potential,
+        'skills': player_skills,
+        'stats': stats,
+        'shot_performances': shot_performances,
+        'defense_performances': defense_performances,
+        'passing_performances': passing_performances,
+        **skill_points
+    }
 
-    # Let's check if there is an existing schedule in redis
-    # TODO not robust - passes even if only one match fetched
-    redis_schedule = r.lrange(redis_schedule_key, 0, -1)
-    if not redis_schedule:
-        matches = Matches.objects.filter(season=season)\
-            .filter(Q(away_team_id=team_id) | Q(home_team_id=team_id))\
-            .order_by('match_date')
-        matches_ids = [match['id'] for match in matches.values('id')]
-        r.rpush(redis_schedule_key, *matches_ids)
-        return matches
-    else:
-        matches = []
-        for match_id in redis_schedule:
-            match_id = match_id.decode('utf-8')
-            match = Matches.objects.get(id=match_id)
-            matches.append(match)
-        return matches
+    return render(request, 'bbstats/player_overview.html', context)
 
 
 # Get aggregates for each unique shot type
 def get_shot_performances(shots):
-    distinct_shot_types = shots\
-        .values_list('pbp__event_type')\
-        .distinct()\
+    distinct_shot_types = shots \
+        .values_list('pbp__event_type') \
+        .distinct() \
         .order_by('pbp__event_type')
     shot_performances = []
 
@@ -349,47 +274,6 @@ def get_passing_performances(passed_shots):
     return passing_performances
 
 
-# Creating a map of skills nomenclature with their respective values
-def get_skills_nomenclature(skills):
-    player_skills = {}
-    for skill in skills:
-        skill_name = skill.skill.replace(' ', '_').replace('.', '').lower()
-        player_skills[skill_name] = [skill.value, skills_mapping[skill.value]]
-    return player_skills
-
-
-# Creating a dict containing highlight info and nomenc. for the potential
-def get_potential_nomenclature(player):
-    try:
-        potential_nomenc = potentials_mapping[player.potential]
-    except KeyError:
-        raise ValueError
-    else:
-        potenial_name = list(potential_nomenc)[0]
-        potential = {
-            'value': player.potential,
-            'name': potenial_name,
-            'lev': potential_nomenc[potenial_name],
-        }
-        return potential
-
-
-def safe_div(x,y):
-    if y == 0:
-        return 0
-    return x / y
-
-
-# Get initials of each strategy name for display a shorter version in the table
-def get_initials(string):
-    initials = ''.join(re.findall('(\d?\d?\d?[A-Z])', string))
-
-    if len(initials) == 1:
-        return string
-    else:
-        return initials
-
-
 # Creates a list of dicts per player ID, containing the player object and skills
 def get_players_skills_potential(players):
     team_players_skills = []
@@ -407,49 +291,15 @@ def get_players_skills_potential(players):
             except ValueError:
                 player_potential = {}
             player_dict = {
-                    'info': player,
-                    'skills': player_skills,
-                    'potential': player_potential,
+                'info': player,
+                'skills': player_skills,
+                'potential': player_potential,
             }
             team_players_skills.append(player_dict)
     return team_players_skills
 
 
-# Gets strategies and preps matches used by the player's team in that particular match
-def get_strategies_preps(player_stats, boxscore):
-    if isinstance(player_stats, BoxscoreStats) and isinstance(boxscore, Boxscores):
-        player_team = player_stats.team
-
-        if player_stats.boxscore.match.home_team_id == player_team.id:
-            away_or_home_str = 'home'
-            player_team_off = get_initials(boxscore.home_off_strategy)
-            player_team_def = get_initials(boxscore.home_def_strategy)
-            player_team_prep_f = boxscore.home_prep_focus_matched
-            player_team_prep_p = boxscore.home_prep_pace_matched
-            opp_team_off = get_initials(boxscore.away_off_strategy)
-            opp_team_def = get_initials(boxscore.away_def_strategy)
-            opp_team_prep_f = boxscore.away_prep_focus_matched
-            opp_team_prep_p = boxscore.away_prep_pace_matched
-        else:
-            away_or_home_str = 'away'
-            player_team_off = get_initials(boxscore.away_off_strategy)
-            player_team_def = get_initials(boxscore.away_def_strategy)
-            player_team_prep_f = boxscore.away_prep_focus_matched
-            player_team_prep_p = boxscore.away_prep_pace_matched
-            opp_team_off = get_initials(boxscore.home_off_strategy)
-            opp_team_def = get_initials(boxscore.home_def_strategy)
-            opp_team_prep_f = boxscore.home_prep_focus_matched
-            opp_team_prep_p = boxscore.home_prep_pace_matched
-
-        strategies_preps = {
-            'away_or_home': away_or_home_str,
-            'player_team_off': player_team_off,
-            'player_team_def': player_team_def,
-            'player_team_prep_f': player_team_prep_f,
-            'player_team_prep_p': player_team_prep_p,
-            'opp_team_off': opp_team_off,
-            'opp_team_def': opp_team_def,
-            'opp_team_prep_f': opp_team_prep_f,
-            'opp_team_prep_p': opp_team_prep_p
-        }
-        return strategies_preps
+def safe_div(x, y):
+    if y == 0:
+        return 0
+    return x / y
