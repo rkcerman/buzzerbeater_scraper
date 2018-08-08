@@ -38,19 +38,31 @@
     var scheduleData = [
         {% for match in schedule %}
         [
-            '{{ match.match_date }}',
+            '{{ match.0.match_date|date:"y-m-d" }}',
+            {% if match.0.home_team_id ==  team.id %}
+            '{{ match.1.home_off_strategy }}',
+            '{{ match.1.home_def_strategy }}',
+            '{{ match.1.home_prep_focus_matched }}',
+            '{{ match.1.home_prep_pace_matched }}',
             '',
+            '{{ match.0.away_team.name }}',
+            '{{ match.1.away_off_strategy }}',
+            '{{ match.1.away_def_strategy }}',
+            '{{ match.1.away_prep_focus_matched }}',
+            '{{ match.1.away_prep_pace_matched }}',            
+            {% else %}
+            '{{ match.1.away_off_strategy }}',
+            '{{ match.1.away_def_strategy }}',
+            '{{ match.1.away_prep_focus_matched }}',
+            '{{ match.1.away_prep_pace_matched }}',
             '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-            '',
-        
+            '{{ match.0.home_team.name }}',
+            '{{ match.1.home_off_strategy }}',
+            '{{ match.1.home_def_strategy }}',
+            '{{ match.1.home_prep_focus_matched }}',
+            '{{ match.1.home_prep_pace_matched }}',   
+            {% endif %}
+            '{{ match.1.match_type }}',
         ],
         {% endfor %}
     ];

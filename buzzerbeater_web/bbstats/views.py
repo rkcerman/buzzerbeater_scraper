@@ -2,20 +2,25 @@ import logging
 
 from django.shortcuts import render
 from django.db.models import Q
+from django.core.cache import cache
+from django.conf import settings
+from django.core.cache.backends.base import DEFAULT_TIMEOUT
+from django.views.decorators.cache import cache_page
 
 from .processors.process import calculate_skill_points, get_skills_nomenclature, \
     get_potential_nomenclature, get_strategies_preps
 
-from .processors.query import get_schedule
+from .processors.query import get_schedule, get_all_teams
 from .models import Players, PlayerSkills, BoxscoreStats, Shots, Teams
 
 default_season = 43
+CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 
 
+@cache_page(CACHE_TTL)
 def index(request):
-    all_teams = Teams.objects.order_by('name')
     context = {
-        'all_teams': all_teams,
+        'all_teams': get_all_teams(),
     }
     return render(request, 'bbstats/index.html', context)
 
