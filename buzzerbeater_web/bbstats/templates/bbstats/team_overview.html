@@ -13,7 +13,7 @@
     <script>
         var teamPlayersData = [
             {% for player in players_skills %}
-                ['<a href="/bbstats/player/{{ player.info.id }}/">{{ player.info.name }}</a>',
+                ['<a href="{% url 'player_default_overview' player.info.id %}">{{ player.info.name }}</a>',
                  '{{ player.info.age }}',
                  '${{ player.info.weekly_salary }}',
                  '{{ player.info.dmi }}',

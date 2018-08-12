@@ -528,7 +528,7 @@
                                 <b> {{ player.position }} </b>
                                 <br />
                                 <br /> Team:
-                                <a id="ctl00_cphContent_teamName" href="/bbstats/team/{{ player.team.id }}">{{ player.team.name }}</a>
+                                <a id="ctl00_cphContent_teamName" href="{% url 'team_overview' player.team.id %}">{{ player.team.name }}</a>
                                 <br />
                                 <br /> Weekly salary: $ {{ player.weekly_salary }}
                                 <br /> DMI: {{ player.dmi }}

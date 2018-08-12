@@ -5,13 +5,7 @@
     <bookmark url="file://$PROJECT_DIR$/buzzerbeater_web/bbstats/views.py" line="154" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="44b49686-e162-4ba2-8c95-3e44a55449bf" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/buzzerbeater_web/bbstats/processors/query.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_web/bbstats/processors/query.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/buzzerbeater_web/bbstats/templates/bbstats/team_overview.html" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_web/bbstats/templates/bbstats/team_overview.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/buzzerbeater_web/bbstats/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_web/bbstats/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/buzzerbeater_web/buzzerbeater_web/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_web/buzzerbeater_web/settings.py" afterDir="false" />
-    </list>
+    <list default="true" id="44b49686-e162-4ba2-8c95-3e44a55449bf" name="Default" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -356,7 +350,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-3" y="30" width="1372" height="741" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" x="604" y="70" width="158" height="655" id="Project" order="0" sideWeight="0.49921995" weight="0.20863836" />
       <window_info anchor="bottom" id="TODO" order="6" />
