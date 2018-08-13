@@ -1,6 +1,9 @@
+import logging
 import re
 
-from bbstats.models import BoxscoreStats, Boxscores
+from bbstats.models import BoxscoreStats, Boxscores, PlayerSkills
+
+from .query import get_player_skills
 
 skills_mapping = {
     1: 'atrocious',
@@ -133,3 +136,89 @@ def get_initials(string):
         return string
     else:
         return initials
+
+
+# Creates a list of dicts per player ID, containing the player object and skills
+def get_players_skills_potential(players):
+    team_players_skills = []
+    for player in players:
+        try:
+            player_skills = get_player_skills(player_id=player.id)
+        except AttributeError as e:
+            logging.error(e)
+            logging.error('Only accepting Players as a model')
+        else:
+            player_skills = player_skills.distinct('skill').order_by('-skill')
+            player_skills = get_skills_nomenclature(player_skills)
+            try:
+                player_potential = get_potential_nomenclature(player)
+            except ValueError:
+                player_potential = {}
+            player_dict = {
+                'info': player,
+                'skills': player_skills,
+                'potential': player_potential,
+            }
+            team_players_skills.append(player_dict)
+    return team_players_skills
+
+
+def get_player_shot_types(shots, agg_type):
+    if agg_type in ['pass', 'shoot', 'guard']:
+        distinct_shot_types = shots \
+            .values_list('pbp__event_type') \
+            .distinct() \
+            .order_by('pbp__event_type')
+        shot_performances = []
+
+        # Performing the actual aggregates, with the exclusion of fouled shots
+        for shot_type in distinct_shot_types:
+            shot_type = shot_type[0]
+            shot_type_query = shots.filter(pbp__event_type=shot_type).exclude(outcome='fouled')
+
+            shot_performances.append(
+                aggregate_shot_type(shot_type, shot_type_query, agg_type)
+            )
+
+        return shot_performances
+    else:
+        raise ValueError('type needs to be one of pass, shoot or guard.')
+
+
+def aggregate_shot_type(shot_type, shot_type_query, agg_type):
+    made_fg = shot_type_query.filter(outcome='scored').count()
+    attempted_fg = shot_type_query.count()
+    fg_per = round(safe_div(made_fg, attempted_fg), 2)
+
+    agg_shot_type = {
+        'shot_type': shot_type,
+        'made_fg': made_fg,
+        'attempted_fg': attempted_fg,
+        'fg_per': fg_per,
+    }
+
+    if agg_type == 'shoot':
+        # Guarded
+        made_guarded = shot_type_query.filter(defender__isnull=False, outcome='scored').count()
+        attempted_guarded = shot_type_query.filter(defender__isnull=False).count()
+        guarded_per = round(safe_div(made_guarded, attempted_guarded), 2)
+
+        # Passed
+        made_passed = shot_type_query.filter(passer__isnull=False, outcome='scored').count()
+        attempted_passed = shot_type_query.filter(passer__isnull=False).count()
+        passed_per = round(safe_div(made_passed, attempted_passed), 2)
+
+        agg_shot_type['made_guarded'] = made_guarded
+        agg_shot_type['attempted_guarded'] = attempted_guarded
+        agg_shot_type['guarded_per'] = guarded_per
+        agg_shot_type['made_passed'] = made_passed
+        agg_shot_type['attempted_passed'] = attempted_passed
+        agg_shot_type['passed_per'] = passed_per
+
+    return agg_shot_type
+
+
+def safe_div(x, y):
+    if y == 0:
+        return 0
+    return x / y

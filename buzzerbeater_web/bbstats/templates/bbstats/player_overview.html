@@ -964,7 +964,7 @@
                         <td>{{ shot_type.guarded_per }}</td>
                         <td>{{ shot_type.made_passed }}</td>
                         <td>{{ shot_type.attempted_passed }}</td>
-                        <td>{{ shot_type.passed_per }}</td>
+                        <td>{{ shot_type.passed_per }}</td>dddd
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -1027,12 +1027,12 @@
                     {% for shot_type in defense_performances %}
                     <tr>
                         <td>{{ shot_type.shot_type }}</td>
-                        <td>{{ shot_type.opp_made_fg }}</td>
-                        <td>{{ shot_type.opp_attempted_fg }}</td>
-                        <td>{{ shot_type.opp_fg_per }}</td>
-                        <td>{{ shot_type.opp_made_passed }}</td>
-                        <td>{{ shot_type.opp_attempted_passed }}</td>
-                        <td>{{ shot_type.opp_passed_per }}</td>
+                        <td>{{ shot_type.made_fg }}</td>
+                        <td>{{ shot_type.attempted_fg }}</td>
+                        <td>{{ shot_type.fg_per }}</td>
+                        <td>{{ shot_type.made_passed }}</td>
+                        <td>{{ shot_type.attempted_passed }}</td>
+                        <td>{{ shot_type.passed_per }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -1090,12 +1090,12 @@
                     {% for shot_type in passing_performances %}
                     <tr>
                         <td>{{ shot_type.shot_type }}</td>
-                        <td>{{ shot_type.mate_made_fg }}</td>
-                        <td>{{ shot_type.mate_attempted_fg }}</td>
-                        <td>{{ shot_type.mate_fg_per }}</td>
-                        <td>{{ shot_type.mate_made_guarded }}</td>
-                        <td>{{ shot_type.mate_attempted_guarded }}</td>
-                        <td>{{ shot_type.mate_guarded_per }}</td>
+                        <td>{{ shot_type.made_fg }}</td>
+                        <td>{{ shot_type.attempted_fg }}</td>
+                        <td>{{ shot_type.fg_per }}</td>
+                        <td>{{ shot_type.made_guarded }}</td>
+                        <td>{{ shot_type.attempted_guarded }}</td>
+                        <td>{{ shot_type.guarded_per }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>

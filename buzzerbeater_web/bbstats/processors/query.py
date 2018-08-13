@@ -1,7 +1,7 @@
 import redis
 from django.db.models import Q
 
-from bbstats.models import Matches, Boxscores, Teams
+from bbstats.models import Matches, Boxscores, Teams, PlayerSkills
 
 r = redis.StrictRedis(host='localhost', port=6379, db=0)
 
@@ -75,6 +75,12 @@ def get_boxscore(boxscore_id):
         model=Boxscores(),
         model_id=boxscore_id
     )
+
+
+def get_player_skills(player_id):
+    return PlayerSkills.objects.filter(
+        player=player_id
+    ).distinct('skill').order_by('-skill', '-date')
 
 
 def redis_get_all_fields(key, model, model_id):
