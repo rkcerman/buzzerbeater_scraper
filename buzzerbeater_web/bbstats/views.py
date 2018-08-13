@@ -70,7 +70,7 @@ def player_overview(request, player_id, season, match_type):
     )
     skills = PlayerSkills.objects.filter(
         player=player_id
-    ).distinct('skill').order_by('-skill')
+    ).distinct('skill').order_by('-skill', '-date')
     boxscore_stats = BoxscoreStats.objects.filter(
         player_id=player_id,
         boxscore__match__season=season
