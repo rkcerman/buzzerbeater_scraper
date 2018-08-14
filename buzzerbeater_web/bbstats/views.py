@@ -5,7 +5,7 @@ from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.views.decorators.cache import cache_page
 
 from .processors.process import calculate_skill_points, get_skills_nomenclature, \
-    get_potential_nomenclature, get_strategies_preps, get_players_skills_potential, get_player_shot_types
+    get_potential_context, get_strategies_context, get_players_skills_potential, get_player_shot_types
 
 from .processors.query import get_schedule, get_all_teams
 from .models import Players, PlayerSkills, BoxscoreStats, Shots, Teams
@@ -104,7 +104,7 @@ def player_overview(request, player_id, season, match_type):
 
     # Returns styling class and nomenclature for potential
     try:
-        potential = get_potential_nomenclature(player)
+        potential = get_potential_context(player)
     except ValueError:
         potential = {}
 
@@ -130,7 +130,7 @@ def player_overview(request, player_id, season, match_type):
             'max_minute_key': max_minute_key,
             'max_minute_value': max_minute_value,
             'match_type': match_type,
-            'strategies_preps': get_strategies_preps(stat, stat.boxscore),
+            'strategies_preps': get_strategies_context(stat, stat.boxscore),
             'shots': player_shots
         }
         )

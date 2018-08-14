@@ -73,7 +73,7 @@ def get_skills_nomenclature(skills):
 
 
 # Creating a dict containing highlight info and nomenc. for the potential
-def get_potential_nomenclature(player):
+def get_potential_context(player):
     try:
         potential_nomenc = potentials_mapping[player.potential]
     except KeyError:
@@ -89,28 +89,28 @@ def get_potential_nomenclature(player):
 
 
 # Gets strategies and preps matches used by the player's team in that particular match
-def get_strategies_preps(player_stats, boxscore):
+def get_strategies_context(player_stats, boxscore):
     if isinstance(player_stats, BoxscoreStats) and isinstance(boxscore, Boxscores):
         player_team = player_stats.team
 
         if player_stats.boxscore.match.home_team_id == player_team.id:
             away_or_home_str = 'home'
-            player_team_off = get_initials(boxscore.home_off_strategy)
-            player_team_def = get_initials(boxscore.home_def_strategy)
+            player_team_off = boxscore.home_off_strategy
+            player_team_def = boxscore.home_def_strategy
             player_team_prep_f = boxscore.home_prep_focus_matched
             player_team_prep_p = boxscore.home_prep_pace_matched
-            opp_team_off = get_initials(boxscore.away_off_strategy)
-            opp_team_def = get_initials(boxscore.away_def_strategy)
+            opp_team_off = boxscore.away_off_strategy
+            opp_team_def = boxscore.away_def_strategy
             opp_team_prep_f = boxscore.away_prep_focus_matched
             opp_team_prep_p = boxscore.away_prep_pace_matched
         else:
             away_or_home_str = 'away'
-            player_team_off = get_initials(boxscore.away_off_strategy)
-            player_team_def = get_initials(boxscore.away_def_strategy)
+            player_team_off = boxscore.away_off_strategy
+            player_team_def = boxscore.away_def_strategy
             player_team_prep_f = boxscore.away_prep_focus_matched
             player_team_prep_p = boxscore.away_prep_pace_matched
-            opp_team_off = get_initials(boxscore.home_off_strategy)
-            opp_team_def = get_initials(boxscore.home_def_strategy)
+            opp_team_off = boxscore.home_off_strategy
+            opp_team_def = boxscore.home_def_strategy
             opp_team_prep_f = boxscore.home_prep_focus_matched
             opp_team_prep_p = boxscore.home_prep_pace_matched
 
@@ -128,16 +128,6 @@ def get_strategies_preps(player_stats, boxscore):
         return strategies_preps
 
 
-# Get initials of each strategy name for display a shorter version in the table
-def get_initials(string):
-    initials = ''.join(re.findall('(\d?\d?\d?[A-Z])', string))
-
-    if len(initials) == 1:
-        return string
-    else:
-        return initials
-
-
 # Creates a list of dicts per player ID, containing the player object and skills
 def get_players_skills_potential(players):
     team_players_skills = []
@@ -151,7 +141,7 @@ def get_players_skills_potential(players):
             player_skills = player_skills.distinct('skill').order_by('-skill')
             player_skills = get_skills_nomenclature(player_skills)
             try:
-                player_potential = get_potential_nomenclature(player)
+                player_potential = get_potential_context(player)
             except ValueError:
                 player_potential = {}
             player_dict = {

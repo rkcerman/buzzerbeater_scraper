@@ -1,4 +1,5 @@
 {% if player %}
+{% load bbstats_extras %}
 <link rel="stylesheet" href="http://www.buzzerbeater.com/CSS/contentbox.css?c=2" type="text/css" />
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.3.1/dt-1.10.18/rg-1.0.3/datatables.min.css" />
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.3.1/dt-1.10.18/rg-1.0.3/datatables.min.js"></script>
@@ -34,12 +35,12 @@
                         '{{ stat.match.pf }}',
                         '{{ stat.match.pts }}',
                         '{{ stat.match.rating }}',
-                        '{{ stat.strategies_preps.player_team_off }}',
-                        '{{ stat.strategies_preps.player_team_def }}',
+                        '{{ stat.strategies_preps.player_team_off|to_initials }}',
+                        '{{ stat.strategies_preps.player_team_def|to_initials }}',
                         //'{{ stat.strategies_preps.player_team_prep_f }}',
                        // '{{ stat.strategies_preps.player_team_prep_p }}',
-                        '{{ stat.strategies_preps.opp_team_off }}',
-                        '{{ stat.strategies_preps.opp_team_def }}',
+                        '{{ stat.strategies_preps.opp_team_off|to_initials }}',
+                        '{{ stat.strategies_preps.opp_team_def|to_initials }}',
                        // '{{ stat.strategies_preps.opp_team_prep_f }}',
                        // '{{ stat.strategies_preps.opp_team_prep_p }}',
                         '{{ stat.match_type }}',

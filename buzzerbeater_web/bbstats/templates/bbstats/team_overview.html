@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 {% if team %}
+{% load bbstats_extras %}
 
 <head>
     <meta charset="UTF-8">
@@ -40,25 +41,25 @@
         [
             '{{ match.0.match_date|date:"y-m-d" }}',
             {% if match.0.home_team_id ==  team.id %}
-            '{{ match.1.home_off_strategy }}',
-            '{{ match.1.home_def_strategy }}',
+            '{{ match.1.home_off_strategy|to_initials }}',
+            '{{ match.1.home_def_strategy|to_initials }}',
             '{{ match.1.home_prep_focus_matched }}',
             '{{ match.1.home_prep_pace_matched }}',
             '',
             '<a href="{% url 'team_overview' match.0.away_team_id %}">{{ match.0.away_team.name }}</a>',
-            '{{ match.1.away_off_strategy }}',
-            '{{ match.1.away_def_strategy }}',
+            '{{ match.1.away_off_strategy|to_initials }}',
+            '{{ match.1.away_def_strategy|to_initials }}',
             '{{ match.1.away_prep_focus_matched }}',
             '{{ match.1.away_prep_pace_matched }}',            
             {% else %}
-            '{{ match.1.away_off_strategy }}',
-            '{{ match.1.away_def_strategy }}',
+            '{{ match.1.away_off_strategy|to_initials }}',
+            '{{ match.1.away_def_strategy|to_initials }}',
             '{{ match.1.away_prep_focus_matched }}',
             '{{ match.1.away_prep_pace_matched }}',
             '',
             '<a href="{% url 'team_overview' match.0.home_team_id %}">{{ match.0.home_team.name }}</a>',
-            '{{ match.1.home_off_strategy }}',
-            '{{ match.1.home_def_strategy }}',
+            '{{ match.1.home_off_strategy|to_initials }}',
+            '{{ match.1.home_def_strategy|to_initials }}',
             '{{ match.1.home_prep_focus_matched }}',
             '{{ match.1.home_prep_pace_matched }}',   
             {% endif %}
