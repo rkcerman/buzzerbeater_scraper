@@ -6,9 +6,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="44b49686-e162-4ba2-8c95-3e44a55449bf" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/buzzerbeater_web/bbstats/processors/process.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_web/bbstats/processors/process.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/buzzerbeater_web/bbstats/templates/bbstats/player_overview.html" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_web/bbstats/templates/bbstats/player_overview.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/buzzerbeater_web/bbstats/templates/bbstats/team_overview.html" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_web/bbstats/templates/bbstats/team_overview.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/buzzerbeater_scraper/spiders/matches_spider.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_scraper/spiders/matches_spider.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -37,14 +35,11 @@
       </split-first>
       <split-second>
         <leaf>
-          <file leaf-file-name="process.py" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/buzzerbeater_web/bbstats/processors/process.py">
+          <file leaf-file-name="matches_spider.py" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/spiders/matches_spider.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state>
-                  <caret line="35" column="4" selection-start-line="35" selection-start-column="4" selection-end-line="35" selection-end-column="4" />
-                  <folding>
-                    <element signature="e#0#14#0" expanded="true" />
-                  </folding>
+                <state relative-caret-position="323">
+                  <caret line="86" column="43" selection-start-line="86" selection-start-column="43" selection-end-line="86" selection-end-column="43" />
                 </state>
               </provider>
             </entry>
@@ -103,7 +98,6 @@
         <option value="$PROJECT_DIR$/buzzerbeater_scraper/spiders/transfers_spider.py" />
         <option value="$PROJECT_DIR$/buzzerbeater_scraper/items.py" />
         <option value="$PROJECT_DIR$/buzzerbeater_scraper/pipelines.py" />
-        <option value="$PROJECT_DIR$/buzzerbeater_scraper/spiders/matches_spider.py" />
         <option value="$PROJECT_DIR$/buzzerbeater_scraper/spiders/player_spider.py" />
         <option value="$PROJECT_DIR$/buzzerbeater_web/buzzerbeater_web/settings.py" />
         <option value="$PROJECT_DIR$/buzzerbeater_scraper/regex_patterns.py" />
@@ -112,6 +106,7 @@
         <option value="$PROJECT_DIR$/buzzerbeater_web/bbstats/processors/query.py" />
         <option value="$PROJECT_DIR$/buzzerbeater_web/bbstats/views.py" />
         <option value="$PROJECT_DIR$/buzzerbeater_web/bbstats/processors/process.py" />
+        <option value="$PROJECT_DIR$/buzzerbeater_scraper/spiders/matches_spider.py" />
       </list>
     </option>
   </component>
@@ -209,7 +204,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
-    <property name="SearchEverywhereHistoryKey" value="proce&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_web/bbstats/processors/process.py&#10;get_sc&#9;null&#9;null&#10;pro&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_web/bbstats/processors/process.py&#10;que&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_web/bbstats/processors/query.py&#10;qu&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_web/bbstats/processors/query.py&#10;vi&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_web/bbstats/views.py&#10;mat&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/matches_spider.py&#10;boxx&#9;null&#9;null&#10;pbp_&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/pbp_parser.py&#10;rege&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/regex_patterns.py&#10;pbp_pa&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/pbp_parser.py&#10;quer&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_web/bbstats/processors/query.py&#10;sett&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_web/buzzerbeater_web/settings.py&#10;django.conf.settings&#9;null&#9;null&#10;set&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_web/buzzerbeater_web/settings.py&#10;q&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_web/bbstats/processors/query.py&#10;view&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_web/bbstats/views.py&#10;settings&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_web/buzzerbeater_web/settings.py&#10;boxscore&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/boxscore_parser.py&#10;settings.py&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_web/buzzerbeater_web/settings.py&#10;pip&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/pipelines.py&#10;pla&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/player_spider.py&#10;play&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/player_spider.py&#10;item&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/items.py&#10;tra&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/transfers_spider.py&#10;playe&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/player_spider.py&#10;for&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/formdata.py&#10;con&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/config.py&#10;matches&#9;null&#9;null&#10;views&#9;null&#9;null&#10;ma&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/matches_spider.py&#10;trans&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/transfers_spider.py&#10;player&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_web/player/templates/player/player_overview.html&#10;tran&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/transfers_spider.py&#10;pbp&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/pbp_tags.py&#10;tag&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/pbp_tags.py&#10;ite&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/items.py&#10;players&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/player_spider.py&#10;items&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/items.py&#10;pipe&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/pipelines.py&#10;transfer&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/transfers_spider.py&#10;test&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/tests/test_boxscore_parser.py&#10;tests&#9;null&#9;null&#10;models&#9;null&#9;null&#10;pl&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/player_spider.py&#10;tr&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/transfers_spider.py" />
+    <property name="SearchEverywhereHistoryKey" value="mat&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/matches_spider.py&#10;proce&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_web/bbstats/processors/process.py&#10;get_sc&#9;null&#9;null&#10;pro&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_web/bbstats/processors/process.py&#10;que&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_web/bbstats/processors/query.py&#10;qu&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_web/bbstats/processors/query.py&#10;vi&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_web/bbstats/views.py&#10;boxx&#9;null&#9;null&#10;pbp_&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/pbp_parser.py&#10;rege&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/regex_patterns.py&#10;pbp_pa&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/pbp_parser.py&#10;quer&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_web/bbstats/processors/query.py&#10;sett&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_web/buzzerbeater_web/settings.py&#10;django.conf.settings&#9;null&#9;null&#10;set&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_web/buzzerbeater_web/settings.py&#10;q&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_web/bbstats/processors/query.py&#10;view&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_web/bbstats/views.py&#10;settings&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_web/buzzerbeater_web/settings.py&#10;boxscore&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/boxscore_parser.py&#10;settings.py&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_web/buzzerbeater_web/settings.py&#10;pip&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/pipelines.py&#10;pla&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/player_spider.py&#10;play&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/player_spider.py&#10;item&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/items.py&#10;tra&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/transfers_spider.py&#10;playe&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/player_spider.py&#10;for&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/formdata.py&#10;con&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/config.py&#10;matches&#9;null&#9;null&#10;views&#9;null&#9;null&#10;ma&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/matches_spider.py&#10;trans&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/transfers_spider.py&#10;player&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_web/player/templates/player/player_overview.html&#10;tran&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/transfers_spider.py&#10;pbp&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/pbp_tags.py&#10;tag&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/pbp_tags.py&#10;ite&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/items.py&#10;players&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/player_spider.py&#10;items&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/items.py&#10;pipe&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/pipelines.py&#10;transfer&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/transfers_spider.py&#10;test&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/tests/test_boxscore_parser.py&#10;tests&#9;null&#9;null&#10;models&#9;null&#9;null&#10;pl&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/player_spider.py&#10;tr&#9;FILE&#9;file:///home/rkcerman/dev/python/PyCharm/buzzerbeater/buzzerbeater_scraper/spiders/transfers_spider.py" />
     <property name="full.screen.before.presentation.mode" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/buzzerbeater_web/bbstats/processors/process.py" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
@@ -640,13 +635,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/spiders/matches_spider.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="250" lean-forward="true" selection-start-line="250" selection-end-line="250" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/pbp_parser.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
@@ -664,16 +652,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/buzzerbeater_web/bbstats/processors/process.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="35" column="4" selection-start-line="35" selection-start-column="4" selection-end-line="35" selection-end-column="4" />
-          <folding>
-            <element signature="e#0#14#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/buzzerbeater_web/bbstats/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="612">
@@ -681,6 +659,23 @@
           <folding>
             <element signature="e#0#35#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/buzzerbeater_web/bbstats/processors/process.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="51" column="2" selection-start-line="51" selection-start-column="2" selection-end-line="51" selection-end-column="2" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/buzzerbeater_scraper/spiders/matches_spider.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="86" column="43" selection-start-line="86" selection-start-column="43" selection-end-line="86" selection-end-column="43" />
         </state>
       </provider>
     </entry>

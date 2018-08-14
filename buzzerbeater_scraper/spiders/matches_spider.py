@@ -49,7 +49,7 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
         for team_id in team_ids:
             for season in seasons:
                 args = {
-                    'team_id': team_id,
+                    'teamid': team_id,
                     'season': season,
                 }
                 teams_seasons.append(args)
@@ -84,7 +84,7 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
     def after_api_login(self, response):
         for team_season in self.teams_seasons:
             args = {
-                'team_id': team_season['team_id'],
+                'teamid': team_season['teamid'],
                 'season': team_season['season'],
             }
             url = self.base_schedule_url + '?{}'.format(urllib.parse.urlencode(args))
