@@ -23,6 +23,13 @@ strategies_initials_mapping = {
     'OutsideBoxAndOne': 'OB',
 }
 
+hit_miss_mapping = {
+    'hit': '✓',
+    'miss': 'x',
+    None: '--'
+}
+
+
 # Turns a strategy name into simple initials
 @register.filter(is_safe=True)
 @stringfilter
@@ -35,13 +42,32 @@ def to_initials(value):
         return initials
 
 
+# Turns a strategy name into simple initials
+@register.filter(is_safe=True)
+def to_hit_miss(value):
+    try:
+        hit_miss_symbol = hit_miss_mapping[value]
+    except KeyError:
+        return '-'
+    else:
+        return hit_miss_symbol
+
+
 @register.inclusion_tag('bbstats/player_info.html', takes_context=True)
 def player_info(context):
-    return {
-        'player': context['player'],
-        'potential': context['potential'],
-        'skills': context['skills'],
-        'tsp': context['tsp'],
-        'fsp': context['fsp'],
-        'gsp': context['gsp'],
+    return_context = {
+            'player': context['player'],
+            'potential': context['potential'],
+            'skills': context['skills'],
     }
+    try:
+        tsp = context['tsp']
+        gsp = context['gsp']
+        fsp = context['fsp']
+    except KeyError:
+        return return_context
+    else:
+        return_context['tsp'] = tsp
+        return_context['gsp'] = gsp
+        return_context['fsp'] = fsp
+        return return_context
