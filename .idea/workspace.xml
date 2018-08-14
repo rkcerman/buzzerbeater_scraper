@@ -7,10 +7,8 @@
   <component name="ChangeListManager">
     <list default="true" id="44b49686-e162-4ba2-8c95-3e44a55449bf" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/buzzerbeater_web/bbstats/processors/process.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_web/bbstats/processors/process.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/buzzerbeater_web/bbstats/processors/query.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_web/bbstats/processors/query.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/buzzerbeater_web/bbstats/templates/bbstats/player_overview.html" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_web/bbstats/templates/bbstats/player_overview.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/buzzerbeater_web/bbstats/templates/bbstats/team_overview.html" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_web/bbstats/templates/bbstats/team_overview.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/buzzerbeater_web/bbstats/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/buzzerbeater_web/bbstats/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -26,8 +24,8 @@
           <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/buzzerbeater_web/bbstats/views.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state>
-                  <caret line="55" column="8" selection-start-line="55" selection-start-column="8" selection-end-line="55" selection-end-column="8" />
+                <state relative-caret-position="612">
+                  <caret line="91" column="8" selection-start-line="91" selection-start-column="8" selection-end-line="91" selection-end-column="9" />
                   <folding>
                     <element signature="e#0#35#0" expanded="true" />
                   </folding>
@@ -42,8 +40,8 @@
           <file leaf-file-name="process.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/buzzerbeater_web/bbstats/processors/process.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="595">
-                  <caret line="195" column="8" selection-start-line="195" selection-start-column="8" selection-end-line="195" selection-end-column="8" />
+                <state>
+                  <caret line="35" column="4" selection-start-line="35" selection-start-column="4" selection-end-line="35" selection-end-column="4" />
                   <folding>
                     <element signature="e#0#14#0" expanded="true" />
                   </folding>
@@ -666,22 +664,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/buzzerbeater_web/bbstats/views.py">
+    <entry file="file://$PROJECT_DIR$/buzzerbeater_web/bbstats/processors/process.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
-          <caret line="55" column="8" selection-start-line="55" selection-start-column="8" selection-end-line="55" selection-end-column="8" />
+          <caret line="35" column="4" selection-start-line="35" selection-start-column="4" selection-end-line="35" selection-end-column="4" />
           <folding>
-            <element signature="e#0#35#0" expanded="true" />
+            <element signature="e#0#14#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/buzzerbeater_web/bbstats/processors/process.py">
+    <entry file="file://$PROJECT_DIR$/buzzerbeater_web/bbstats/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="595">
-          <caret line="195" column="8" selection-start-line="195" selection-start-column="8" selection-end-line="195" selection-end-column="8" />
+        <state relative-caret-position="612">
+          <caret line="91" column="8" selection-start-line="91" selection-start-column="8" selection-end-line="91" selection-end-column="9" />
           <folding>
-            <element signature="e#0#14#0" expanded="true" />
+            <element signature="e#0#35#0" expanded="true" />
           </folding>
         </state>
       </provider>

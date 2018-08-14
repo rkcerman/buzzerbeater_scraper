@@ -6,6 +6,65 @@
 <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.19/api/average().js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.19/api/sum().js"></script>
 <script type="text/javascript">
+    // Generated data
+    var boxscoreStats = [
+        {% for stat in stats %}
+            [
+            
+                        '{{ stat.match.boxscore.id }}',
+                        'Season {{ stat.match.boxscore.match.season }}',
+                        '<a href="http://www.buzzerbeater.com/match/{{ stat.match.boxscore.match_id }}/boxscore.aspx">{{ stat.match.boxscore.match.match_date|date:"y-m-d" }}</a>',
+                        '{{ stat.max_minute_key }}',
+                        '{{ stat.max_minute_value }}',
+                        '{{ stat.match.fgm }}',
+                        '{{ stat.match.fga }}',
+                        '',
+                        '{{ stat.match.tpm }}',
+                        '{{ stat.match.tpa }}',
+                        '',
+                        '{{ stat.match.ftm }}',
+                        '{{ stat.match.fta }}',
+                        '',
+                        '{{ stat.match.oreb }}',
+                        '{{ stat.match.reb }}',
+                        '{{ stat.match.ast }}',
+                        '{{ stat.match.t_o }}',
+                        '{{ stat.match.stl }}',
+                        '{{ stat.match.blk }}',
+                        '{{ stat.match.pf }}',
+                        '{{ stat.match.pts }}',
+                        '{{ stat.match.rating }}',
+                        '{{ stat.strategies_preps.player_team_off }}',
+                        '{{ stat.strategies_preps.player_team_def }}',
+                        //'{{ stat.strategies_preps.player_team_prep_f }}',
+                       // '{{ stat.strategies_preps.player_team_prep_p }}',
+                        '{{ stat.strategies_preps.opp_team_off }}',
+                        '{{ stat.strategies_preps.opp_team_def }}',
+                       // '{{ stat.strategies_preps.opp_team_prep_f }}',
+                       // '{{ stat.strategies_preps.opp_team_prep_p }}',
+                        '{{ stat.match_type }}',
+            ],
+        {% endfor %}
+    ];
+
+    var shotPerformances = [
+          {% for shot_type in shot_performances %}
+          [
+              '{{ shot_type.shot_type }}',
+              '{{ shot_type.made_fg }}',
+              '{{ shot_type.attempted_fg }}',
+              '{{ shot_type.fg_per }}',
+              '{{ shot_type.made_guarded }}',
+              '{{ shot_type.attempted_guarded }}',
+              '{{ shot_type.guarded_per }}',
+              '{{ shot_type.made_passed }}',
+              '{{ shot_type.attempted_passed }}',
+              '{{ shot_type.passed_per }}',
+          ],
+          {% endfor %}
+    ];
+
+    // DataTables functions
     var percentageColumn = function(row, colA, colB) {
                         var result = 0
                         if (row[colB] > 0) {
@@ -30,6 +89,37 @@
         
             
         var table = $('#matchHistory').DataTable({
+          data: boxscoreStats,
+          columns: [
+            { title: 'match_id' },
+            { title: 'Season' },
+            { title: 'Date' },
+            { title: 'POS' },
+            { title: 'MIN' },
+            { title: 'FGM' },
+            { title: 'FGA' },
+            { title: 'FG%' },
+            { title: '3GM' },
+            { title: '3GA' },
+            { title: '3%' },
+            { title: 'FTM' },
+            { title: 'FTA' },
+            { title: 'FT%' },
+            { title: 'OR' },
+            { title: 'TR' },
+            { title: 'AST' },
+            { title: 'TO' },
+            { title: 'STL' },
+            { title: 'BLK' },
+            { title: 'PF' },
+            { title: 'PTS' },
+            { title: 'Rating' },
+            { title: 'OFF' },
+            { title: 'DEF' },
+            { title: 'O_OFF' },
+            { title: 'O_DEF' },
+            { title: 'Type' },
+          ],
             
             
             "columnDefs": [{
@@ -71,7 +161,7 @@
             "displayLength": 100,
 
             initComplete: function() {
-                this.api().columns().every(function() {
+                this.api().columns([23,24,25,26,27]).every(function() {
                     var column = this;
                     var select = $('<select><option value=""></option></select>')
                         .appendTo($(column.header()).empty())
@@ -208,22 +298,24 @@
             }
         });
 
-        $('a.toggle-vis').on('click', function(e) {
-            e.preventDefault();
-
-            // Get the column API object
-            var column = table.columns($(this).attr('data-column'));
-            console.log(column)
-            // Toggle the visibility
-            column.visible(!column.visible());
-        });
-
     });
 
     // Table with shot types
     $(document).ready(function() {
-        $('#shotTypes').DataTable({
-            
+        $('#shotPerfs').DataTable({
+            data: shotPerformances,           
+            columns: [
+                { title: 'Shot type' },
+                { title: 'Made' },
+                { title: 'Att.' },
+                { title: '%' },
+                { title: 'Made' },
+                { title: 'Att.' },
+                { title: '%' },
+                { title: 'Made' },
+                { title: 'Att.' },
+                { title: '%' },
+            ],
             "displayLength": 100,
             
             // Creating a Totals row
@@ -484,7 +576,7 @@
         width: 60%;
     }
 
-    #shotTypes {
+    #shotPerfs {
         width: 50%;
     }
 
@@ -654,48 +746,11 @@
         </div>
 
     </div>
-    <div>
-        Toggle column: <a class="toggle-vis" data-column="23, 24, 27, 28">Strategies</a> - <a class="toggle-vis" data-column="25, 26, 29, 30">Prep Hits/Misses</a> -
-    </div>
     <div class="boxcontent">
         <a name="playerstats"></a>
         <div>
             <table id="matchHistory" class="compact stripe cell-border">
                 <thead>
-                    <tr class='search'>
-                        <th>match_id</th>
-                        <th>Season</th>
-                        <th style="width: 150px !important">Date</th>
-                        <th>POS</th>
-                        <th>MIN</th>
-                        <th>FGM</th>
-                        <th>FGA</th>
-                        <th>FG%</th>
-                        <th>3GM</th>
-                        <th>3GA</th>
-                        <th>3%</th>
-                        <th>FTM</th>
-                        <th>FTA</th>
-                        <th>FT%</th>
-                        <th>OR</th>
-                        <th>TR</th>
-                        <th>AST</th>
-                        <th>TO</th>
-                        <th>STL</th>
-                        <th>BLK</th>
-                        <th>PF</th>
-                        <th>PTS</th>
-                        <th>Rating</th>
-                        <th>OFF</th>
-                        <th>DEF</th>
-                        <th>F_HIT</th>
-                        <th>P_HIT</th>
-                        <th>O_OFF</th>
-                        <th>O_DEF</th>
-                        <th>O_F_HIT</th>
-                        <th>O_P_HIT</th>
-                        <th>Type</th>
-                    </tr>
                     <tr>
                         <th>match_id</th>
                         <th>Season</th>
@@ -722,55 +777,11 @@
                         <th>Rating</th>
                         <th>OFF</th>
                         <th>DEF</th>
-                        <th>F_HIT</th>
-                        <th>P_HIT</th>
                         <th>O_OFF</th>
                         <th>O_DEF</th>
-                        <th>O_F_HIT</th>
-                        <th>O_P_HIT</th>
                         <th>Type</th>
                     </tr>
                 </thead>
-                <tbody>
-                    {% for stat in stats %}
-                    <tr>
-                        <td>{{ stat.match.boxscore.id }}</td>
-                        <td align="center">Season {{ stat.match.boxscore.match.season }}</td>
-                        <td align="center">
-                            <a id="ctl00_cphContent_playerStats_ctl02_HyperLink1" href="http://www.buzzerbeater.com/match/{{ stat.match.boxscore.id }}/boxscore.aspx">{{ stat.match.boxscore.match.match_date|date:"y-m-d" }}</a>
-                        </td>
-                        <td align="center">{{ stat.max_minute_key }}</td>
-                        <td align="center">{{ stat.max_minute_value }}</td>
-                        <td align="center">{{ stat.match.fgm }}</td>
-                        <td align="center">{{ stat.match.fga }}</td>
-                        <td align="center"></td>
-                        <td align="center">{{ stat.match.tpm }}</td>
-                        <td align="center">{{ stat.match.tpa }}</td>
-                        <td align="center"></td>
-                        <td align="center">{{ stat.match.ftm }}</td>
-                        <td align="center">{{ stat.match.fta }}</td>
-                        <td align="center"></td>
-                        <td align="center">{{ stat.match.oreb }}</td>
-                        <td align="center">{{ stat.match.reb }}</td>
-                        <td align="center">{{ stat.match.ast }}</td>
-                        <td align="center">{{ stat.match.t_o }}</td>
-                        <td align="center">{{ stat.match.stl }}</td>
-                        <td align="center">{{ stat.match.blk }}</td>
-                        <td align="center">{{ stat.match.pf }}</td>
-                        <td align="center">{{ stat.match.pts }}</td>
-                        <td align="center">{{ stat.match.rating }}</td>
-                        <td>{{ stat.strategies_preps.player_team_off }}</td>
-                        <td>{{ stat.strategies_preps.player_team_def }}</td>
-                        <td>{{ stat.strategies_preps.player_team_prep_f }}</td>
-                        <td>{{ stat.strategies_preps.player_team_prep_p }}</td>
-                        <td>{{ stat.strategies_preps.opp_team_off }}</td>
-                        <td>{{ stat.strategies_preps.opp_team_def }}</td>
-                        <td>{{ stat.strategies_preps.opp_team_prep_f }}</td>
-                        <td>{{ stat.strategies_preps.opp_team_prep_p }}</td>
-                        <td align="center">{{ stat.match_type }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
                 <tfoot>
                     <tr style="background-color:#EEEEEE;">
                         <td align="center"></td>
@@ -792,10 +803,6 @@
                         <td align="center"></td>
                         <td align="center"></td>
                         <td align="center"></td>
-                        <td alikgn="center"></td>
-                        <td align="center"></td>
-                        <td align="center"></td>
-                        <td align="center"></td>
                         <td align="center"></td>
                         <td align="center"></td>
                         <td align="center"></td>
@@ -809,10 +816,6 @@
                         </td>
                     </tr>
                     <tr>
-                        <td align="center"></td>
-                        <td align="center"></td>
-                        <td align="center"></td>
-                        <td align="center"></td>
                         <td align="center"></td>
                         <td align="center"></td>
                         <td align="center"></td>
@@ -872,19 +875,11 @@
                         <td align="center"></td>
                         <td align="center"></td>
                         <td align="center"></td>
-                        <td align="center"></td>
-                        <td align="center"></td>
-                        <td align="center"></td>
-                        <td align="center"></td>
                         <td align="center">
                             ALL AVG
                         </td>
                     </tr>
                     <tr>
-                        <td align="center"></td>
-                        <td align="center"></td>
-                        <td align="center"></td>
-                        <td align="center"></td>
                         <td align="center"></td>
                         <td align="center"></td>
                         <td align="center"></td>
@@ -932,7 +927,7 @@
     <div class="boxcontent">
         <a name="playerstats"></a>
         <div>
-            <table id="shotTypes" class="cell-border stripe" style="width: 50%;">
+            <table id="shotPerfs" class="cell-border stripe" style="width: 50%;">
                 <thead>
                     <tr>
                         <th rowspan="2">Shot type</th>
@@ -952,22 +947,6 @@
                         <th>%</th>
                     </tr>
                 </thead>
-                <tbody>
-                    {% for shot_type in shot_performances %}
-                    <tr>
-                        <td>{{ shot_type.shot_type }}</td>
-                        <td>{{ shot_type.made_fg }}</td>
-                        <td>{{ shot_type.attempted_fg }}</td>
-                        <td>{{ shot_type.fg_per }}</td>
-                        <td>{{ shot_type.made_guarded }}</td>
-                        <td>{{ shot_type.attempted_guarded }}</td>
-                        <td>{{ shot_type.guarded_per }}</td>
-                        <td>{{ shot_type.made_passed }}</td>
-                        <td>{{ shot_type.attempted_passed }}</td>
-                        <td>{{ shot_type.passed_per }}</td>dddd
-                    </tr>
-                    {% endfor %}
-                </tbody>
                 <tfoot>
                     <tr>
                         <td>AVERAGE</td>

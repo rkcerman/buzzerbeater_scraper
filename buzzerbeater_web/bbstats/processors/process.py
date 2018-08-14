@@ -163,6 +163,7 @@ def get_players_skills_potential(players):
     return team_players_skills
 
 
+# Gets performances for each shot type for a player
 def get_player_shot_types(shots, agg_type):
     if agg_type in ['pass', 'shoot', 'guard']:
         distinct_shot_types = shots \
@@ -185,6 +186,7 @@ def get_player_shot_types(shots, agg_type):
         raise ValueError('type needs to be one of pass, shoot or guard.')
 
 
+# Performs aggregates for each shot type for a player
 def aggregate_shot_type(shot_type, shot_type_query, agg_type):
     made_fg = shot_type_query.filter(outcome='scored').count()
     attempted_fg = shot_type_query.count()
