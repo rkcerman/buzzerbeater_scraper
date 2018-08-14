@@ -23,7 +23,7 @@ strategies_initials_mapping = {
     'OutsideBoxAndOne': 'OB',
 }
 
-
+# Turns a strategy name into simple initials
 @register.filter(is_safe=True)
 @stringfilter
 def to_initials(value):
@@ -34,3 +34,14 @@ def to_initials(value):
     else:
         return initials
 
+
+@register.inclusion_tag('bbstats/player_info.html', takes_context=True)
+def player_info(context):
+    return {
+        'player': context['player'],
+        'potential': context['potential'],
+        'skills': context['skills'],
+        'tsp': context['tsp'],
+        'fsp': context['fsp'],
+        'gsp': context['gsp'],
+    }
