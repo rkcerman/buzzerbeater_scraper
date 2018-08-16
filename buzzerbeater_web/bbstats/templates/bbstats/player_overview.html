@@ -7,6 +7,9 @@
 <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.19/api/average().js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.19/api/sum().js"></script>
 <script type="text/javascript">
+	// Declaring variables that will be used multiple times
+	var fg_per;
+
     // Generated data
     var boxscoreStats = [
         {% for stat in stats %}
@@ -84,8 +87,6 @@
           ],
           {% endfor %}
     ];
-	console.log(defPerformances);
-	console.log(passPerformances);
 
     // DataTables functions
     var percentageColumn = function(row, colA, colB) {
@@ -296,13 +297,14 @@
                     var made_cell2 = $('tr:eq(2) td:eq(' + (dontAverage[i] - 4) + ')', api.table().footer()).html()
                     var attempt_cell = $('tr:eq(0) td:eq(' + (dontAverage[i] - 3) + ')', api.table().footer()).html()
                     var attempt_cell2 = $('tr:eq(2) td:eq(' + (dontAverage[i] - 3) + ')', api.table().footer()).html()
+					var page_percentage = Math.round(((made_cell / attempt_cell) + 0.00001) * 100) / 100
+					var total_percentage = Math.round(((made_cell2 / attempt_cell2) + 0.00001) * 100) / 100
+
 
                     $('tr:eq(0) td:eq(' + (dontAverage[i] - 2) + ')', api.table().footer()).html(
-                        Math.round(((made_cell / attempt_cell) + 0.00001) * 100) / 100
-                    );
+                        page_percentage                    );
                     $('tr:eq(2) td:eq(' + (dontAverage[i] - 2) + ')', api.table().footer()).html(
-                        Math.round(((made_cell2 / attempt_cell2) + 0.00001) * 100) / 100
-                    );
+                        total_percentage                    );
                 }
             }
 
@@ -413,11 +415,14 @@
                 for (i; i < 3; i++) {
                     var made_cell = $('tr:eq(0) td:eq(' + (dontAgg[i] - 2) + ')', api.table().footer()).html()
                     var attempt_cell = $('tr:eq(0) td:eq(' + (dontAgg[i] - 1) + ')', api.table().footer()).html()
+					var cell_percentage = Math.round(((made_cell / attempt_cell) + 0.00001) * 100) / 100
+
                     
                     $('tr:eq(0) td:eq(' + (dontAgg[i]) + ')', api.table().footer()).html(
                         '<strong>'
-                        + Math.round(((made_cell / attempt_cell) + 0.00001) * 100) / 100
-                        + '</strong>'
+                        + 
+						cell_percentage
+						+ '</strong>'
                     );
                 }
             }
@@ -562,7 +567,6 @@
                 }
 
                 // Update footer
-                // TODO make this into a loop pls
                 var i;
                 var dontAgg = [3]
                                 
@@ -599,6 +603,7 @@
             }
         });
     });
+	
 
 </script>
 
@@ -630,6 +635,9 @@
 		margin-top:5%;
 		text-align: center;
 	}
+	#quickOverviewTable {
+		margin: 0 auto;
+	}
     table.playerinfo {
         margin: 0 auto;
         width: 100%;
@@ -658,14 +666,39 @@
 </style>
 
 {% player_info %}
-
-<div id="playerhistory" class="widebox statsTableDiv" style=" ">
-    <div class="boxheader" style="border-top-left-radius:4px;border-top-right-radius:4px;padding-left:6px;padding-right:6px; ">
-        <div style="float: left">
-            Player history for {{ player.name }}
-        </div>
-
-    </div>
+<div id="quickOverview" class="widebox">
+	<div class="perfHeader">
+		<h3>Quick overview</h3>
+	</div>
+	<div class="boxcontent">
+		<table id="quickOverviewTable">
+		<tr>
+			<td><strong>FG%: </strong></br></td>
+			<td id="fgPerCell"></td>
+		</tr>
+		<tr>
+			<td><strong>3P%: </strong></br></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td><strong>Defensive %: </strong></br></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td><strong>Contests per 36 m: </strong></br></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td><strong>Fouls per 36 m: </strong></br></td>
+			<td></td>
+		</tr>
+		</table>
+	</div>
+</div>
+<div id="playerhistory" class="widebox statsTableDiv">
+	<div class="perfHeader">
+		<h3>Match history</h3>
+	</div>
     <div class="boxcontent">
         <a name="playerstats"></a>
         <div>
