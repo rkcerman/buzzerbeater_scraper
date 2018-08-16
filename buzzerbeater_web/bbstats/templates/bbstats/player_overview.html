@@ -64,6 +64,28 @@
           ],
           {% endfor %}
     ];
+    var defPerformances = [
+          {% for shot_type in defense_performances %}
+          [
+              '{{ shot_type.shot_type }}',
+              '{{ shot_type.made_fg }}',
+              '{{ shot_type.attempted_fg }}',
+              '{{ shot_type.fg_per }}',
+          ],
+          {% endfor %}
+    ];
+    var passPerformances = [
+          {% for shot_type in passing_performances %}
+          [
+              '{{ shot_type.shot_type }}',
+              '{{ shot_type.made_fg }}',
+              '{{ shot_type.attempted_fg }}',
+              '{{ shot_type.fg_per }}',
+          ],
+          {% endfor %}
+    ];
+	console.log(defPerformances);
+	console.log(passPerformances);
 
     // DataTables functions
     var percentageColumn = function(row, colA, colB) {
@@ -303,7 +325,7 @@
 
     // Table with shot types
     $(document).ready(function() {
-        $('#shotPerfs').DataTable({
+        $('#shotPerf').DataTable({
             data: shotPerformances,           
             columns: [
                 { title: 'Shot type' },
@@ -318,6 +340,9 @@
                 { title: '%' },
             ],
             "displayLength": 100,
+            "order": [
+                [2, 'desc']
+            ],
             
             // Creating a Totals row
             "footerCallback": function(row, data, start, end, display) {
@@ -402,7 +427,17 @@
     // Table with defense performance
     $(document).ready(function() {
         $('#defensePerf').DataTable({
+            data: defPerformances,           
+            columns: [
+                { title: 'Shot type' },
+                { title: 'Opp Made' },
+                { title: 'Opp Att.' },
+                { title: 'Opp %' },
+            ],
             "displayLength": 100,
+            "order": [
+                [2, 'desc']
+            ],
             
         // Creating a Totals row
             "footerCallback": function(row, data, start, end, display) {
@@ -441,9 +476,9 @@
                 // Update footer
                 // TODO make this into a loop pls
                 var i;
-                var dontAgg = [3, 6]
+                var dontAgg = [3]
                                 
-                for (i = 1; i < 7; i++) {
+                for (i = 1; i < 4; i++) {
                     // Filling the averages row with averages for columns that can be averaged
                     if (dontAgg.indexOf(i) == -1) {
                         $(api.column(i).footer()).html(
@@ -480,7 +515,17 @@
     // Table with passing performance
     $(document).ready(function() {
         $('#passingPerf').DataTable({
+            data: passPerformances,           
+            columns: [
+                { title: 'Shot type' },
+                { title: 'Made' },
+                { title: 'Att.' },
+                { title: '%' },
+            ],
             "displayLength": 100,
+            "order": [
+                [2, 'desc']
+            ],
             
         // Creating a Totals row
             "footerCallback": function(row, data, start, end, display) {
@@ -519,9 +564,9 @@
                 // Update footer
                 // TODO make this into a loop pls
                 var i;
-                var dontAgg = [3, 6]
+                var dontAgg = [3]
                                 
-                for (i = 1; i < 7; i++) {
+                for (i = 1; i < 4; i++) {
                     // Filling the averages row with averages for columns that can be averaged
                     if (dontAgg.indexOf(i) == -1) {
                         $(api.column(i).footer()).html(
@@ -578,10 +623,13 @@
         width: 60%;
     }
 
-    #shotPerfs {
+    #shotPerf {
         width: 50%;
     }
-
+	div.perfHeader {
+		margin-top:5%;
+		text-align: center;
+	}
     table.playerinfo {
         margin: 0 auto;
         width: 100%;
@@ -790,16 +838,15 @@
     </div>
 </div>
 <div id="playerShotTypes" class="widebox statsTableDiv" style="width:50%; margin: 0 auto;">
-    <div class="boxheader" style="border-top-left-radius:4px;border-top-right-radius:4px;padding-left:6px;padding-right:6px; ">
-        <div style="float: left">
-            Shot types for {{ player.name }}
-        </div>
-
+	<div class="perfHeader">
+		<h3>Shooting style & performance</h3>
+		<p>The higher % the better</p>
+	</div>
     </div>
     <div class="boxcontent">
         <a name="playerstats"></a>
         <div>
-            <table id="shotPerfs" class="cell-border stripe" style="width: 50%;">
+            <table id="shotPerf" class="cell-border stripe" style="width: 50%;">
                 <thead>
                     <tr>
                         <th rowspan="2">Shot type</th>
@@ -849,59 +896,34 @@
         </div>
     </div>
 </div>
-<div id="playerDefensePerf" class="widebox defenseTableDiv" style="width:50%; margin: 0 auto;">
-    <div class="boxheader" style="border-top-left-radius:4px;border-top-right-radius:4px;padding-left:6px;padding-right:6px; ">
-        <div style="float: left">
-            Defensive performance for {{ player.name }}. The lower % the better
-        </div>
-
-    </div>
+<div id="playerDefensePerf" class="widebox statsTableDiv" style="width:50%; margin: 0 auto;">
+	<div class="perfHeader">
+		<h3>Defensive performance</h3>
+		<p>The lower % the better</p>
+	</div>
     <div class="boxcontent">
         <div>
             <table id="defensePerf" class="cell-border stripe" style="width: 50%;">
                 <thead>
                     <tr>
                         <th rowspan="2">Shot type</th>
-                        <th colspan="3">Field goals</th>
-                        <th colspan="3">Passed</th>
+                        <th colspan="3">Matchup field goals</th>
                     </tr>
                     <tr>
-                        <th>Opp Made</th>
-                        <th>Opp Att.</th>
-                        <th>Opp %</th>
                         <th>Opp Made</th>
                         <th>Opp Att.</th>
                         <th>Opp %</th>
                     </tr>
                 </thead>
-                <tbody>
-                    {% for shot_type in defense_performances %}
-                    <tr>
-                        <td>{{ shot_type.shot_type }}</td>
-                        <td>{{ shot_type.made_fg }}</td>
-                        <td>{{ shot_type.attempted_fg }}</td>
-                        <td>{{ shot_type.fg_per }}</td>
-                        <td>{{ shot_type.made_passed }}</td>
-                        <td>{{ shot_type.attempted_passed }}</td>
-                        <td>{{ shot_type.passed_per }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
                 <tfoot>
                     <tr>
                         <td>AVERAGE</td>
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
                     </tr>
                     <tr>
                         <td>TOTAL</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -912,13 +934,11 @@
     </div>
     
 </div>
-<div id="playerPassingPerf" class="widebox passingTableDiv" style="width:50%; margin: 0 auto;">
-    <div class="boxheader" style="border-top-left-radius:4px;border-top-right-radius:4px;padding-left:6px;padding-right:6px; ">
-        <div style="float: left">
-            Passing performance for {{ player.name }}. The higher % the better
-        </div>
-
-    </div>
+<div id="playerPassingPerf" class="widebox statsTableDiv" style="width:50%; margin: 0 auto;">
+	<div class="perfHeader">
+		<h3>Passing performance</h3>
+		<p>The higher % the better</p>
+	</div>
     <div class="boxcontent">
         <div>
             <table id="passingPerf" class="cell-border stripe" style="width: 50%;">
@@ -926,45 +946,22 @@
                     <tr>
                         <th rowspan="2">Shot type</th>
                         <th colspan="3">Field goals</th>
-                        <th colspan="3">Defended</th>
                     </tr>
                     <tr>
-                        <th>Made</th>
-                        <th>Att.</th>
-                        <th>%</th>
                         <th>Made</th>
                         <th>Att.</th>
                         <th>%</th>
                     </tr>
                 </thead>
-                <tbody>
-                    {% for shot_type in passing_performances %}
-                    <tr>
-                        <td>{{ shot_type.shot_type }}</td>
-                        <td>{{ shot_type.made_fg }}</td>
-                        <td>{{ shot_type.attempted_fg }}</td>
-                        <td>{{ shot_type.fg_per }}</td>
-                        <td>{{ shot_type.made_guarded }}</td>
-                        <td>{{ shot_type.attempted_guarded }}</td>
-                        <td>{{ shot_type.guarded_per }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
                 <tfoot>
                     <tr>
                         <td>AVERAGE</td>
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
                     </tr>
                     <tr>
                         <td>TOTAL</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
