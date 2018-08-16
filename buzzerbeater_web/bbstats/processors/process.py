@@ -2,6 +2,8 @@ import logging
 import re
 
 from bbstats.models import BoxscoreStats, Boxscores, PlayerSkills
+from django.db.models import Sum
+from collections import Counter
 
 from .query import get_player_skills
 
@@ -208,6 +210,42 @@ def aggregate_shot_type(shot_type, shot_type_query, agg_type):
         agg_shot_type['passed_per'] = passed_per
 
     return agg_shot_type
+
+
+# Creates dict with quick overview stats for a player
+def get_player_quick_stats_context(boxscore_stats, sdp_stats):
+    fg_per = calc_player_fg_per(boxscore_stats)
+
+    return {
+        'fg_per': fg_per,
+    }
+
+
+# Calculates player's FG% out of supplied boxscore stats
+def calc_player_fg_per(player_boxscore_stats):
+    try:
+        fgm_sum = player_boxscore_stats.aggregate(Sum('fgm'))
+        fga_sum = player_boxscore_stats.aggregate(Sum('fga'))
+    except AttributeError:
+        raise TypeError('Expecting type BoxscoreStats.')
+    else:
+        return safe_div(fgm_sum['fgm_sum'], fga_sum['fga_sum'])
+
+
+# Calculates player's defensive FG% out of supplied def. performances
+def calc_player_defense_per(def_stats):
+    result = Counter()
+    try:
+        for shot_type in def_stats:
+            result['made_fg'] += shot_type['made_fg']
+            result['attempted_fg'] += shot_type['attempted_fg']
+    except TypeError:
+        raise TypeError('Expecting a shot_types dict')
+    else:
+        return round(safe_div(
+            result['made_fg'],
+            result['attempted_fg']
+        ), 2)
 
 
 def safe_div(x, y):

@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'test_without_migrations',
 ]
 
 MIDDLEWARE = [
@@ -140,3 +141,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Set Django's test runner to the custom class defined in runners.py
+TEST_RUNNER = 'bbstats.runners.ManagedModelTestRunner'
+# TEST_WITHOUT_MIGRATIONS_COMMAND = 'django_nose.management.commands.test.Command'
