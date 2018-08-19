@@ -102,7 +102,8 @@ class PlayerSpider(scrapy.Spider):
             age = int(re.search('Age:.\s+(\d+)', personal_info_text).group(1))
             height = int(re.search('Height:\s+.+ / (\d+) cm<br', personal_info_text).group(1))
             game_shape = int(personal_info.xpath('//a[@id="ctl00_cphContent_playerForm_linkDen"]/@title').extract_first())
-            potential = int(personal_info.xpath('//a[@id="ctl00_cphContent_potential_linkDen"]/@title').extract_first())
+            potential = personal_info.xpath('//a[@id="ctl00_cphContent_potential_linkDen"]/@title')
+            potential = int(potential.extract_first().replace('10+', '11'))
             position = personal_info.xpath('//div[@style="float: right; display: block;"]/text()').extract_first()
 
             position = re.search('\s+(.+)\s+', position).group(1).replace("\r", "")
