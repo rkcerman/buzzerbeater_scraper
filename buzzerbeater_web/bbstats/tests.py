@@ -29,6 +29,10 @@ class ViewTester(TestCase):
             id=58420,
             name='Ethereum Traders'
         )
+        Teams.objects.create(
+            id=58377,
+            name='BK Sever 5'
+        )
         Players.objects.create(
             id=123,
             created_at=datetime.now(),
