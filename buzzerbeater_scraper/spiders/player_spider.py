@@ -119,7 +119,6 @@ class PlayerSpider(scrapy.Spider):
                 while i <= 3:
                     span = response.xpath(
                         '//span[@id="ctl00_cphContent_LblTransferEstimate' + str(i) + 'new"]/text()').extract_first()
-                    print(span)
 
                     if span is not None:
                         transfer_estimate.append(span.replace('\xa0', ''))
