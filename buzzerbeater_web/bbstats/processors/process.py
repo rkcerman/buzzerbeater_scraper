@@ -4,9 +4,11 @@ import re
 from bbstats.models import BoxscoreStats, Boxscores, PlayerSkills
 from django.db.models import Sum
 from collections import Counter
+from .query import get_match_scores
 
 from .query import get_player_skills
 
+# TODO create filter
 skills_mapping = {
     1: 'atrocious',
     2: 'pitiful',
