@@ -17,6 +17,18 @@ from buzzerbeater_scraper.boxscore_parser import BoxscoreParser
 from buzzerbeater_scraper.spiders import player_spider
 
 
+def get_teams_seasons(team_ids, seasons):
+    teams_seasons = []
+    for team_id in team_ids:
+        for season in seasons:
+            args = {
+                'teamid': team_id,
+                'season': season,
+            }
+            teams_seasons.append(args)
+    return teams_seasons
+
+
 class BuzzerbeaterMatchesSpider(scrapy.Spider):
 
     name = "matches_spider"
@@ -25,8 +37,6 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
         'http://www.buzzerbeater.com/default.aspx',
     )
     teams_seasons = []
-    parse_players = False
-    parse_pbps = False
     base_url = 'http://bbapi.buzzerbeater.com'
     base_login_url = base_url + '/login.aspx'
     base_schedule_url = base_url + '/schedule.aspx'
@@ -35,7 +45,7 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
     def __init__(self, team_ids='58420', seasons='43', parse_players=False, parse_pbps=False, **kwargs):
         seasons = seasons.split(',')
         team_ids = team_ids.split(',')
-        self.teams_seasons = self.get_teams_seasons(
+        self.teams_seasons = get_teams_seasons(
             team_ids=team_ids,
             seasons=seasons
         )
@@ -44,16 +54,6 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
         super().__init__(**kwargs)
 
     # Creates a list of dicts, each containing a team_id and season to scrape
-    def get_teams_seasons(self, team_ids, seasons):
-        teams_seasons = []
-        for team_id in team_ids:
-            for season in seasons:
-                args = {
-                    'teamid': team_id,
-                    'season': season,
-                }
-                teams_seasons.append(args)
-        return teams_seasons
 
     def parse(self, response):
         # Opening a login request
@@ -193,9 +193,18 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
         match_id = match_id.replace("/match/", "")
         match_id = match_id.replace("/pbp.aspx", "")
 
+        self.logger.info('Parsing match id: ' + str(match_id))
+
         # Iterating through the Play-by-play table
         i = 1
-        while i < len(play_by_play.find_all('tr')):
+        len_play_by_plays = len(play_by_play.find_all('tr'))
+        self.logger.info(str(match_id)
+                         + ' -- Total number of plays: '
+                         + str(len_play_by_plays))
+        while i < len_play_by_plays:
+            self.logger.info(str(match_id)
+                             + ' --- play no. '
+                             + str(i))
             row = play_by_play.select('tr')[i]
             item_match_id = int(match_id)
             item_event_type = row['class'][0]
@@ -215,7 +224,6 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
 
             # Adding custom play_type_categories to the plays
             play_tags = PLAY_TYPE_CATEGORIES.get(item_event_type)
-            print("Play tags", play_tags)
 
             # Creating an Item to insert into the DB
             pbp_item = PlayByPlayItem(
@@ -248,6 +256,11 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
         if player is not None:
             player_item = player['player_item']
             team_item = player['team_item']
+
+            self.logger.info('Team: '
+                             + team_item['id']
+                             + ' Player: '
+                             + player_item['id'])
 
             yield team_item
             yield player_item
