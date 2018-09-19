@@ -200,3 +200,6 @@ class Teams(models.Model):
     class Meta:
         managed = False
         db_table = 'teams'
+
+    def __str__(self):
+        return self.id + ' - ' + str(self.name)

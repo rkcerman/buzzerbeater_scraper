@@ -3,12 +3,15 @@ from django.db.models import Q
 from django.conf import settings
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.views.decorators.cache import cache_page
+from rest_framework import generics, viewsets
+from rest_framework.generics import get_object_or_404
 
 from .processors.process import calculate_skill_points, get_skills_nomenclature, \
     get_potential_context, get_strategies_context, get_players_skills_potential, get_player_shot_types
 
 from .processors.query import get_schedule, get_all_teams
 from .models import Players, PlayerSkills, BoxscoreStats, Shots, Teams
+from .serializers import *
 
 default_season = 43
 CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
@@ -152,3 +155,28 @@ def player_overview(request, player_id, season, match_type):
     }
 
     return render(request, 'bbstats/player_overview.html', context)
+
+
+class UserViewSet(generics.ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+
+class TeamList(generics.ListAPIView):
+    queryset = Teams.objects.all()
+    serializer_class = TeamsSerializer
+
+
+class TeamDetail(generics.RetrieveAPIView):
+    queryset = Teams.objects.all()
+    serializer_class = TeamsSerializer
+
+
+class PlayerList(generics.ListAPIView):
+    queryset = Players.objects.all()
+    serializer_class = PlayersSerializer
+
+
+class PlayerDetail(generics.RetrieveAPIView):
+    queryset = Players.objects.all()
+    serializer_class = PlayersSerializer

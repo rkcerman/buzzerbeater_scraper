@@ -15,8 +15,10 @@ cookiecutter==1.6.0
 cryptography==2.2.2
 cssselect==1.0.3
 Django==2.0.6
+django-filter==2.0.0
 django-redis==4.9.0
 django-test-without-migrations==0.6
+djangorestframework==3.8.2
 Flask==0.12.1
 Flask-BasicAuth==0.2.0
 Flask-RESTful==0.3.5
@@ -30,6 +32,7 @@ itsdangerous==0.24
 Jinja2==2.9.6
 jinja2-time==0.2.0
 lxml==4.2.1
+Markdown==2.6.11
 MarkupSafe==1.0
 MechanicalSoup==0.10.0
 pager==3.3
