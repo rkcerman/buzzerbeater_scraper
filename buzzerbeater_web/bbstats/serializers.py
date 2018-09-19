@@ -16,10 +16,6 @@ class TeamsSerializer(serializers.ModelSerializer):
         fields = ('id', 'name')
 
 
-class TeamDetailsSerializer(serializers.Serializer):
-    team = TeamsSerializer
-
-
 class PlayersSerializer(serializers.ModelSerializer):
     class Meta:
         model = Players
@@ -38,6 +34,13 @@ class PlayersSerializer(serializers.ModelSerializer):
             'potential',
         )
 
+
+class TeamDetailsSerializer(serializers.ModelSerializer):
+    players_set = PlayersSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Teams
+        fields = ('id', 'name', 'players_set')
 
 class PlayerDetailsSerializer(serializers.ModelSerializer):
     class Meta:
