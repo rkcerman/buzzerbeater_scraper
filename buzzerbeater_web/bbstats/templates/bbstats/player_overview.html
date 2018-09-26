@@ -37,7 +37,7 @@
                         '{{ stat.match.blk }}',
                         '{{ stat.match.pf }}',
                         '{{ stat.match.pts }}',
-                        '{{ stat.match.rating }}',
+                        '{{ stat.match.rating|none_to_empty }}',
                         '{{ stat.strategies_preps.player_team_off|to_initials }}',
                         '{{ stat.strategies_preps.player_team_def|to_initials }}',
                         //'{{ stat.strategies_preps.player_team_prep_f }}',

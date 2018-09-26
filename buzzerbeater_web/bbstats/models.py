@@ -137,7 +137,6 @@ class PlayerSkills(models.Model):
     class Meta:
         managed = False
         db_table = 'player_skills'
-        unique_together = (('player', 'skill', 'value'),)
 
     def __str__(self):
         return self.player.name

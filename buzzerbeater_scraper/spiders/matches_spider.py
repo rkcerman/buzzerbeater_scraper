@@ -42,7 +42,7 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
     base_schedule_url = base_url + '/schedule.aspx'
     base_boxscore_url = base_url + '/boxscore.aspx'
 
-    def __init__(self, team_ids='58420', seasons='43', parse_players=False, parse_pbps=False, **kwargs):
+    def __init__(self, team_ids='58420', seasons='43', parse_players=True, parse_pbps=True, **kwargs):
         seasons = seasons.split(',')
         team_ids = team_ids.split(',')
         self.teams_seasons = get_teams_seasons(
@@ -52,8 +52,6 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
         self.parse_players = parse_players
         self.parse_pbps = parse_pbps
         super().__init__(**kwargs)
-
-    # Creates a list of dicts, each containing a team_id and season to scrape
 
     def parse(self, response):
         # Opening a login request

@@ -169,7 +169,7 @@ class TeamList(generics.ListAPIView):
 
 class TeamDetail(generics.RetrieveAPIView):
     queryset = Teams.objects.all()
-    serializer_class = TeamDetailsSerializer
+    serializer_class = TeamDetailSerializer
 
 
 class PlayerList(generics.ListAPIView):

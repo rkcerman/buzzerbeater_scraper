@@ -42,6 +42,13 @@ def to_initials(value):
         return initials
 
 
+# Turns 'None' to empty string
+@register.filter(is_safe=True)
+@stringfilter
+def none_to_empty(value):
+    return '' if value == 'None' else value
+
+
 # Turns a strategy name into simple initials
 @register.filter(is_safe=True)
 def to_hit_miss(value):

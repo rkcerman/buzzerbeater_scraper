@@ -7,7 +7,8 @@ from buzzerbeater_scraper.regex_patterns import PASSER_PATTERNS, DEFENDER_PATTER
 
 # TODO badly needs unit testing
 # Class for parsing each play-by-play by
-# assigning a play categories to each play type. Each category gets parsed differently.
+# assigning a play categories to each play type.
+# Each category gets parsed differently.
 class PlayByPlayParser:
 
     # Reads play type and decides what to do with the play
