@@ -42,7 +42,19 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
     base_schedule_url = base_url + '/schedule.aspx'
     base_boxscore_url = base_url + '/boxscore.aspx'
 
-    def __init__(self, team_ids='58420', seasons='43', parse_players=True, parse_pbps=True, **kwargs):
+    # __init__ function to handle custom args
+    # team_ids - IDs of teams to scrape their schedule
+    # seasons - for which seasons the schedule should be scraped
+    # parse_players - if true, scrapes each player's overview page
+    # parse_pbps - if true, scrapes every match's play by play
+    # force_rescrape - if true, rescrapes already scraped matches
+    def __init__(self,
+                 team_ids='58420',
+                 seasons='43',
+                 parse_players=True,
+                 parse_pbps=True,
+                 force_rescrape=False,
+                 **kwargs):
         seasons = seasons.split(',')
         team_ids = team_ids.split(',')
         self.teams_seasons = get_teams_seasons(
