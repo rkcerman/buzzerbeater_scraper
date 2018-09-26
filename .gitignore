@@ -7,3 +7,5 @@ buzzerbeater_scraper/spiders/__pycache__/
 buzzerbeater_scraper/spiders/__pycache__/*.pyc
 buzzerbeater_web/buzzerbeater_web/settings.py
 *.egg
+
+\.idea/
