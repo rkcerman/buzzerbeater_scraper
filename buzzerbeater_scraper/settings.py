@@ -3,7 +3,8 @@ import sys
 
 # DJANGO INTEGRATION
 
-sys.path.append(os.path.dirname(os.path.abspath('.')))
+sys.path.append(os.path.abspath('./buzzerbeater_web/'))
+print(sys.path)
 os.environ['DJANGO_SETTINGS_MODULE'] = 'buzzerbeater_web.' \
                                        'buzzerbeater_web.settings'
 

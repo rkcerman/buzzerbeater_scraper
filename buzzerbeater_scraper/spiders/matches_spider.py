@@ -17,7 +17,7 @@ from buzzerbeater_scraper.formdata import BB_LOGIN, BB_API_LOGIN
 from buzzerbeater_scraper.boxscore_parser import BoxscoreParser
 from buzzerbeater_scraper.spiders import player_spider
 
-from buzzerbeater_web.bbstats.models import Matches
+from bbstats.models import Matches
 
 
 # Generates a list of dictionaries containing
@@ -102,9 +102,9 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
             self.logger.error("Login failed")
         else:
             self.logger.info("Login successful")
-            self.logger.info('Parse Players: ' + self.parse_players)
-            self.logger.info('Parse Play-by-plays: ' + self.parse_pbps)
-            self.logger.info('Already scraped matches: ' + self.scraped_matches)
+            self.logger.info('Parse Players: ' + str(self.parse_players))
+            self.logger.info('Parse Play-by-plays: ' + str(self.parse_pbps))
+            self.logger.info('Already scraped matches: ' + str(self.scraped_matches))
             api_url = self.base_login_url + '?{}'.format(
                 urllib.parse.urlencode(BB_API_LOGIN)
             )
@@ -138,13 +138,13 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
         season = response.meta['season']
 
         for match in schedule_xml.xpath('match'):
-            match_id = match.xpath('@id').extract_first()
+            match_id = int(match.xpath('@id').extract_first())
+            type = match.xpath('@type').extract_first()
 
             # Further scrape matches only if they haven't been scraped yet
-            if match_id not in self.scraped_matches:
+            if match_id not in self.scraped_matches and type != 'unknown':
                 match_date = match.xpath('@start').extract_first()
                 match_date = datetime.datetime.strptime(match_date, '%Y-%m-%dT%H:%M:%SZ')
-                # type = match.xpath('@type') <- For some other time
 
                 # Gathering data for away and home teams and yielding it
                 away_team_id = match.xpath('awayTeam/@id').extract_first()
@@ -173,7 +173,7 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
 
                 # Let's make sure we don't request not-yet-existing boxscore pages
                 if datetime.datetime.now() > match_date:
-                    boxscore_api_link = self.base_boxscore_url + '?matchid=' + match_id
+                    boxscore_api_link = self.base_boxscore_url + '?matchid=' + str(match_id)
 
                     yield response.follow(
                         url=boxscore_api_link,
@@ -181,7 +181,7 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
                         meta={'match_id': match_id}
                     )
             else:
-                self.logger.info('Match id already in the DB: ' + match_id)
+                self.logger.info('Match id already in the DB: ' + str(match_id))
 
     # Parses the Boxscore page
     def parse_boxscore(self, response):
