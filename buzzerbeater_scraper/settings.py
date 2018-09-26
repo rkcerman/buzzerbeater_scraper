@@ -1,3 +1,19 @@
+import os
+import sys
+
+# DJANGO INTEGRATION
+
+sys.path.append(os.path.dirname(os.path.abspath('.')))
+os.environ['DJANGO_SETTINGS_MODULE'] = 'buzzerbeater_web.' \
+                                       'buzzerbeater_web.settings'
+
+SECRET_KEY = 'm*3x9h@44$*5ku63m5(e0+_2ux8dn8cr#klepj@9e&7(4$j2&p'
+
+import django
+django.setup()
+
+# DJANGO INTEGRATION
+
 # -*- coding: utf-8 -*-
 
 # Scrapy settings for buzzerbeater project

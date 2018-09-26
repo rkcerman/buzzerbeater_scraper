@@ -6,6 +6,7 @@ import scrapy
 import re
 
 from bs4 import BeautifulSoup
+from django.db.models import Q
 
 from buzzerbeater_scraper import pbp_parser
 
@@ -16,7 +17,11 @@ from buzzerbeater_scraper.formdata import BB_LOGIN, BB_API_LOGIN
 from buzzerbeater_scraper.boxscore_parser import BoxscoreParser
 from buzzerbeater_scraper.spiders import player_spider
 
+from buzzerbeater_web.bbstats.models import Matches
 
+
+# Generates a list of dictionaries containing
+# all combinations of team IDs and seasons to scrape
 def get_teams_seasons(team_ids, seasons):
     teams_seasons = []
     for team_id in team_ids:
@@ -29,6 +34,16 @@ def get_teams_seasons(team_ids, seasons):
     return teams_seasons
 
 
+# Pulls out already scraped matches from the DB into a list
+def get_scraped_matches(team_ids, seasons):
+    schedule = Matches.objects.filter(season__in=seasons) \
+        .filter(Q(away_team_id__in=team_ids)
+                | Q(home_team_id__in=team_ids)) \
+        .order_by('match_date')
+    matches_ids = [match['id'] for match in schedule.values('id')]
+    return matches_ids
+
+
 class BuzzerbeaterMatchesSpider(scrapy.Spider):
 
     name = "matches_spider"
@@ -36,7 +51,6 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
     start_urls = (
         'http://www.buzzerbeater.com/default.aspx',
     )
-    teams_seasons = []
     base_url = 'http://bbapi.buzzerbeater.com'
     base_login_url = base_url + '/login.aspx'
     base_schedule_url = base_url + '/schedule.aspx'
@@ -55,8 +69,14 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
                  parse_pbps=True,
                  force_rescrape=False,
                  **kwargs):
+
         seasons = seasons.split(',')
         team_ids = team_ids.split(',')
+
+        if not force_rescrape:
+            self.scraped_matches = get_scraped_matches(team_ids, seasons)
+        else:
+            self.scraped_matches = []
         self.teams_seasons = get_teams_seasons(
             team_ids=team_ids,
             seasons=seasons
@@ -84,20 +104,26 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
             self.logger.info("Login successful")
             self.logger.info('Parse Players: ' + self.parse_players)
             self.logger.info('Parse Play-by-plays: ' + self.parse_pbps)
-            api_url = self.base_login_url + '?{}'.format(urllib.parse.urlencode(BB_API_LOGIN))
+            self.logger.info('Already scraped matches: ' + self.scraped_matches)
+            api_url = self.base_login_url + '?{}'.format(
+                urllib.parse.urlencode(BB_API_LOGIN)
+            )
             yield scrapy.Request(
                 url=api_url,
                 callback=self.after_api_login
             )
 
-    # After API login method that calls the boxscore API link before parsing it
+    # After API login method that calls the boxscore API link before
+    # parsing it
     def after_api_login(self, response):
         for team_season in self.teams_seasons:
             args = {
                 'teamid': team_season['teamid'],
                 'season': team_season['season'],
             }
-            url = self.base_schedule_url + '?{}'.format(urllib.parse.urlencode(args))
+            url = self.base_schedule_url + '?{}'.format(
+                urllib.parse.urlencode(args)
+            )
 
             self.logger.debug("Current URL: {}".format(url))
             yield scrapy.Request(
@@ -113,44 +139,49 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
 
         for match in schedule_xml.xpath('match'):
             match_id = match.xpath('@id').extract_first()
-            match_date = match.xpath('@start').extract_first()
-            match_date = datetime.datetime.strptime(match_date, '%Y-%m-%dT%H:%M:%SZ')
-            # type = match.xpath('@type') <- For some other time
 
-            # Gathering data for away and home teams and yielding it
-            away_team_id = match.xpath('awayTeam/@id').extract_first()
-            away_team_name = match.xpath('awayTeam/teamName/text()').extract_first()
-            away_team_item = TeamItem(
-                id=away_team_id,
-                name=away_team_name
-            )
-            home_team_id = match.xpath('homeTeam/@id').extract_first()
-            home_team_name = match.xpath('homeTeam/teamName/text()').extract_first()
-            home_team_item = TeamItem(
-                id=home_team_id,
-                name=home_team_name
-            )
-            match_item = MatchItem(
-                id=match_id,
-                match_date=match_date,
-                away_team_id=away_team_id,
-                home_team_id=home_team_id,
-                season=season
-            )
+            # Further scrape matches only if they haven't been scraped yet
+            if match_id not in self.scraped_matches:
+                match_date = match.xpath('@start').extract_first()
+                match_date = datetime.datetime.strptime(match_date, '%Y-%m-%dT%H:%M:%SZ')
+                # type = match.xpath('@type') <- For some other time
 
-            yield away_team_item
-            yield home_team_item
-            yield match_item
-
-            # Let's make sure we don't request not-yet-existing boxscore pages
-            if datetime.datetime.now() > match_date:
-                boxscore_api_link = self.base_boxscore_url + '?matchid=' + match_id
-
-                yield response.follow(
-                    url=boxscore_api_link,
-                    callback=self.parse_boxscore,
-                    meta={'match_id': match_id}
+                # Gathering data for away and home teams and yielding it
+                away_team_id = match.xpath('awayTeam/@id').extract_first()
+                away_team_name = match.xpath('awayTeam/teamName/text()').extract_first()
+                away_team_item = TeamItem(
+                    id=away_team_id,
+                    name=away_team_name
                 )
+                home_team_id = match.xpath('homeTeam/@id').extract_first()
+                home_team_name = match.xpath('homeTeam/teamName/text()').extract_first()
+                home_team_item = TeamItem(
+                    id=home_team_id,
+                    name=home_team_name
+                )
+                match_item = MatchItem(
+                    id=match_id,
+                    match_date=match_date,
+                    away_team_id=away_team_id,
+                    home_team_id=home_team_id,
+                    season=season
+                )
+
+                yield away_team_item
+                yield home_team_item
+                yield match_item
+
+                # Let's make sure we don't request not-yet-existing boxscore pages
+                if datetime.datetime.now() > match_date:
+                    boxscore_api_link = self.base_boxscore_url + '?matchid=' + match_id
+
+                    yield response.follow(
+                        url=boxscore_api_link,
+                        callback=self.parse_boxscore,
+                        meta={'match_id': match_id}
+                    )
+            else:
+                self.logger.info('Match id already in the DB: ' + match_id)
 
     # Parses the Boxscore page
     def parse_boxscore(self, response):
