@@ -10,7 +10,7 @@ from .processors.process import calculate_skill_points, get_skills_nomenclature,
     get_potential_context, get_strategies_context, get_players_skills_potential, get_player_shot_types
 
 from .processors.query import get_schedule, get_all_teams
-from .models import Players, PlayerSkills, BoxscoreStats, Shots, Teams
+from .models import Matches, Players, PlayerSkills, BoxscoreStats, Shots, Teams
 from .serializers import *
 
 default_season = 43
@@ -159,6 +159,17 @@ def player_overview(request, player_id, season, match_type):
     }
 
     return render(request, 'bbstats/player_overview.html', context)
+
+
+# Returns match overview
+def match_overview(request, match_id):
+    match = Matches.objects.get(id=match_id)
+
+    context = {
+        'match': match
+    }
+
+    return render(request, 'bbstats/match_overview.html', context)
 
 
 class UserViewSet(generics.ListAPIView):

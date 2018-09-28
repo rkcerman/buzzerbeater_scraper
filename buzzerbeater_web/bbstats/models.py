@@ -9,7 +9,8 @@ from django.db import models
 
 
 class BoxscoreStats(models.Model):
-    boxscore = models.ForeignKey('Boxscores', models.DO_NOTHING, primary_key=True)
+    boxscore = models.ForeignKey('Boxscores', models.DO_NOTHING,
+                                 primary_key=True)
     player_id = models.IntegerField()
     pg_min = models.SmallIntegerField()
     sg_min = models.SmallIntegerField()
@@ -30,9 +31,9 @@ class BoxscoreStats(models.Model):
     blk = models.SmallIntegerField()
     pf = models.SmallIntegerField()
     pts = models.SmallIntegerField()
-    rating = models.DecimalField(max_digits=3, decimal_places=1, blank=True, null=True)
+    rating = models.DecimalField(max_digits=3, decimal_places=1, blank=True,
+                                 null=True)
     team = models.ForeignKey('Teams', models.DO_NOTHING)
-
 
     class Meta:
         managed = False
@@ -41,11 +42,16 @@ class BoxscoreStats(models.Model):
 
 
 class Boxscores(models.Model):
-    match = models.OneToOneField('Matches', models.DO_NOTHING, primary_key=True)
-    away_prep_focus = models.TextField(blank=True, null=True)  # This field type is a guess.
-    away_prep_pace = models.TextField(blank=True, null=True)  # This field type is a guess.
-    home_prep_focus = models.TextField(blank=True, null=True)  # This field type is a guess.
-    home_prep_pace = models.TextField(blank=True, null=True)  # This field type is a guess.
+    match = models.OneToOneField('Matches', models.DO_NOTHING,
+                                 primary_key=True)
+    away_prep_focus = models.TextField(blank=True,
+                                       null=True)  # This field type is a guess.
+    away_prep_pace = models.TextField(blank=True,
+                                      null=True)  # This field type is a guess.
+    home_prep_focus = models.TextField(blank=True,
+                                       null=True)  # This field type is a guess.
+    home_prep_pace = models.TextField(blank=True,
+                                      null=True)  # This field type is a guess.
     away_outside_off = models.DecimalField(max_digits=3, decimal_places=1)
     away_inside_off = models.DecimalField(max_digits=3, decimal_places=1)
     away_outside_def = models.DecimalField(max_digits=3, decimal_places=1)
@@ -58,10 +64,14 @@ class Boxscores(models.Model):
     home_inside_def = models.DecimalField(max_digits=3, decimal_places=1)
     home_reb = models.DecimalField(max_digits=3, decimal_places=1)
     home_off_flow = models.DecimalField(max_digits=3, decimal_places=1)
-    home_prep_focus_matched = models.CharField(max_length=4, blank=True, null=True)
-    home_prep_pace_matched = models.CharField(max_length=4, blank=True, null=True)
-    away_prep_focus_matched = models.CharField(max_length=4, blank=True, null=True)
-    away_prep_pace_matched = models.CharField(max_length=4, blank=True, null=True)
+    home_prep_focus_matched = models.CharField(max_length=4, blank=True,
+                                               null=True)
+    home_prep_pace_matched = models.CharField(max_length=4, blank=True,
+                                              null=True)
+    away_prep_focus_matched = models.CharField(max_length=4, blank=True,
+                                               null=True)
+    away_prep_pace_matched = models.CharField(max_length=4, blank=True,
+                                              null=True)
     match_type = models.CharField(max_length=30)
     away_off_strategy = models.TextField()  # This field type is a guess.
     away_def_strategy = models.TextField()  # This field type is a guess.
@@ -76,8 +86,10 @@ class Boxscores(models.Model):
 class Matches(models.Model):
     id = models.IntegerField(primary_key=True)
     match_date = models.DateField()
-    home_team = models.ForeignKey('Teams', models.DO_NOTHING, related_name='%(class)s_home_team_id')
-    away_team = models.ForeignKey('Teams', models.DO_NOTHING, related_name='%(class)s_away_team_id')
+    home_team = models.ForeignKey('Teams', models.DO_NOTHING,
+                                  related_name='%(class)s_home_team_id')
+    away_team = models.ForeignKey('Teams', models.DO_NOTHING,
+                                  related_name='%(class)s_away_team_id')
     season = models.SmallIntegerField()
 
     class Meta:
@@ -102,7 +114,8 @@ class PlayByPlays(models.Model):
     score = models.CharField(max_length=10)
     event = models.TextField()
     boxscore = models.ForeignKey(Boxscores, models.DO_NOTHING)
-    play_tags = models.TextField(blank=True, null=True)  # This field type is a guess.
+    play_tags = models.TextField(blank=True,
+                                 null=True)  # This field type is a guess.
 
     class Meta:
         managed = False
@@ -113,7 +126,8 @@ class PlayByPlays(models.Model):
 
 
 class PlayerHistory(models.Model):
-    player = models.ForeignKey('Players', models.DO_NOTHING, primary_key=True)
+    player = models.ForeignKey('Players', models.DO_NOTHING,
+                               primary_key=True)
     event = models.CharField(max_length=25)
     date = models.DateField()
     season = models.SmallIntegerField()
@@ -129,7 +143,8 @@ class PlayerHistory(models.Model):
 
 
 class PlayerSkills(models.Model):
-    player = models.ForeignKey('Players', models.DO_NOTHING, primary_key=True)
+    player = models.ForeignKey('Players', models.DO_NOTHING,
+                               primary_key=True)
     date = models.DateTimeField()
     skill = models.TextField()  # This field type is a guess.
     value = models.SmallIntegerField()
@@ -177,10 +192,12 @@ class ScoreTables(models.Model):
 
 
 class Shots(models.Model):
-    pbp = models.ForeignKey(PlayByPlays, models.DO_NOTHING, primary_key=True)
+    pbp = models.ForeignKey(PlayByPlays, models.DO_NOTHING,
+                            primary_key=True)
     outcome = models.TextField()  # This field type is a guess.
     defender = models.IntegerField(blank=True, null=True)
-    defense_type = models.TextField(blank=True, null=True)  # This field type is a guess.
+    defense_type = models.TextField(blank=True,
+                                    null=True)  # This field type is a guess.
     passer = models.IntegerField(blank=True, null=True)
     shooter = models.IntegerField()
 
@@ -190,6 +207,7 @@ class Shots(models.Model):
 
     def __str__(self):
         return self.outcome + ' by ' + str(self.shooter)
+
 
 class Teams(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -201,4 +219,4 @@ class Teams(models.Model):
         db_table = 'teams'
 
     def __str__(self):
-        return self.id + ' - ' + str(self.name)
+        return str(self.id) + ' - ' + str(self.name)
