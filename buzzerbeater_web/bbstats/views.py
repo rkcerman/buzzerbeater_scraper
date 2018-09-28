@@ -78,6 +78,8 @@ def player_overview(request, player_id, season, match_type):
     season_shots = Shots.objects.filter(
         pbp__boxscore__match__season=season
     )
+    if not request.GET.get('with_fouled', False):
+        season_shots = season_shots.exclude(outcome='fouled')
     player_shots = season_shots.filter(
         shooter=player_id,
     )

@@ -166,10 +166,10 @@ def get_player_shot_types(shots, agg_type):
             .order_by('pbp__event_type')
         shot_performances = []
 
-        # Performing the actual aggregates, with the exclusion of fouled shots
+        # Performing the actual aggregates
         for shot_type in distinct_shot_types:
             shot_type = shot_type[0]
-            shot_type_query = shots.filter(pbp__event_type=shot_type).exclude(outcome='fouled')
+            shot_type_query = shots.filter(pbp__event_type=shot_type)
 
             shot_performances.append(
                 aggregate_shot_type(shot_type, shot_type_query, agg_type)
@@ -182,7 +182,9 @@ def get_player_shot_types(shots, agg_type):
 
 # Performs aggregates for each shot type for a player
 def aggregate_shot_type(shot_type, shot_type_query, agg_type):
-    made_fg = shot_type_query.filter(outcome='scored').count()
+    made_fg = shot_type_query.filter(
+        outcome__in=['scored', 'fouled']
+    ).count()
     attempted_fg = shot_type_query.count()
     fg_per = round(safe_div(made_fg, attempted_fg), 2)
 
