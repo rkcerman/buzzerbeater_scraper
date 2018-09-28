@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import datetime
 import urllib.parse
+from collections import Counter
 
 import scrapy
 import re
@@ -55,6 +56,9 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
     base_login_url = base_url + '/login.aspx'
     base_schedule_url = base_url + '/schedule.aspx'
     base_boxscore_url = base_url + '/boxscore.aspx'
+
+    matches_pbp_counter = {}
+
 
     # __init__ function to handle custom args
     # team_ids - IDs of teams to scrape their schedule
@@ -235,7 +239,7 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
 
         # Following the link to Play-By-Play page
         pbp_link = 'http://www.buzzerbeater.com/match/'\
-                   + match_id\
+                   + str(match_id)\
                    +'/pbp.aspx'
 
         if self.parse_pbps:
@@ -265,6 +269,11 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
         self.logger.info(str(match_id)
                          + ' -- Total number of plays: '
                          + str(len_play_by_plays))
+        self.matches_pbp_counter[match_id] = Counter(
+            total_pbps=len_play_by_plays,
+            scraped_pbps=1,
+            scraped_shots=1,
+        )
         while i < len_play_by_plays:
             self.logger.info(str(match_id)
                              + ' --- play no. '
@@ -312,7 +321,9 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
             )
             if parsed_pbp_item is not None:
                 yield parsed_pbp_item
+                self.matches_pbp_counter[match_id]['scraped_shots'] += 1
 
+            self.matches_pbp_counter[match_id]['scraped_pbps'] += 1
             i += 1
 
     # Parses individual player overviews
@@ -350,3 +361,11 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
 
         for item in player_history_items:
             yield item
+
+    def closed(self, reason):
+        print(reason)
+        for k, v in self.matches_pbp_counter:
+            print(k)
+            print(v)
+            if v['total_pbps'] != v['scraped_pbps']:
+                print(' <- ATTENTION!')
