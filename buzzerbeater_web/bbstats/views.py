@@ -42,7 +42,7 @@ def team_overview(request, team_id):
     return render(request, 'bbstats/team_overview.html', context)
 
 
-# Returns player overview with the default season and all league and cup matches
+# Returns player overview for the default season and league & cup matches
 def player_default_overview(request, player_id):
     return player_overview(
         request=request,
@@ -52,7 +52,7 @@ def player_default_overview(request, player_id):
     )
 
 
-# Returns player overview with the specified season and all league and cup matches
+# Returns player overview for the specified season and league & cup matches
 def player_season_overview(request, player_id, season):
     return player_overview(
         request=request,
@@ -75,26 +75,28 @@ def player_overview(request, player_id, season, match_type):
         player_id=player_id,
         boxscore__match__season=season
     ).order_by('-boxscore_id')
-    player_shots = Shots.objects.filter(
+    season_shots = Shots.objects.filter(
+        pbp__boxscore__match__season=season
+    )
+    player_shots = season_shots.filter(
         shooter=player_id,
-        pbp__boxscore__match__season=season
     )
-    player_defended_shots = Shots.objects.filter(
+    player_defended_shots = season_shots.filter(
         defender=player_id,
-        pbp__boxscore__match__season=season
     )
-    player_passed_shots = Shots.objects.filter(
+    player_passed_shots = season_shots.filter(
         passer=player_id,
-        pbp__boxscore__match__season=season
     )
 
     # Further filtering based on match_types if they are defined
     if match_type == 'standard':
         boxscore_stats = boxscore_stats.filter(
-            Q(boxscore__match_type__contains='league') | Q(boxscore__match_type__contains='cup')
+            Q(boxscore__match_type__contains='league')
+            | Q(boxscore__match_type__contains='cup')
         )
         player_shots = player_shots.filter(
-            Q(pbp__boxscore__match_type__contains='league') | Q(pbp__boxscore__match_type__contains='cup')
+            Q(pbp__boxscore__match_type__contains='league')
+            | Q(pbp__boxscore__match_type__contains='cup')
         )
 
     # Returns styling class and nomenclature for skills
