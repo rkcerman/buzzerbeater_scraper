@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+{% if match %}
+{% load bbstats_extras %}
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="http://www.buzzerbeater.com/CSS/contentbox.css?c=2" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.3.1/dt-1.10.18/rg-1.0.3/datatables.min.css" />
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.3.1/dt-1.10.18/rg-1.0.3/datatables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/3.2.6/js/dataTables.fixedColumns.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.19/api/average().js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/plug-ins/1.10.19/api/sum().js"></script>
+    <title>{{ match.away_team.name }} vs {{ match.home_team.name }}</title>
+</head>
+<style>
+        .pbpAnalysis {
+            margin: 0 auto;
+            text-align: center;
+        }
+</style>
+<body>
+	<div class="pbpAnalysis">
+		<p>
+		
+		</p>
+	</div>
+</body>
+{% endif %}
+
+</html>

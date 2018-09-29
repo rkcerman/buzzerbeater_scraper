@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import datetime
 import urllib.parse
+from collections import Counter
 
 import scrapy
 import re
@@ -15,7 +16,7 @@ from buzzerbeater_scraper.items import PlayByPlayItem, TeamItem, MatchItem
 from buzzerbeater_scraper.pbp_parser import PlayByPlayParser
 from buzzerbeater_scraper.formdata import BB_LOGIN, BB_API_LOGIN
 from buzzerbeater_scraper.boxscore_parser import BoxscoreParser
-from buzzerbeater_scraper.spiders import player_spider
+from buzzerbeater_scraper.spiders.player_spider import PlayerSpider
 
 from bbstats.models import Matches
 
@@ -55,6 +56,9 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
     base_login_url = base_url + '/login.aspx'
     base_schedule_url = base_url + '/schedule.aspx'
     base_boxscore_url = base_url + '/boxscore.aspx'
+
+    matches_pbp_counter = {}
+
 
     # __init__ function to handle custom args
     # team_ids - IDs of teams to scrape their schedule
@@ -98,13 +102,19 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
         soup = BeautifulSoup(response.text, 'lxml')
         title = soup.h1.get_text()
         print(title)
-        if title != "Welcome to BuzzerBeater!":
-            self.logger.error("Login failed")
+        if title != 'Welcome to BuzzerBeater!':
+            self.logger.error('Login failed')
         else:
-            self.logger.info("Login successful")
-            self.logger.info('Parse Players: ' + str(self.parse_players))
-            self.logger.info('Parse Play-by-plays: ' + str(self.parse_pbps))
-            self.logger.info('Already scraped matches: ' + str(self.scraped_matches))
+            self.logger.info('Login successful')
+            self.logger.info('Parse Players: '
+                             + str(self.parse_players)
+                             )
+            self.logger.info('Parse Play-by-plays: '
+                             + str(self.parse_pbps)
+                             )
+            self.logger.info('Already scraped matches: '
+                             + str(self.scraped_matches)
+                             )
             api_url = self.base_login_url + '?{}'.format(
                 urllib.parse.urlencode(BB_API_LOGIN)
             )
@@ -142,9 +152,13 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
             type = match.xpath('@type').extract_first()
 
             # Further scrape matches only if they haven't been scraped yet
+            # Also excludes matches of type 'unknown' which are all-star
             if match_id not in self.scraped_matches and type != 'unknown':
                 match_date = match.xpath('@start').extract_first()
-                match_date = datetime.datetime.strptime(match_date, '%Y-%m-%dT%H:%M:%SZ')
+                match_date = datetime.datetime.strptime(
+                    match_date,
+                    '%Y-%m-%dT%H:%M:%SZ'
+                )
 
                 # Gathering data for away and home teams and yielding it
                 away_team_id = match.xpath('awayTeam/@id').extract_first()
@@ -171,9 +185,11 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
                 yield home_team_item
                 yield match_item
 
-                # Let's make sure we don't request not-yet-existing boxscore pages
+                # Prevent requesting not-yet-existing boxscore pages
                 if datetime.datetime.now() > match_date:
-                    boxscore_api_link = self.base_boxscore_url + '?matchid=' + str(match_id)
+                    boxscore_api_link = self.base_boxscore_url\
+                                        + '?matchid='\
+                                        + str(match_id)
 
                     yield response.follow(
                         url=boxscore_api_link,
@@ -181,7 +197,8 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
                         meta={'match_id': match_id}
                     )
             else:
-                self.logger.info('Match id already in the DB: ' + str(match_id))
+                self.logger.info('Match id already in the DB: '
+                                 + str(match_id))
 
     # Parses the Boxscore page
     def parse_boxscore(self, response):
@@ -210,16 +227,26 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
 
             if self.parse_players:
                 player_id = boxscore_stats_item['player_id']
-                url = 'http://www.buzzerbeater.com/player/' + str(player_id) + '/overview.aspx'
-                yield response.follow(url, self.parse_player)
+                url = 'http://www.buzzerbeater.com/player/'\
+                      + str(player_id)\
+                      + '/overview.aspx'
+                yield response.follow(
+                    url=url,
+                    callback=self.parse_player
+                )
 
             yield boxscore_stats_item
 
         # Following the link to Play-By-Play page
-        pbp_link = 'http://www.buzzerbeater.com/match/' + match_id + '/pbp.aspx'
+        pbp_link = 'http://www.buzzerbeater.com/match/'\
+                   + str(match_id)\
+                   +'/pbp.aspx'
 
         if self.parse_pbps:
-            yield response.follow(pbp_link, self.parse_pbp)
+            yield response.follow(
+                url=pbp_link,
+                callback=self.parse_pbp
+            )
 
     # TODO Try to find a way to use scrapy's native parsing here
     # Parses the Play-by-Play page
@@ -242,6 +269,11 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
         self.logger.info(str(match_id)
                          + ' -- Total number of plays: '
                          + str(len_play_by_plays))
+        self.matches_pbp_counter[match_id] = Counter(
+            total_pbps=len_play_by_plays,
+            scraped_pbps=1,
+            scraped_shots=1,
+        )
         while i < len_play_by_plays:
             self.logger.info(str(match_id)
                              + ' --- play no. '
@@ -254,7 +286,8 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
             item_score = row.select('td')[2].get_text()
             item_event = row.select('td')[3]
 
-            # Replacing Player names for IDs; makes jobs down the line easier
+            # Replacing Player names for IDs
+            # Makes jobs down the line easier
             for idx, href in enumerate(item_event.find_all('a')):
                 player_href_id = href.get('href')
                 player_href_id = re.search(
@@ -280,19 +313,24 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
 
             yield pbp_item
 
-            # Check if the item can be processed further, e.g. in case of shot items
+            # Check if the item can be processed further
+            # E.g. in case of shot items
             parsed_pbp_item = pbp_parser.PlayByPlayParser.parse(
                 self=PlayByPlayParser,
                 pbp_item=pbp_item
             )
             if parsed_pbp_item is not None:
                 yield parsed_pbp_item
+                self.matches_pbp_counter[match_id]['scraped_shots'] += 1
 
+            self.matches_pbp_counter[match_id]['scraped_pbps'] += 1
             i += 1
 
     # Parses individual player overviews
     def parse_player(self, response):
-        player = player_spider.PlayerSpider.parse_player_html(response=response)
+        player = PlayerSpider.parse_player_html(
+            response=response
+        )
 
         if player is not None:
             player_item = player['player_item']
@@ -310,11 +348,24 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
                 yield skill
 
             player_history_link = player['player_history_link']
-            yield response.follow(player_history_link, self.parse_player_history)
+            yield response.follow(
+                url=player_history_link,
+                callback=self.parse_player_history
+            )
 
     # Parses the player history page
     def parse_player_history(self, response):
-        player_history_items = player_spider.PlayerSpider.parse_player_history_html(response=response)
+        player_history_items = PlayerSpider.parse_player_history_html(
+            response=response
+        )
 
         for item in player_history_items:
             yield item
+
+    def closed(self, reason):
+        print(reason)
+        for k, v in self.matches_pbp_counter:
+            print(k)
+            print(v)
+            if v['total_pbps'] != v['scraped_pbps']:
+                print(' <- ATTENTION!')

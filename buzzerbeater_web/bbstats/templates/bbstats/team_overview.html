@@ -38,31 +38,31 @@
     var scheduleData = [
         {% for match in schedule %}
         [
-            '{{ match.0.match_date|date:"y-m-d" }}',
-            {% if match.0.home_team_id ==  team.id %}
-            '{{ match.1.home_off_strategy|to_initials }}',
-            '{{ match.1.home_def_strategy|to_initials }}',
-            '{{ match.1.home_prep_focus_matched|to_hit_miss }}',
-            '{{ match.1.home_prep_pace_matched|to_hit_miss }}',
-	    '{{ match.2 }}',
-            '@<a href="{% url 'team_overview' match.0.away_team_id %}">{{ match.0.away_team.name }}</a>',
-            '{{ match.1.away_off_strategy|to_initials }}',
-            '{{ match.1.away_def_strategy|to_initials }}',
-            '{{ match.1.away_prep_focus_matched|to_hit_miss }}',
-            '{{ match.1.away_prep_pace_matched|to_hit_miss }}',            
-            {% else %}
-            '{{ match.1.away_off_strategy|to_initials }}',
-            '{{ match.1.away_def_strategy|to_initials }}',
-            '{{ match.1.away_prep_focus_matched|to_hit_miss }}',
-            '{{ match.1.away_prep_pace_matched|to_hit_miss }}',
-	    '{{ match.2 }}',
-            '<a href="{% url 'team_overview' match.0.home_team_id %}">{{ match.0.home_team.name }}</a>',
-            '{{ match.1.home_off_strategy|to_initials }}',
-            '{{ match.1.home_def_strategy|to_initials }}',
-            '{{ match.1.home_prep_focus_matched|to_hit_miss }}',
-            '{{ match.1.home_prep_pace_matched|to_hit_miss }}',   
-            {% endif %}
-            '{{ match.1.match_type }}',
+		'{{ match.0.match_date|date:"y-m-d" }}',
+		{% if match.0.home_team_id ==  team.id %}
+		'{{ match.1.home_off_strategy|to_initials }}',
+		'{{ match.1.home_def_strategy|to_initials }}',
+		'{{ match.1.home_prep_focus_matched|to_hit_miss }}',
+		'{{ match.1.home_prep_pace_matched|to_hit_miss }}',
+	'<a href="{% url 'match_overview' match.0.id %}">{{ match.2 }}</a>',
+		'@<a href="{% url 'team_overview' match.0.away_team_id %}">{{ match.0.away_team.name }}</a>',
+		'{{ match.1.away_off_strategy|to_initials }}',
+		'{{ match.1.away_def_strategy|to_initials }}',
+		'{{ match.1.away_prep_focus_matched|to_hit_miss }}',
+		'{{ match.1.away_prep_pace_matched|to_hit_miss }}',            
+		{% else %}
+		'{{ match.1.away_off_strategy|to_initials }}',
+		'{{ match.1.away_def_strategy|to_initials }}',
+		'{{ match.1.away_prep_focus_matched|to_hit_miss }}',
+		'{{ match.1.away_prep_pace_matched|to_hit_miss }}',
+	'<a href="{% url 'match_overview' match.0.id %}">{{ match.2 }}</a>',
+		'<a href="{% url 'team_overview' match.0.home_team_id %}">{{ match.0.home_team.name }}</a>',
+		'{{ match.1.home_off_strategy|to_initials }}',
+		'{{ match.1.home_def_strategy|to_initials }}',
+		'{{ match.1.home_prep_focus_matched|to_hit_miss }}',
+		'{{ match.1.home_prep_pace_matched|to_hit_miss }}',   
+		{% endif %}
+		'{{ match.1.match_type }}',
         ],
         {% endfor %}
     ];
