@@ -19,7 +19,7 @@ class PlayByPlayParser:
 
     def parse_shots(self, shot_play):
         if 'shot' in shot_play['play_tags']:
-            logging.info('PARSING SHOTS')
+            logging.debug('PARSING SHOTS')
 
             # Turn all the Goaltends into Scores because noone cares
             shot_play['event'] = shot_play['event'].replace('Goaltending called', 'Scored')

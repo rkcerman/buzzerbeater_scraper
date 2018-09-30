@@ -275,7 +275,7 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
             scraped_shots=1,
         )
         while i < len_play_by_plays:
-            self.logger.info(str(match_id)
+            self.logger.debug(str(match_id)
                              + ' --- play no. '
                              + str(i))
             row = play_by_play.select('tr')[i]
@@ -364,7 +364,8 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
 
     def closed(self, reason):
         print(reason)
-        for k, v in self.matches_pbp_counter:
+        print(self.matches_pbp_counter)
+        for k, v in self.matches_pbp_counter.items():
             print(k)
             print(v)
             if v['total_pbps'] != v['scraped_pbps']:
