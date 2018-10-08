@@ -18,7 +18,7 @@ from buzzerbeater_scraper.formdata import BB_LOGIN, BB_API_LOGIN
 from buzzerbeater_scraper.boxscore_parser import BoxscoreParser
 from buzzerbeater_scraper.spiders.player_spider import PlayerSpider
 
-from bbstats.models import Matches
+from bbstats.models import Boxscores
 
 
 # Generates a list of dictionaries containing
@@ -37,11 +37,10 @@ def get_teams_seasons(team_ids, seasons):
 
 # Pulls out already scraped matches from the DB into a list
 def get_scraped_matches(team_ids, seasons):
-    schedule = Matches.objects.filter(season__in=seasons) \
-        .filter(Q(away_team_id__in=team_ids)
-                | Q(home_team_id__in=team_ids)) \
-        .order_by('match_date')
-    matches_ids = [match['id'] for match in schedule.values('id')]
+    schedule = Boxscores.objects.filter(match__season__in=seasons) \
+        .filter(Q(match__away_team_id__in=team_ids)
+                | Q(match__home_team_id__in=team_ids))
+    matches_ids = [match['match_id'] for match in schedule.values('match_id')]
     return matches_ids
 
 
@@ -78,9 +77,9 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
         team_ids = team_ids.split(',')
 
         if not force_rescrape:
-            self.scraped_matches = get_scraped_matches(team_ids, seasons)
+            self.scraped_boxscores = get_scraped_matches(team_ids, seasons)
         else:
-            self.scraped_matches = []
+            self.scraped_boxscores = []
         self.teams_seasons = get_teams_seasons(
             team_ids=team_ids,
             seasons=seasons
@@ -112,8 +111,8 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
             self.logger.info('Parse Play-by-plays: '
                              + str(self.parse_pbps)
                              )
-            self.logger.info('Already scraped matches: '
-                             + str(self.scraped_matches)
+            self.logger.info('Already scraped boxscores: '
+                             + str(self.scraped_boxscores)
                              )
             api_url = self.base_login_url + '?{}'.format(
                 urllib.parse.urlencode(BB_API_LOGIN)
@@ -153,7 +152,7 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
 
             # Further scrape matches only if they haven't been scraped yet
             # Also excludes matches of type 'unknown' which are all-star
-            if match_id not in self.scraped_matches and type != 'unknown':
+            if match_id not in self.scraped_boxscores and type != 'unknown':
                 match_date = match.xpath('@start').extract_first()
                 match_date = datetime.datetime.strptime(
                     match_date,
@@ -275,7 +274,7 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
             scraped_shots=1,
         )
         while i < len_play_by_plays:
-            self.logger.info(str(match_id)
+            self.logger.debug(str(match_id)
                              + ' --- play no. '
                              + str(i))
             row = play_by_play.select('tr')[i]
@@ -364,7 +363,8 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
 
     def closed(self, reason):
         print(reason)
-        for k, v in self.matches_pbp_counter:
+        print(self.matches_pbp_counter)
+        for k, v in self.matches_pbp_counter.items():
             print(k)
             print(v)
             if v['total_pbps'] != v['scraped_pbps']:

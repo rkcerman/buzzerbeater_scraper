@@ -70,10 +70,11 @@
         $(document).ready(function() {
             $('#teamPlayers').DataTable( {
                 data: teamPlayersData,   
+		order: [[ 2, "desc" ]],
                 columns: [
-                    { title: 'Name', width:'8%'},
+                    { title: 'Name', width:'50px'},
                     { title: 'Age'},
-                    { title: 'Salary'},
+                    { title: 'Salary', width: '50px'},
                     { title: 'DMI'},
                     { title: 'Pot'},
                     { title: 'GS'},
@@ -122,6 +123,9 @@
 
     </script>
     <style>
+	table.dataTable thead .sorting {
+		background-image: none !important;
+	}
         .teamInfo {
             margin: 0 auto;
             text-align: center;
@@ -129,7 +133,7 @@
         .tableDiv {
             margin: 0 auto;
             margin-top: 4%;
-            width: 60%;
+            width: 70%;
         }
         .teamPlayersDiv {
             
