@@ -328,9 +328,8 @@
     // Table with shot types
     $(document).ready(function() {
         $('#shotPerf').DataTable({
-            //data: shotPerformances,           
 	    ajax: {
-		url: "{% url 'player_stats' player.id season %}",
+		url: "{% url 'player_stats' player.id season %}?match_type=standard&filter=shoot",
 		dataSrc: "shoot",
 	    },
             columns: [
@@ -436,12 +435,15 @@
     // Table with defense performance
     $(document).ready(function() {
         $('#defensePerf').DataTable({
-            data: defPerformances,           
+	    ajax: {
+		url: "{% url 'player_stats' player.id season %}?match_type=standard&filter=guard",
+		dataSrc: "guard",
+	    },
             columns: [
-                { title: 'Shot type' },
-                { title: 'Opp Made' },
-                { title: 'Opp Att.' },
-                { title: 'Opp %' },
+                { title: 'Shot type', data: "shot_type"},
+                { title: 'Made', data: "made_fg" },
+                { title: 'Att.', data: "attempted_fg" },
+                { title: '%', data: "fg_per" },
             ],
             "displayLength": 100,
             "order": [
@@ -524,12 +526,15 @@
     // Table with passing performance
     $(document).ready(function() {
         $('#passingPerf').DataTable({
-            data: passPerformances,           
+	    ajax: {
+		url: "{% url 'player_stats' player.id season %}?match_type=standard&filter=pass",
+		dataSrc: "pass",
+	    },
             columns: [
-                { title: 'Shot type' },
-                { title: 'Made' },
-                { title: 'Att.' },
-                { title: '%' },
+                { title: 'Shot type', data: "shot_type"},
+                { title: 'Made', data: "made_fg" },
+                { title: 'Att.', data: "attempted_fg" },
+                { title: '%', data: "fg_per" },
             ],
             "displayLength": 100,
             "order": [

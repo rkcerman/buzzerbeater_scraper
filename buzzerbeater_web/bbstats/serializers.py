@@ -49,12 +49,6 @@ class PlayersSerializer(serializers.ModelSerializer):
         )
 
 
-class PlayersStatsSerializer(serializers.Serializer):
-    shot_type = serializers.CharField()
-    fgm = serializers.IntegerField()
-    fga = serializers.IntegerField()
-
-
 class TeamDetailSerializer(serializers.ModelSerializer):
     players_set = PlayersSerializer(many=True, read_only=True)
 
