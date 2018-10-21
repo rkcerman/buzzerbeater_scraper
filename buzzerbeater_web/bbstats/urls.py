@@ -14,4 +14,5 @@ urlpatterns = [
     url(r'^api/teams/(?P<pk>[0-9]+)/$', views.TeamDetail.as_view(), name='team_detail'),
     url(r'^api/players/$', views.PlayerList.as_view()),
     url(r'^api/players/(?P<pk>[0-9]+)/$', views.PlayerDetail.as_view()),
+    url(r'^api/players/(?P<pk>[0-9]+)/stats/(?P<season>[0-9]+)/$', views.player_stats, name='player_stats'),
 ]

@@ -328,18 +328,22 @@
     // Table with shot types
     $(document).ready(function() {
         $('#shotPerf').DataTable({
-            data: shotPerformances,           
+            //data: shotPerformances,           
+	    ajax: {
+		url: "{% url 'player_stats' player.id season %}",
+		dataSrc: "shoot",
+	    },
             columns: [
-                { title: 'Shot type' },
-                { title: 'Made' },
-                { title: 'Att.' },
-                { title: '%' },
-                { title: 'Made' },
-                { title: 'Att.' },
-                { title: '%' },
-                { title: 'Made' },
-                { title: 'Att.' },
-                { title: '%' },
+                { title: 'Shot type', data: "shot_type"},
+                { title: 'Made', data: "made_fg" },
+                { title: 'Att.', data: "attempted_fg" },
+                { title: '%', data: "fg_per" },
+                { title: 'Made', data: "made_guarded" },
+                { title: 'Att.', data: "attempted_guarded" },
+                { title: '%', data: "guarded_per"},
+                { title: 'Made', data: "made_passed" },
+                { title: 'Att.', data: "attempted_passed" },
+                { title: '%', data: "passed_per" },
             ],
             "displayLength": 100,
             "order": [

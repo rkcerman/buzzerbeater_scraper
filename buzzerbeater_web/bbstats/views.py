@@ -3,8 +3,10 @@ from django.db.models import Q
 from django.conf import settings
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.views.decorators.cache import cache_page
-from rest_framework import generics, viewsets
+from rest_framework import generics, viewsets, permissions
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.generics import get_object_or_404
+from rest_framework.response import Response
 
 from .processors.process import calculate_skill_points, get_skills_nomenclature, \
     get_potential_context, get_strategies_context, get_players_skills_potential, get_player_shot_types
@@ -78,6 +80,8 @@ def player_overview(request, player_id, season, match_type):
     season_shots = Shots.objects.filter(
         pbp__boxscore__match__season=season
     )
+
+    # Able to add shots with 'fouled' outcome into calculations
     if not request.GET.get('with_fouled', False):
         season_shots = season_shots.exclude(outcome='fouled')
     player_shots = season_shots.filter(
@@ -152,6 +156,7 @@ def player_overview(request, player_id, season, match_type):
         'potential': potential,
         'skills': player_skills,
         'stats': stats,
+        'season': season,
         'shot_performances': shot_performances,
         'defense_performances': defense_performances,
         'passing_performances': passing_performances,
@@ -170,6 +175,40 @@ def match_overview(request, match_id):
     }
 
     return render(request, 'bbstats/match_overview.html', context)
+
+
+@api_view(['GET'])
+@permission_classes((permissions.AllowAny,))
+def player_stats(request, pk, season):
+
+    season_shots = Shots.objects.filter(
+        pbp__boxscore__match__season=season
+    )
+
+    # Able to add shots with 'fouled' outcome into calculations
+    if not request.GET.get('with_fouled', False):
+        season_shots = season_shots.exclude(outcome='fouled')
+    player_shots = season_shots.filter(
+        shooter=pk,
+    )
+    player_defended_shots = season_shots.filter(
+        defender=pk,
+    )
+    player_passed_shots = season_shots.filter(
+        passer=pk,
+    )
+    shot_performances = get_player_shot_types(player_shots, 'shoot')
+    defense_performances = get_player_shot_types(player_defended_shots, 'pass')
+    passing_performances = get_player_shot_types(player_passed_shots, 'guard')
+
+    # serializer = PlayersStatsSerializer(shot_performances)
+    data = {
+        'shoot': shot_performances,
+        'guard': defense_performances,
+        'pass': passing_performances,
+    }
+
+    return Response(data)
 
 
 class UserViewSet(generics.ListAPIView):
@@ -195,3 +234,5 @@ class PlayerList(generics.ListAPIView):
 class PlayerDetail(generics.RetrieveAPIView):
     queryset = Players.objects.all()
     serializer_class = PlayersSerializer
+
+
