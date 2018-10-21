@@ -40,12 +40,12 @@ def get_scraped_matches(team_ids, seasons):
     schedule = Boxscores.objects.filter(match__season__in=seasons) \
         .filter(Q(match__away_team_id__in=team_ids)
                 | Q(match__home_team_id__in=team_ids))
-    matches_ids = [match['match_id'] for match in schedule.values('match_id')]
+    matches_ids = [match['match_id'] for match in
+                   schedule.values('match_id')]
     return matches_ids
 
 
 class BuzzerbeaterMatchesSpider(scrapy.Spider):
-
     name = "matches_spider"
     allowed_domains = ["buzzerbeater.com"]
     start_urls = (
@@ -57,7 +57,6 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
     base_boxscore_url = base_url + '/boxscore.aspx'
 
     matches_pbp_counter = {}
-
 
     # __init__ function to handle custom args
     # team_ids - IDs of teams to scrape their schedule
@@ -161,13 +160,15 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
 
                 # Gathering data for away and home teams and yielding it
                 away_team_id = match.xpath('awayTeam/@id').extract_first()
-                away_team_name = match.xpath('awayTeam/teamName/text()').extract_first()
+                away_team_name = match.xpath(
+                    'awayTeam/teamName/text()').extract_first()
                 away_team_item = TeamItem(
                     id=away_team_id,
                     name=away_team_name
                 )
                 home_team_id = match.xpath('homeTeam/@id').extract_first()
-                home_team_name = match.xpath('homeTeam/teamName/text()').extract_first()
+                home_team_name = match.xpath(
+                    'homeTeam/teamName/text()').extract_first()
                 home_team_item = TeamItem(
                     id=home_team_id,
                     name=home_team_name
@@ -186,8 +187,8 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
 
                 # Prevent requesting not-yet-existing boxscore pages
                 if datetime.datetime.now() > match_date:
-                    boxscore_api_link = self.base_boxscore_url\
-                                        + '?matchid='\
+                    boxscore_api_link = self.base_boxscore_url \
+                                        + '?matchid=' \
                                         + str(match_id)
 
                     yield response.follow(
@@ -226,8 +227,8 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
 
             if self.parse_players:
                 player_id = boxscore_stats_item['player_id']
-                url = 'http://www.buzzerbeater.com/player/'\
-                      + str(player_id)\
+                url = 'http://www.buzzerbeater.com/player/' \
+                      + str(player_id) \
                       + '/overview.aspx'
                 yield response.follow(
                     url=url,
@@ -237,9 +238,9 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
             yield boxscore_stats_item
 
         # Following the link to Play-By-Play page
-        pbp_link = 'http://www.buzzerbeater.com/match/'\
-                   + str(match_id)\
-                   +'/pbp.aspx'
+        pbp_link = 'http://www.buzzerbeater.com/match/' \
+                   + str(match_id) \
+                   + '/pbp.aspx'
 
         if self.parse_pbps:
             yield response.follow(
@@ -275,8 +276,8 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
         )
         while i < len_play_by_plays:
             self.logger.debug(str(match_id)
-                             + ' --- play no. '
-                             + str(i))
+                              + ' --- play no. '
+                              + str(i))
             row = play_by_play.select('tr')[i]
             item_match_id = int(match_id)
             item_event_type = row['class'][0]

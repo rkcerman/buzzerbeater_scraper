@@ -213,7 +213,7 @@ class Players(models.Model):
 class Seasons(models.Model):
     id = models.SmallIntegerField(primary_key=True)
     start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
+    end_date = models.DateTimeField(null=True) # In case season in progress
 
     class Meta:
         managed = False

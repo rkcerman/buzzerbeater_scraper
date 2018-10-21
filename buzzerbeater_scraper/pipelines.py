@@ -10,7 +10,7 @@ from psycopg2 import IntegrityError
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 from buzzerbeater_scraper.items import PlayByPlayItem, MatchItem, TeamItem, OnlinePeopleItem, PlayerItem, \
-    PlayerSkillsItem, PlayerHistoryItem, ShotsItem, ScoreTableItem, BoxscoreItem, BoxscoreStatsItem
+    PlayerSkillsItem, PlayerHistoryItem, ShotsItem, ScoreTableItem, BoxscoreItem, BoxscoreStatsItem, SeasonItem
 
 
 class BuzzerbeaterScraperPipeline(object):
@@ -253,6 +253,17 @@ class BuzzerbeaterScraperPipeline(object):
                               item['date'],
                               item['season'],
                               item['details']))
+            self.conn.commit()
+            return item
+        if isinstance(item, SeasonItem):
+            self.cur.execute("INSERT INTO seasons (id,"
+                             "start_date,"
+                             "end_date) "
+                             "VALUES(%s, %s, %s) "
+                             "ON CONFLICT DO NOTHING",
+                             (item['season_id'],
+                              item['start_date'],
+                              item['end_date']))
             self.conn.commit()
             return item
 
