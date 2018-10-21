@@ -45,13 +45,13 @@ class Boxscores(models.Model):
     match = models.OneToOneField('Matches', models.DO_NOTHING,
                                  primary_key=True)
     away_prep_focus = models.TextField(blank=True,
-                                       null=True)  # This field type is a guess.
+                                       null=True)
     away_prep_pace = models.TextField(blank=True,
-                                      null=True)  # This field type is a guess.
+                                      null=True)
     home_prep_focus = models.TextField(blank=True,
-                                       null=True)  # This field type is a guess.
+                                       null=True)
     home_prep_pace = models.TextField(blank=True,
-                                      null=True)  # This field type is a guess.
+                                      null=True)
     away_outside_off = models.DecimalField(max_digits=3, decimal_places=1)
     away_inside_off = models.DecimalField(max_digits=3, decimal_places=1)
     away_outside_def = models.DecimalField(max_digits=3, decimal_places=1)
@@ -73,14 +73,45 @@ class Boxscores(models.Model):
     away_prep_pace_matched = models.CharField(max_length=4, blank=True,
                                               null=True)
     match_type = models.CharField(max_length=30)
-    away_off_strategy = models.TextField()  # This field type is a guess.
-    away_def_strategy = models.TextField()  # This field type is a guess.
-    home_off_strategy = models.TextField()  # This field type is a guess.
-    home_def_strategy = models.TextField()  # This field type is a guess.
+    away_off_strategy = models.TextField()
+    away_def_strategy = models.TextField()
+    home_off_strategy = models.TextField()
+    home_def_strategy = models.TextField()
 
     class Meta:
         managed = False
         db_table = 'boxscores'
+
+    def __str__(self):
+        return self.match
+
+
+class Countries(models.Model):
+    id = models.SmallIntegerField(primary_key=True)
+    name = models.CharField(max_length=25)
+    divisions = models.SmallIntegerField(null=True)
+    first_season = models.SmallIntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'countries'
+
+    def __str__(self):
+        return self.name
+
+
+class Leagues(models.Model):
+    id = models.SmallIntegerField(primary_key=True)
+    name = models.CharField(max_length=25)
+    country = models.ForeignKey('Countries', models.DO_NOTHING)
+    level = models.SmallIntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'leagues'
+
+    def __str__(self):
+        return self.name
 
 
 class Matches(models.Model):
@@ -179,6 +210,18 @@ class Players(models.Model):
         return self.name
 
 
+class Seasons(models.Model):
+    id = models.SmallIntegerField(primary_key=True)
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField(null=True) # In case season in progress
+
+    class Meta:
+        managed = False
+        db_table = 'seasons'
+
+    def __str__(self):
+        return self.id
+
 class ScoreTables(models.Model):
     match = models.ForeignKey(Matches, models.DO_NOTHING, primary_key=True)
     qtr = models.SmallIntegerField()
@@ -220,3 +263,17 @@ class Teams(models.Model):
 
     def __str__(self):
         return str(self.id) + ' - ' + str(self.name)
+
+
+class SeasonsLeaguesTeams(models.Model):
+    season = models.ForeignKey(Seasons, models.DO_NOTHING)
+    league = models.ForeignKey(Leagues, models.DO_NOTHING)
+    team = models.ForeignKey(Teams, models.DO_NOTHING)
+
+    class Meta:
+        managed = False
+        db_table = 'seasons_leagues_teams'
+        unique_together = (('season', 'league', 'team'),)
+
+    def __str__(self):
+        return '%s %s %s' % (self.season, self.league, self.team)

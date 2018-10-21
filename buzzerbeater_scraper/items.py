@@ -36,6 +36,12 @@ class MatchItem(scrapy.Item):
     season = scrapy.Field()
 
 
+class SeasonItem(scrapy.Item):
+    season_id = scrapy.Field()
+    start_date = scrapy.Field()
+    end_date = scrapy.Field()
+
+
 class ScoreTableItem(scrapy.Item):
     match_id = scrapy.Field()
     qtr = scrapy.Field()
