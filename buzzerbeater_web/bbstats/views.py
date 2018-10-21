@@ -179,6 +179,19 @@ def match_overview(request, match_id):
 @api_view(['GET'])
 @permission_classes((permissions.AllowAny,))
 def player_stats(request, pk, season):
+    """
+    Returns single player's statistics for a season/list of seasons
+
+    :param request:
+    :param pk: - player ID
+    :param season: - season to aggregate stats for
+
+    GET params:
+    with_fouled - boolean: aggregate shots with 'fouled' outcome
+    match_type - if 'standard', agg.s only league and cup games
+    filter - allows to aggregate only specific types of stats
+            options: pass, shoot, guard
+    """
     data = {}
     season_shots = Shots.objects.filter(
         pbp__boxscore__match__season=season
