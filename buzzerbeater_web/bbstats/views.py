@@ -81,6 +81,17 @@ def player_overview(request, player_id, season, match_type):
         pbp__boxscore__match__season=season
     )
 
+    # Further filtering based on match_types if they are defined
+    if match_type == 'standard':
+        boxscore_stats = boxscore_stats.filter(
+            Q(boxscore__match_type__contains='league')
+            | Q(boxscore__match_type__contains='cup')
+        )
+        season_shots = season_shots.filter(
+            Q(pbp__boxscore__match_type__contains='league')
+            | Q(pbp__boxscore__match_type__contains='cup')
+        )
+
     # Able to add shots with 'fouled' outcome into calculations
     if not request.GET.get('with_fouled', False):
         season_shots = season_shots.exclude(outcome='fouled')
@@ -93,18 +104,6 @@ def player_overview(request, player_id, season, match_type):
     player_passed_shots = season_shots.filter(
         passer=player_id,
     )
-
-    # Further filtering based on match_types if they are defined
-    if match_type == 'standard':
-        boxscore_stats = boxscore_stats.filter(
-            Q(boxscore__match_type__contains='league')
-            | Q(boxscore__match_type__contains='cup')
-        )
-        player_shots = player_shots.filter(
-            Q(pbp__boxscore__match_type__contains='league')
-            | Q(pbp__boxscore__match_type__contains='cup')
-        )
-
     # Returns styling class and nomenclature for skills
     player_skills = get_skills_nomenclature(skills)
 
@@ -188,6 +187,13 @@ def player_stats(request, pk, season):
     # Able to add shots with 'fouled' outcome into calculations
     if not request.GET.get('with_fouled', False):
         season_shots = season_shots.exclude(outcome='fouled')
+    # Only aggregate from league and cup matches
+    if request.GET.get('match_type', None) == 'standard':
+        season_shots = season_shots.filter(
+            Q(pbp__boxscore__match_type__contains='league')
+            | Q(pbp__boxscore__match_type__contains='cup')
+        )
+
     player_shots = season_shots.filter(
         shooter=pk,
     )

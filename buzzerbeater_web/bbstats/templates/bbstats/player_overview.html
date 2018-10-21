@@ -330,7 +330,7 @@
         $('#shotPerf').DataTable({
             //data: shotPerformances,           
 	    ajax: {
-		url: "{% url 'player_stats' player.id season %}",
+		url: "{% url 'player_stats' player.id season %}?match_type=standard",
 		dataSrc: "shoot",
 	    },
             columns: [
