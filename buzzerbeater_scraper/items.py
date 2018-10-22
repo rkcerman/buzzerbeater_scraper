@@ -8,6 +8,7 @@
 import scrapy
 
 
+# TODO order alphabetically
 class CountryItem(scrapy.Item):
     id = scrapy.Field()
     name = scrapy.Field()
@@ -47,6 +48,13 @@ class SeasonItem(scrapy.Item):
     season_id = scrapy.Field()
     start_date = scrapy.Field()
     end_date = scrapy.Field()
+
+
+class LeagueItem(scrapy.Item):
+    id = scrapy.Field()
+    name = scrapy.Field()
+    country_id = scrapy.Field()
+    level = scrapy.Field()
 
 
 class ScoreTableItem(scrapy.Item):

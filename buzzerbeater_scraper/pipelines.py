@@ -25,6 +25,8 @@ class BuzzerbeaterScraperPipeline(object):
         self.cur.close()
         self.conn.close()
 
+    # TODO order alphabetically
+    # TODO remove duplicate method calls
     def process_item(self, item, spider):
         if isinstance(item, PlayByPlayItem):
             try:
@@ -53,6 +55,19 @@ class BuzzerbeaterScraperPipeline(object):
                               item['name'],
                               item['divisions'],
                               item['first_season']))
+            self.conn.commit()
+            return item
+        if isinstance(item, LeagueItem):
+            self.cur.execute("INSERT INTO leagues (id,"
+                             "name,"
+                             "country_id,"
+                             "level) "
+                             "VALUES(%s, %s, %s, %s) "
+                             "ON CONFLICT DO NOTHING",
+                             (item['id'],
+                              item['name'],
+                              item['country_id'],
+                              item['level']))
             self.conn.commit()
             return item
         if isinstance(item, ShotsItem):
