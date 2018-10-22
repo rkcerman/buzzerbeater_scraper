@@ -1,9 +1,11 @@
 import logging
 import re
 
-from bbstats.models import BoxscoreStats, Boxscores, PlayerSkills
+from bbstats.models import BoxscoreStats, Boxscores, PlayerSkills, \
+    PlayByPlays
 from django.db.models import Sum
 from collections import Counter
+
 from .query import get_match_scores
 
 from .query import get_player_skills
@@ -189,6 +191,10 @@ def aggregate_shot_type(shot_type, shot_type_query, agg_type):
     fg_per = round(safe_div(made_fg, attempted_fg), 2)
 
     agg_shot_type = {
+        # TODO remove after creating a mapping table
+        'play_tags': PlayByPlays.objects.filter(
+            event_type=shot_type
+        )[0].play_tags,
         'shot_type': shot_type,
         'made_fg': made_fg,
         'attempted_fg': attempted_fg,
