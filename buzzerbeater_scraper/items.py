@@ -8,6 +8,13 @@
 import scrapy
 
 
+class CountryItem(scrapy.Item):
+    id = scrapy.Field()
+    name = scrapy.Field()
+    divisions = scrapy.Field()
+    first_season = scrapy.Field()
+
+
 class PlayByPlayItem(scrapy.Item):
     id = scrapy.Field()
     match_id = scrapy.Field()

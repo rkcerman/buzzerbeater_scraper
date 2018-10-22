@@ -9,8 +9,7 @@ from psycopg2 import IntegrityError
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
-from buzzerbeater_scraper.items import PlayByPlayItem, MatchItem, TeamItem, OnlinePeopleItem, PlayerItem, \
-    PlayerSkillsItem, PlayerHistoryItem, ShotsItem, ScoreTableItem, BoxscoreItem, BoxscoreStatsItem, SeasonItem
+from buzzerbeater_scraper.items import *
 
 
 class BuzzerbeaterScraperPipeline(object):
@@ -42,6 +41,19 @@ class BuzzerbeaterScraperPipeline(object):
                 self.conn.commit()
             except IntegrityError as e:
                 print("Duplicate primary key entry, skipping")
+            return item
+        if isinstance(item, CountryItem):
+            self.cur.execute("INSERT INTO countries (id,"
+                             "name,"
+                             "divisions,"
+                             "first_season) "
+                             "VALUES(%s, %s, %s, %s) "
+                             "ON CONFLICT DO NOTHING",
+                             (item['id'],
+                              item['name'],
+                              item['divisions'],
+                              item['first_season']))
+            self.conn.commit()
             return item
         if isinstance(item, ShotsItem):
             try:
