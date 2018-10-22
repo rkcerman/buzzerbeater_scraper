@@ -77,9 +77,6 @@ def player_overview(request, player_id, season, match_type):
         player_id=player_id,
         boxscore__match__season=season
     ).order_by('-boxscore_id')
-    season_shots = Shots.objects.filter(
-        pbp__boxscore__match__season=season
-    )
 
     # Further filtering based on match_types if they are defined
     if match_type == 'standard':
@@ -87,23 +84,7 @@ def player_overview(request, player_id, season, match_type):
             Q(boxscore__match_type__contains='league')
             | Q(boxscore__match_type__contains='cup')
         )
-        season_shots = season_shots.filter(
-            Q(pbp__boxscore__match_type__contains='league')
-            | Q(pbp__boxscore__match_type__contains='cup')
-        )
 
-    # Able to add shots with 'fouled' outcome into calculations
-    if not request.GET.get('with_fouled', False):
-        season_shots = season_shots.exclude(outcome='fouled')
-    player_shots = season_shots.filter(
-        shooter=player_id,
-    )
-    player_defended_shots = season_shots.filter(
-        defender=player_id,
-    )
-    player_passed_shots = season_shots.filter(
-        passer=player_id,
-    )
     # Returns styling class and nomenclature for skills
     player_skills = get_skills_nomenclature(skills)
 
@@ -141,13 +122,8 @@ def player_overview(request, player_id, season, match_type):
             'max_minute_value': max_minute_value,
             'match_type': match_type,
             'strategies_preps': get_strategies_context(stat, stat.boxscore),
-            'shots': player_shots
         }
         )
-
-    shot_performances = get_player_shot_types(player_shots, 'shoot')
-    defense_performances = get_player_shot_types(player_defended_shots, 'pass')
-    passing_performances = get_player_shot_types(player_passed_shots, 'guard')
 
     # Setting up the final context
     context = {
@@ -156,9 +132,6 @@ def player_overview(request, player_id, season, match_type):
         'skills': player_skills,
         'stats': stats,
         'season': season,
-        'shot_performances': shot_performances,
-        'defense_performances': defense_performances,
-        'passing_performances': passing_performances,
         **skill_points
     }
 
