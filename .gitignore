@@ -9,3 +9,9 @@ buzzerbeater_web/buzzerbeater_web/settings.py
 *.egg
 
 \.idea/
+
+dbs/
+
+*.pid
+
+logs/
