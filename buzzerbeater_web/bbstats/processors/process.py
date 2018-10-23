@@ -6,11 +6,8 @@ from bbstats.models import BoxscoreStats, Boxscores, PlayerSkills, \
 from django.db.models import Sum
 from collections import Counter
 
-from .query import get_match_scores
-
 from .query import get_player_skills
 
-# TODO create filter
 skills_mapping = {
     1: 'atrocious',
     2: 'pitiful',
@@ -32,21 +29,6 @@ skills_mapping = {
     18: 'phenomenal',
     19: 'colossal',
     20: 'legendary',
-}
-
-potentials_mapping = {
-    0: {'announcer': 'lev5'},
-    1: {'bench warmer': 'lev6'},
-    2: {'role player': 'lev7'},
-    3: {'6th man': 'lev8'},
-    4: {'starter': 'lev9'},
-    5: {'star': 'lev10'},
-    6: {'allstar': 'lev11'},
-    7: {'perennial allstar': 'lev12'},
-    8: {'superstar': 'lev13'},
-    9: {'MVP': 'lev15'},
-    10: {'hall of famer': 'lev16'},
-    11: {'all-time great': 'lev17'},
 }
 
 
@@ -76,22 +58,6 @@ def get_skills_nomenclature(skills):
         skill_name = skill.skill.replace(' ', '_').replace('.', '').lower()
         player_skills[skill_name] = [skill.value, skills_mapping[skill.value]]
     return player_skills
-
-
-# Creating a dict containing highlight info and nomenc. for the potential
-def get_potential_context(player):
-    try:
-        potential_nomenc = potentials_mapping[player.potential]
-    except KeyError:
-        raise ValueError
-    else:
-        potenial_name = list(potential_nomenc)[0]
-        potential = {
-            'value': player.potential,
-            'name': potenial_name,
-            'lev': potential_nomenc[potenial_name],
-        }
-        return potential
 
 
 # Gets strategies and preps matches used by the player's team in that particular match
@@ -135,7 +101,7 @@ def get_strategies_context(player_stats, boxscore):
 
 
 # Creates a list of dicts per player ID, containing the player object and skills
-def get_players_skills_potential(players):
+def get_players_skills_info(players):
     team_players_skills = []
     for player in players:
         try:
@@ -146,14 +112,9 @@ def get_players_skills_potential(players):
         else:
             player_skills = player_skills.distinct('skill').order_by('-skill')
             player_skills = get_skills_nomenclature(player_skills)
-            try:
-                player_potential = get_potential_context(player)
-            except ValueError:
-                player_potential = {}
             player_dict = {
                 'info': player,
                 'skills': player_skills,
-                'potential': player_potential,
             }
             team_players_skills.append(player_dict)
     return team_players_skills

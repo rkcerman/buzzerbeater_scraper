@@ -3,13 +3,12 @@ from django.db.models import Q
 from django.conf import settings
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
 from django.views.decorators.cache import cache_page
-from rest_framework import generics, viewsets, permissions
+from rest_framework import generics, permissions
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 
 from .processors.process import calculate_skill_points, get_skills_nomenclature, \
-    get_potential_context, get_strategies_context, get_players_skills_potential, get_player_shot_types
+    get_strategies_context, get_players_skills_info, get_player_shot_types
 
 from .processors.query import get_schedule, get_all_teams
 from .models import Matches, Players, PlayerSkills, BoxscoreStats, Shots, Teams
@@ -31,10 +30,10 @@ def index(request):
 def team_overview(request, team_id):
     team = Teams.objects.get(id=team_id)
     team_players = Players.objects.filter(team_id=team_id)
-    team_players_skills = get_players_skills_potential(team_players)
+    team_players_skills = get_players_skills_info(team_players)
 
     # TODO change season
-    schedule = get_schedule(team, 43)
+    schedule = get_schedule(team, default_season)
 
     context = {
         'team': team,
@@ -93,12 +92,6 @@ def player_overview(request, player_id, season, match_type):
     except ValueError:
         skill_points = {}
 
-    # Returns styling class and nomenclature for potential
-    try:
-        potential = get_potential_context(player)
-    except ValueError:
-        potential = {}
-
     # Creating a list of all matches with their types, stats and minutes
     stats = []
     for stat in boxscore_stats:
@@ -128,7 +121,6 @@ def player_overview(request, player_id, season, match_type):
     # Setting up the final context
     context = {
         'player': player,
-        'potential': potential,
         'skills': player_skills,
         'stats': stats,
         'season': season,

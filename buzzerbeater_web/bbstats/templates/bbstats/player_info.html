@@ -1,3 +1,4 @@
+{% load bbstats_extras %}
 <div class="playerinfobox">
     <table class="playerinfo" cellpadding="0" cellspacing="0">
         <tr>
@@ -18,7 +19,7 @@
                                 <br /> DMI: {{ player.dmi }}
                                 <br /> Age: {{ player.age }}
                                 <br /> Height: {{ player.height }}cm
-                                <br /> Potential: <span class="{{ potential.lev }}" title="{{ potential.value }}">{{ potential.name }}</span>
+                                <br /> Potential: <span class="{{ player.potential|potential_lev }}" title="{{ player.potential }}">{{ player.potential|potential_name }}</span>
                                 <br /> Game shape: <span class="lev{{ skills.game_shape.0 }}" title="{{ skills.game_shape.0 }}">{{ skills.game_shape.1 }}</span>
                                 <br /> Last update at: {{ player.last_update_at }}
                                 <br /> Created at: {{ player.created_at }}
