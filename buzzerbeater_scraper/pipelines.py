@@ -287,7 +287,9 @@ class BuzzerbeaterScraperPipeline(object):
                              "start_date,"
                              "end_date) "
                              "VALUES(%s, %s, %s) "
-                             "ON CONFLICT DO NOTHING",
+                             "ON CONFLICT (id) DO UPDATE SET "
+                             "start_date=EXCLUDED.start_date, "
+                             "end_date=EXCLUDED.end_date",
                              (item['season_id'],
                               item['start_date'],
                               item['end_date']))
