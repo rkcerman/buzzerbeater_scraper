@@ -333,6 +333,7 @@
 		dataSrc: "shoot",
 	    },
             columns: [
+		{ title: 'Tags', data: "play_tags"},
                 { title: 'Shot type', data: "shot_type"},
                 { title: 'Made', data: "made_fg" },
                 { title: 'Att.', data: "attempted_fg" },
@@ -346,7 +347,7 @@
             ],
             "displayLength": 100,
             "order": [
-                [2, 'desc']
+                [3, 'desc']
             ],
             
             // Creating a Totals row
@@ -386,10 +387,9 @@
                 // Update footer
                 // TODO make this into a loop pls
                 var i;
-                var dontAgg = [3, 6, 9]
-                // var dontTotal = [3, , 13, 22]
+                var dontAgg = [4, 7, 10]
                 
-                for (i = 1; i < 10; i++) {
+                for (i = 1; i < 11; i++) {
                     // Filling the averages row with averages for columns that can be averaged
                     if (dontAgg.indexOf(i) == -1) {
                         $(api.column(i).footer()).html(
@@ -397,9 +397,6 @@
                                 page: 'current'
                             }).data().average()) + 0.00001) * 100) / 100
                         );
-                        /*$('tr:eq(2) td:eq(' + (i - 2) + ')', api.table().footer()).html(
-                            Math.round(((total(i) / data.length) + 0.00001) * 100) / 100
-                        );*/
                     }
 
                     // Filling the totals row with totals for columns that can be totaled
@@ -407,26 +404,22 @@
                         $('tr:eq(1) td:eq(' + (i) + ')', api.table().footer()).html(
                             pageTotal(i)
                         );
-                        /*$('tr:eq(3) td:eq(' + (i - 2) + ')', api.table().footer()).html(
-                            total(i)
-                        );*/
                     }
                 }
 
                 // Filling the percentages row with percentages
                 var i = 0;
                 for (i; i < 3; i++) {
-                    var made_cell = $('tr:eq(0) td:eq(' + (dontAgg[i] - 2) + ')', api.table().footer()).html()
-                    var attempt_cell = $('tr:eq(0) td:eq(' + (dontAgg[i] - 1) + ')', api.table().footer()).html()
-					var cell_percentage = Math.round(((made_cell / attempt_cell) + 0.00001) * 100) / 100
+		    var made_cell = $('tr:eq(0) td:eq(' + (dontAgg[i] - 2) + ')', api.table().footer()).html()
+		    var attempt_cell = $('tr:eq(0) td:eq(' + (dontAgg[i] - 1) + ')', api.table().footer()).html()
+		    var cell_percentage = Math.round(((made_cell / attempt_cell) + 0.00001) * 100) / 100
 
-                    
-                    $('tr:eq(0) td:eq(' + (dontAgg[i]) + ')', api.table().footer()).html(
-                        '<strong>'
-                        + 
-						cell_percentage
-						+ '</strong>'
-                    );
+		    $('tr:eq(0) td:eq(' + (dontAgg[i]) + ')', api.table().footer()).html(
+			'<strong>'
+			+ 
+			cell_percentage
+			+ '</strong>'
+		    );
                 }
             }
         });
@@ -440,6 +433,7 @@
 		dataSrc: "guard",
 	    },
             columns: [
+		{ title: 'Tags', data: "play_tags"},
                 { title: 'Shot type', data: "shot_type"},
                 { title: 'Made', data: "made_fg" },
                 { title: 'Att.', data: "attempted_fg" },
@@ -447,7 +441,7 @@
             ],
             "displayLength": 100,
             "order": [
-                [2, 'desc']
+                [3, 'desc']
             ],
             
         // Creating a Totals row
@@ -487,7 +481,7 @@
                 // Update footer
                 // TODO make this into a loop pls
                 var i;
-                var dontAgg = [3]
+                var dontAgg = [4]
                                 
                 for (i = 1; i < 4; i++) {
                     // Filling the averages row with averages for columns that can be averaged
@@ -531,6 +525,7 @@
 		dataSrc: "pass",
 	    },
             columns: [
+		{ title: 'Tags', data: "play_tags"},
                 { title: 'Shot type', data: "shot_type"},
                 { title: 'Made', data: "made_fg" },
                 { title: 'Att.', data: "attempted_fg" },
@@ -538,7 +533,7 @@
             ],
             "displayLength": 100,
             "order": [
-                [2, 'desc']
+                [3, 'desc']
             ],
             
         // Creating a Totals row
@@ -577,7 +572,7 @@
 
                 // Update footer
                 var i;
-                var dontAgg = [3]
+                var dontAgg = [4]
                                 
                 for (i = 1; i < 4; i++) {
                     // Filling the averages row with averages for columns that can be averaged
@@ -887,6 +882,7 @@
             <table id="shotPerf" class="cell-border stripe" style="width: 50%;">
                 <thead>
                     <tr>
+                        <th rowspan="2">Tags</th>
                         <th rowspan="2">Shot type</th>
                         <th colspan="3">Field goals</th>
                         <th colspan="3">Guarded</th>
@@ -916,6 +912,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
+                        <td></td>
                     </tr>
                     <tr>
                         <td>TOTAL</td>
@@ -928,7 +925,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                    </tr>
+                        <td></td> </tr>
                 </tfoot>
             </table>
         </div>
@@ -944,6 +941,7 @@
             <table id="defensePerf" class="cell-border stripe" style="width: 50%;">
                 <thead>
                     <tr>
+                        <th rowspan="2">Tags</th>
                         <th rowspan="2">Shot type</th>
                         <th colspan="3">Matchup field goals</th>
                     </tr>
@@ -959,9 +957,11 @@
                         <td></td>
                         <td></td>
                         <td></td>
+                        <td></td>
                     </tr>
                     <tr>
                         <td>TOTAL</td>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -982,6 +982,7 @@
             <table id="passingPerf" class="cell-border stripe" style="width: 50%;">
                 <thead>
                     <tr>
+                        <th rowspan="2">Tags</th>
                         <th rowspan="2">Shot type</th>
                         <th colspan="3">Field goals</th>
                     </tr>
@@ -997,9 +998,11 @@
                         <td></td>
                         <td></td>
                         <td></td>
+                        <td></td>
                     </tr>
                     <tr>
                         <td>TOTAL</td>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>

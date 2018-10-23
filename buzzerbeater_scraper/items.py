@@ -8,6 +8,14 @@
 import scrapy
 
 
+# TODO order alphabetically
+class CountryItem(scrapy.Item):
+    id = scrapy.Field()
+    name = scrapy.Field()
+    divisions = scrapy.Field()
+    first_season = scrapy.Field()
+
+
 class PlayByPlayItem(scrapy.Item):
     id = scrapy.Field()
     match_id = scrapy.Field()
@@ -40,6 +48,19 @@ class SeasonItem(scrapy.Item):
     season_id = scrapy.Field()
     start_date = scrapy.Field()
     end_date = scrapy.Field()
+
+
+class SeasonLeagueTeamItem(scrapy.Item):
+    season_id = scrapy.Field()
+    league_id = scrapy.Field()
+    team_id = scrapy.Field()
+
+
+class LeagueItem(scrapy.Item):
+    id = scrapy.Field()
+    name = scrapy.Field()
+    country_id = scrapy.Field()
+    level = scrapy.Field()
 
 
 class ScoreTableItem(scrapy.Item):

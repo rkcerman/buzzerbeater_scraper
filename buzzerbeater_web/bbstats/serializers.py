@@ -65,7 +65,8 @@ class PlayerDetailsSerializer(serializers.ModelSerializer):
             'id',
             'created_at',
             'last_update_at',
-            'weekly_salary',
+            'weekly_salary'
+            ,
             'dmi',
             'age',
             'height',

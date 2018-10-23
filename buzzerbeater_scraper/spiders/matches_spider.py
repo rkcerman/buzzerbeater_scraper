@@ -72,8 +72,8 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
                  force_rescrape=False,
                  **kwargs):
 
-        seasons = seasons.split(',')
         team_ids = team_ids.split(',')
+        seasons = seasons.split(',')
 
         if not force_rescrape:
             self.scraped_boxscores = get_scraped_matches(team_ids, seasons)

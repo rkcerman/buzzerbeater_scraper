@@ -9,8 +9,7 @@ from psycopg2 import IntegrityError
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
-from buzzerbeater_scraper.items import PlayByPlayItem, MatchItem, TeamItem, OnlinePeopleItem, PlayerItem, \
-    PlayerSkillsItem, PlayerHistoryItem, ShotsItem, ScoreTableItem, BoxscoreItem, BoxscoreStatsItem, SeasonItem
+from buzzerbeater_scraper.items import *
 
 
 class BuzzerbeaterScraperPipeline(object):
@@ -26,6 +25,8 @@ class BuzzerbeaterScraperPipeline(object):
         self.cur.close()
         self.conn.close()
 
+    # TODO order alphabetically
+    # TODO remove duplicate method calls
     def process_item(self, item, spider):
         if isinstance(item, PlayByPlayItem):
             try:
@@ -42,6 +43,32 @@ class BuzzerbeaterScraperPipeline(object):
                 self.conn.commit()
             except IntegrityError as e:
                 print("Duplicate primary key entry, skipping")
+            return item
+        if isinstance(item, CountryItem):
+            self.cur.execute("INSERT INTO countries (id,"
+                             "name,"
+                             "divisions,"
+                             "first_season) "
+                             "VALUES(%s, %s, %s, %s) "
+                             "ON CONFLICT DO NOTHING",
+                             (item['id'],
+                              item['name'],
+                              item['divisions'],
+                              item['first_season']))
+            self.conn.commit()
+            return item
+        if isinstance(item, LeagueItem):
+            self.cur.execute("INSERT INTO leagues (id,"
+                             "name,"
+                             "country_id,"
+                             "level) "
+                             "VALUES(%s, %s, %s, %s) "
+                             "ON CONFLICT DO NOTHING",
+                             (item['id'],
+                              item['name'],
+                              item['country_id'],
+                              item['level']))
+            self.conn.commit()
             return item
         if isinstance(item, ShotsItem):
             try:
@@ -260,10 +287,24 @@ class BuzzerbeaterScraperPipeline(object):
                              "start_date,"
                              "end_date) "
                              "VALUES(%s, %s, %s) "
-                             "ON CONFLICT DO NOTHING",
+                             "ON CONFLICT (id) DO UPDATE SET "
+                             "start_date=EXCLUDED.start_date, "
+                             "end_date=EXCLUDED.end_date",
                              (item['season_id'],
                               item['start_date'],
                               item['end_date']))
+            self.conn.commit()
+            return item
+        if isinstance(item, SeasonLeagueTeamItem):
+            self.cur.execute("INSERT INTO seasons_leagues_teams ("
+                             "season_id,"
+                             "league_id,"
+                             "team_id) "
+                             "VALUES(%s, %s, %s) "
+                             "ON CONFLICT DO NOTHING",
+                             (item['season_id'],
+                              item['league_id'],
+                              item['team_id']))
             self.conn.commit()
             return item
 
