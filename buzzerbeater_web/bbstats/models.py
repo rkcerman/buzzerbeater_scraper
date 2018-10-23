@@ -83,7 +83,7 @@ class Boxscores(models.Model):
         db_table = 'boxscores'
 
     def __str__(self):
-        return self.match
+        return 'Boxscore ' + self.match.__str__()
 
 
 class Countries(models.Model):
@@ -126,6 +126,13 @@ class Matches(models.Model):
     class Meta:
         managed = False
         db_table = 'matches'
+
+    def __str__(self):
+        return '{} - {} vs. {}'.format(
+            self.match_date,
+            self.away_team,
+            self.home_team
+        )
 
 
 class OnlinePeople(models.Model):
