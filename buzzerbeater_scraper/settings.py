@@ -4,7 +4,6 @@ import sys
 # DJANGO INTEGRATION
 
 sys.path.append(os.path.abspath('./buzzerbeater_web/'))
-print(sys.path)
 os.environ['DJANGO_SETTINGS_MODULE'] = 'buzzerbeater_web.' \
                                        'buzzerbeater_web.settings'
 
@@ -100,3 +99,4 @@ ITEM_PIPELINES = {
 #HTTPCACHE_DIR='httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES=[]
 #HTTPCACHE_STORAGE='scrapy.extensions.httpcache.FilesystemCacheStorage'
+LOG_LEVEL = 'ERROR'

@@ -166,6 +166,8 @@ def player_stats(request, pk, season):
             options: pass, shoot, guard
     """
     data = {}
+    default_filter = ('shoot', 'guard', 'pass')
+
     season_shots = Shots.objects.filter(
         pbp__boxscore__match__season=season
     )
@@ -182,7 +184,7 @@ def player_stats(request, pk, season):
 
     # Only aggregate specific types of stats
     # To aggregate multiple types, separate by comma
-    data_filter = request.GET.get('filter', ('shoot', 'guard', 'pass'))
+    data_filter = request.GET.get('filter', default_filter)
     if 'shoot' in data_filter:
         player_shots = season_shots.filter(
             shooter=pk,

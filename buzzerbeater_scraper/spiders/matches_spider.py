@@ -66,7 +66,7 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
     # force_rescrape - if true, rescrapes already scraped matches
     def __init__(self,
                  team_ids='58420',
-                 seasons='43',
+                 seasons='44',
                  parse_players=True,
                  parse_pbps=True,
                  force_rescrape=False,
