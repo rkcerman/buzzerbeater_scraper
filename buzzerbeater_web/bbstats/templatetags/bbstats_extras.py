@@ -111,6 +111,14 @@ def potential_name(potential):
     return potentials_mapping[potential][0]
 
 
+@register.filter(is_safe=True)
+def skill_name(skill):
+    if skill < 21:
+        return skills_mapping[skill]
+    else:
+        return skills_mapping[20]
+
+
 # Includes the player info table with skills
 @register.inclusion_tag('bbstats/player_info.html', takes_context=True)
 def player_info(context):

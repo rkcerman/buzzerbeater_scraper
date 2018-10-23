@@ -7,7 +7,7 @@ from rest_framework import generics, permissions
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
-from .processors.process import calculate_skill_points, get_skills_nomenclature, \
+from .processors.process import calculate_skill_points, get_skills_dict, \
     get_strategies_context, get_players_skills_info, get_player_shot_types
 
 from .processors.query import get_schedule, get_all_teams
@@ -32,7 +32,6 @@ def team_overview(request, team_id):
     team_players = Players.objects.filter(team_id=team_id)
     team_players_skills = get_players_skills_info(team_players)
 
-    # TODO change season
     schedule = get_schedule(team, default_season)
 
     context = {
@@ -85,7 +84,7 @@ def player_overview(request, player_id, season, match_type):
         )
 
     # Returns styling class and nomenclature for skills
-    player_skills = get_skills_nomenclature(skills)
+    player_skills = get_skills_dict(skills)
 
     try:
         skill_points = calculate_skill_points(player_skills)
