@@ -50,6 +50,12 @@ class SeasonItem(scrapy.Item):
     end_date = scrapy.Field()
 
 
+class SeasonLeagueTeamItem(scrapy.Item):
+    season_id = scrapy.Field()
+    league_id = scrapy.Field()
+    team_id = scrapy.Field()
+
+
 class LeagueItem(scrapy.Item):
     id = scrapy.Field()
     name = scrapy.Field()

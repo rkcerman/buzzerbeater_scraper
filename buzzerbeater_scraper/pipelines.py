@@ -295,4 +295,16 @@ class BuzzerbeaterScraperPipeline(object):
                               item['end_date']))
             self.conn.commit()
             return item
+        if isinstance(item, SeasonLeagueTeamItem):
+            self.cur.execute("INSERT INTO seasons_leagues_teams ("
+                             "season_id,"
+                             "league_id,"
+                             "team_id) "
+                             "VALUES(%s, %s, %s) "
+                             "ON CONFLICT DO NOTHING",
+                             (item['season_id'],
+                              item['league_id'],
+                              item['team_id']))
+            self.conn.commit()
+            return item
 
