@@ -10,27 +10,14 @@ r = redis.StrictRedis(host='localhost', port=6379, db=0)
 # TODO get this to process.py
 # Fetches the schedule from the DB, or if available from redis
 def get_schedule(team, season):
-    redis_schedule_key = 'team:{}:season:{}:schedule'.format(team.id, season)
     team_id = team.id
     schedule_with_bs = []
 
     # Let's check if there is an existing schedule in redis
     # If not, it fetches the matches from the DB and creates redis list
-    redis_schedule = r.lrange(redis_schedule_key, 0, -1)
-    if not redis_schedule:
-        print('Getting matches from psql')
-        schedule = Matches.objects.filter(season=season)\
-            .filter(Q(away_team_id=team_id) | Q(home_team_id=team_id))\
-            .order_by('match_date')
-        matches_ids = [match['id'] for match in schedule.values('id')]
-
-        r.rpush(redis_schedule_key, *matches_ids)
-        set_redis_matches(schedule)
-    else:
-        print('Getting matches from redis')
-        schedule = []
-        for match_id in redis_schedule:
-            schedule.append(get_match(match_id))
+    schedule = Matches.objects.filter(season=season)\
+        .filter(Q(away_team_id=team_id) | Q(home_team_id=team_id))\
+        .order_by('match_date')
 
     # Append boxscore to each match and tuple them together
     for match in schedule:

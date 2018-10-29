@@ -108,9 +108,14 @@ def potential_lev(potential):
 # Returns the verbal name for player's potential
 @register.filter(is_safe=True)
 def potential_name(potential):
-    return potentials_mapping[potential][0]
+    try:
+        return potentials_mapping[potential][0]
+    except KeyError:
+        return ''
 
 
+# Skill values above 20 used the same styling and nomenc.
+# as the skill value 20/'legendary'
 @register.filter(is_safe=True)
 def skill_name(skill):
     if skill < 21:
