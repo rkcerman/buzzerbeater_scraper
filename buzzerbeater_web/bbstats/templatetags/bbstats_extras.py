@@ -118,10 +118,13 @@ def potential_name(potential):
 # as the skill value 20/'legendary'
 @register.filter(is_safe=True)
 def skill_name(skill):
-    if skill < 21:
-        return skills_mapping[skill]
+    if skill == '':
+        return skill
     else:
-        return skills_mapping[20]
+        if skill < 21:
+            return skills_mapping[skill]
+        else:
+            return skills_mapping[20]
 
 
 # Includes the player info table with skills
