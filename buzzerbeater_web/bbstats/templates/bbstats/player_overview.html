@@ -1,5 +1,8 @@
+<!DOCTYPE html>
+<html lang="en">
 {% if player %}
 {% load bbstats_extras %}
+<head>
 <link rel="stylesheet" href="http://www.buzzerbeater.com/CSS/contentbox.css?c=2" type="text/css" />
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.3.1/dt-1.10.18/rg-1.0.3/datatables.min.css" />
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.3.1/dt-1.10.18/rg-1.0.3/datatables.min.js"></script>
@@ -664,7 +667,8 @@
         box-sizing: border-box;
     }
 </style>
-
+</head>
+<body>
 {% player_info %}
 <div id="quickOverview" class="widebox">
 	<div class="perfHeader">
@@ -1013,6 +1017,8 @@
     </div>
     
 </div>
+</body>
+</html>
                 {% else %}
 
                 <p>Player ID not in the database</p>

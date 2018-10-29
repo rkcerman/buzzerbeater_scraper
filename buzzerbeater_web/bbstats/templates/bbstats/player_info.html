@@ -20,7 +20,7 @@
                                 <br /> Age: {{ player.age }}
                                 <br /> Height: {{ player.height }}cm
                                 <br /> Potential: <span class="{{ player.potential|potential_lev }}" title="{{ player.potential }}">{{ player.potential|potential_name }}</span>
-                                <br /> Game shape: <span class="lev{{ skills.game_shape.0 }}" title="{{ skills.game_shape.0 }}">{{ skills.game_shape.1 }}</span>
+                                <br /> Game shape: <span class="lev{{ skills.game_shape }}" title="{{ skills.game_shape }}">{{ skills.game_shape|skill_name }}</span>
                                 <br /> Last update at: {{ player.last_update_at }}
                                 <br /> Created at: {{ player.created_at }}
                             </p>
