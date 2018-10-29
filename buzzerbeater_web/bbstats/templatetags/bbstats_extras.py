@@ -102,7 +102,10 @@ def to_hit_miss(value):
 # The 'lev' is used for styling
 @register.filter(is_safe=True)
 def potential_lev(potential):
-    return potentials_mapping[potential][1]
+    try:
+        return potentials_mapping[potential][1]
+    except KeyError:
+        return ''
 
 
 # Returns the verbal name for player's potential
