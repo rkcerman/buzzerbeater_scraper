@@ -71,18 +71,15 @@ class BuzzerbeaterScraperPipeline(object):
             self.conn.commit()
             return item
         if isinstance(item, ShotsItem):
-            try:
-                self.cur.execute("INSERT INTO shots VALUES(%s, %s, %s, %s, %s, %s) "
-                                 "ON CONFLICT DO NOTHING",
-                                 (item['pbp_id'],
-                                  item['outcome'],
-                                  item['defender'],
-                                  item['defense_type'],
-                                  item['passer'],
-                                  item['shooter']))
-                self.conn.commit()
-            except IntegrityError as e:
-                print("Duplicate primary key entry, skipping")
+            self.cur.execute("INSERT INTO shots VALUES(%s, %s, %s, %s, %s, %s) "
+                             "ON CONFLICT DO NOTHING",
+                             (item['pbp_id'],
+                              item['outcome'],
+                              item['defender'],
+                              item['defense_type'],
+                              item['passer'],
+                              item['shooter']))
+            self.conn.commit()
             return item
         if isinstance(item, MatchItem):
             try:

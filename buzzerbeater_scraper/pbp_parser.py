@@ -29,17 +29,25 @@ class PlayByPlayParser:
 
             passer = self.get_passer(shot_event=shot_play['event'])
 
-            for player_id in re.findall(pattern='(\d+)', string=shot_play['event']):
-                if player_id not in (defensive_play, passer):
-                    shooter = player_id
-                    break
-
-            # TODO unit test empty shooter (which should never happen)
             shots_item = ShotsItem(
                 pbp_id=shot_play['id'],
-                shooter=shooter,
                 outcome=outcome,
             )
+
+            ids_in_event = re.findall(
+                pattern='(\d+)', string=shot_play['event']
+            )
+
+            for player_id in ids_in_event:
+                # If a player is not a defender/passer, he can only be
+                # the shooter.
+                # The second condition checks if all IDs in the list are
+                # equal. Because yes it's actually possible for a player
+                # to pass to himself -_- -_-
+                if player_id not in (defensive_play, passer)\
+                        or len(set(ids_in_event)) <= 1:
+                    shots_item['shooter'] = player_id
+                    break
 
             try:
                 shots_item['defender'] = defensive_play[1]
