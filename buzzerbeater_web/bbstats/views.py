@@ -11,7 +11,8 @@ from .processors.process import calculate_skill_points, get_skills_dict, \
     get_strategies_context, get_players_skills_info, get_player_shot_types
 
 from .processors.query import get_schedule, get_all_teams
-from .models import Matches, Players, PlayerSkills, BoxscoreStats, Shots, Teams
+from .models import Matches, Players, PlayerSkills, BoxscoreStats, Shots, \
+    Teams
 from .serializers import *
 
 default_season = 43
@@ -157,6 +158,7 @@ def player_stats(request, pk, season):
             options: pass, shoot, guard
     """
     data = {}
+    players = [pk]
     default_filter = ('shoot', 'guard', 'pass')
 
     season_shots = Shots.objects.filter(
@@ -178,21 +180,83 @@ def player_stats(request, pk, season):
     data_filter = request.GET.get('filter', default_filter)
     if 'shoot' in data_filter:
         player_shots = season_shots.filter(
-            shooter=pk,
+            shooter__in=players,
         )
         shot_performances = get_player_shot_types(player_shots, 'shoot')
         data['shoot'] = shot_performances
     if 'guard' in data_filter:
         player_defended_shots = season_shots.filter(
-            defender=pk,
+            defender__in=players,
         )
-        defense_performances = get_player_shot_types(player_defended_shots, 'pass')
+        defense_performances = get_player_shot_types(player_defended_shots,
+                                                     'pass')
         data['guard'] = defense_performances
     if 'pass' in data_filter:
         player_passed_shots = season_shots.filter(
-            passer=pk,
+            passer__in=players,
         )
-        passing_performances = get_player_shot_types(player_passed_shots, 'guard')
+        passing_performances = get_player_shot_types(player_passed_shots,
+                                                     'guard')
+        data['pass'] = passing_performances
+
+    return Response(data)
+
+
+def get_stats(shots):
+    data = {}
+    default_filter = ('shoot', 'guard', 'pass')
+    pass
+
+
+@api_view(['GET'])
+@permission_classes((permissions.AllowAny,))
+def team_stats(request, pk, season):
+    data = {}
+    default_filter = ('shoot', 'guard', 'pass')
+    players = [
+        BoxscoreStats.objects.filter(
+            team_id=pk,
+            boxscore__match__season=season
+        ).values(
+            'player_id'
+        )
+    ]
+    season_shots = Shots.objects.filter(
+        pbp__boxscore__match__season=season,
+    )
+
+    # Able to add shots with 'fouled' outcome into calculations
+    if not request.GET.get('with_fouled', False):
+        season_shots = season_shots.exclude(outcome='fouled')
+    # Only aggregate from league and cup matches
+    if request.GET.get('match_type', None) == 'standard':
+        season_shots = season_shots.filter(
+            Q(pbp__boxscore__match_type__contains='league')
+            | Q(pbp__boxscore__match_type__contains='cup')
+        )
+
+    # Only aggregate specific types of stats
+    # To aggregate multiple types, separate by comma
+    data_filter = request.GET.get('filter', default_filter)
+    if 'shoot' in data_filter:
+        player_shots = season_shots.filter(
+            shooter__in=players,
+        )
+        shot_performances = get_player_shot_types(player_shots, 'shoot')
+        data['shoot'] = shot_performances
+    if 'guard' in data_filter:
+        player_defended_shots = season_shots.filter(
+            defender__in=players,
+        )
+        defense_performances = get_player_shot_types(player_defended_shots,
+                                                     'pass')
+        data['guard'] = defense_performances
+    if 'pass' in data_filter:
+        player_passed_shots = season_shots.filter(
+            passer__in=players,
+        )
+        passing_performances = get_player_shot_types(player_passed_shots,
+                                                     'guard')
         data['pass'] = passing_performances
 
     return Response(data)
@@ -221,5 +285,3 @@ class PlayerList(generics.ListAPIView):
 class PlayerDetail(generics.RetrieveAPIView):
     queryset = Players.objects.all()
     serializer_class = PlayersSerializer
-
-
