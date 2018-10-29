@@ -6,57 +6,17 @@ from bbstats.models import BoxscoreStats, Boxscores, PlayerSkills, \
 from django.db.models import Sum
 from collections import Counter
 
-from .query import get_match_scores
-
 from .query import get_player_skills
-
-# TODO create filter
-skills_mapping = {
-    1: 'atrocious',
-    2: 'pitiful',
-    3: 'awful',
-    4: 'inept',
-    5: 'mediocre',
-    6: 'average',
-    7: 'respectable',
-    8: 'strong',
-    9: 'proficient',
-    10: 'prominent',
-    11: 'prolific',
-    12: 'sensational',
-    13: 'tremendous',
-    14: 'wondrous',
-    15: 'marvelous',
-    16: 'prodigious',
-    17: 'stupendous',
-    18: 'phenomenal',
-    19: 'colossal',
-    20: 'legendary',
-}
-
-potentials_mapping = {
-    0: {'announcer': 'lev5'},
-    1: {'bench warmer': 'lev6'},
-    2: {'role player': 'lev7'},
-    3: {'6th man': 'lev8'},
-    4: {'starter': 'lev9'},
-    5: {'star': 'lev10'},
-    6: {'allstar': 'lev11'},
-    7: {'perennial allstar': 'lev12'},
-    8: {'superstar': 'lev13'},
-    9: {'MVP': 'lev15'},
-    10: {'hall of famer': 'lev16'},
-    11: {'all-time great': 'lev17'},
-}
 
 
 # Calculates GSP, FSP and TSP from the skills model
 def calculate_skill_points(skills):
     try:
-        gsp = skills['jump_shot'][0] + skills['jump_range'][0] + skills['outside_def'][0] \
-              + skills['handling'][0] + skills['driving'][0] + skills['passing'][0]
-        fsp = skills['inside_shot'][0] + skills['inside_def'][0] \
-              + skills['rebounding'][0] + skills['shot_blocking'][0]
+        gsp = skills['jump_shot'] + skills['jump_range'] \
+              + skills['outside_def'] \
+              + skills['handling'] + skills['driving'] + skills['passing']
+        fsp = skills['inside_shot'] + skills['inside_def'] \
+              + skills['rebounding'] + skills['shot_blocking']
     except KeyError as e:
         raise ValueError('Not enough skills') from e
     else:
@@ -70,31 +30,16 @@ def calculate_skill_points(skills):
 
 
 # Creating a map of skills nomenclature with their respective values
-def get_skills_nomenclature(skills):
+def get_skills_dict(skills):
     player_skills = {}
     for skill in skills:
         skill_name = skill.skill.replace(' ', '_').replace('.', '').lower()
-        player_skills[skill_name] = [skill.value, skills_mapping[skill.value]]
+        player_skills[skill_name] = skill.value
     return player_skills
 
 
-# Creating a dict containing highlight info and nomenc. for the potential
-def get_potential_context(player):
-    try:
-        potential_nomenc = potentials_mapping[player.potential]
-    except KeyError:
-        raise ValueError
-    else:
-        potenial_name = list(potential_nomenc)[0]
-        potential = {
-            'value': player.potential,
-            'name': potenial_name,
-            'lev': potential_nomenc[potenial_name],
-        }
-        return potential
-
-
-# Gets strategies and preps matches used by the player's team in that particular match
+# Gets strategies and preps matches
+# used by the player's team in that particular match
 def get_strategies_context(player_stats, boxscore):
     if isinstance(player_stats, BoxscoreStats) and isinstance(boxscore, Boxscores):
         player_team = player_stats.team
@@ -134,8 +79,9 @@ def get_strategies_context(player_stats, boxscore):
         return strategies_preps
 
 
-# Creates a list of dicts per player ID, containing the player object and skills
-def get_players_skills_potential(players):
+# Creates a list of dicts per player ID
+# Each contains the player object and skills
+def get_players_skills_info(players):
     team_players_skills = []
     for player in players:
         try:
@@ -145,15 +91,10 @@ def get_players_skills_potential(players):
             logging.error('Only accepting Players as a model')
         else:
             player_skills = player_skills.distinct('skill').order_by('-skill')
-            player_skills = get_skills_nomenclature(player_skills)
-            try:
-                player_potential = get_potential_context(player)
-            except ValueError:
-                player_potential = {}
+            player_skills = get_skills_dict(player_skills)
             player_dict = {
                 'info': player,
                 'skills': player_skills,
-                'potential': player_potential,
             }
             team_players_skills.append(player_dict)
     return team_players_skills

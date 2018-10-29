@@ -1,7 +1,9 @@
 import scrapy
+import time
 import urllib.parse
 from buzzerbeater_scraper.formdata import BB_API_LOGIN
 from buzzerbeater_scraper.items import SeasonLeagueTeamItem, TeamItem
+from bbstats.models import Leagues, Seasons
 
 
 # Generates a list of dictionaries containing
@@ -33,9 +35,22 @@ class SeasonsSpider(scrapy.Spider):
     # __init__ function to handle custom args
     # league_ids - IDs of leagues to scrape their standings
     # seasons - for which seasons the standings should be scraped
-    def __init__(self, league_ids='2274', seasons='44', **kwargs):
-        league_ids = league_ids.split(',')
-        seasons = seasons.split(',')
+    # all_leagues - disregards the league_ids param and scrapes every league
+    # all_seasons - disregards the seasons param and scrapes every season
+    def __init__(self,
+                 league_ids='2274',
+                 seasons='44',
+                 all_leagues=False,
+                 all_seasons=False,
+                 **kwargs):
+        if not all_leagues:
+            league_ids = league_ids.split(',')
+        else:
+            league_ids = Leagues.objects.all().values_list('id', flat=True)
+        if not all_seasons:
+            seasons = seasons.split(',')
+        else:
+            seasons = Seasons.objects.all().values_list('id', flat=True)
         self.leagues_seasons = get_leagues_seasons(league_ids, seasons)
 
         super().__init__(**kwargs)
@@ -52,6 +67,12 @@ class SeasonsSpider(scrapy.Spider):
 
     def after_login(self, response):
         self.logger.debug('Logged in.')
+        print('There are ',
+              len(self.leagues_seasons),
+              ' unique combinations.')
+        # Sleep function gives time to terminate script
+        # in case there are too many URLs
+        time.sleep(6)
         # Generate a URL for every league_id and season combination
         # And then scrape it
         for league_season in self.leagues_seasons:

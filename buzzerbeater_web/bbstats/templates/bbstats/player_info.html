@@ -1,3 +1,4 @@
+{% load bbstats_extras %}
 <div class="playerinfobox">
     <table class="playerinfo" cellpadding="0" cellspacing="0">
         <tr>
@@ -18,7 +19,7 @@
                                 <br /> DMI: {{ player.dmi }}
                                 <br /> Age: {{ player.age }}
                                 <br /> Height: {{ player.height }}cm
-                                <br /> Potential: <span class="{{ potential.lev }}" title="{{ potential.value }}">{{ potential.name }}</span>
+                                <br /> Potential: <span class="{{ player.potential|potential_lev }}" title="{{ player.potential }}">{{ player.potential|potential_name }}</span>
                                 <br /> Game shape: <span class="lev{{ skills.game_shape.0 }}" title="{{ skills.game_shape.0 }}">{{ skills.game_shape.1 }}</span>
                                 <br /> Last update at: {{ player.last_update_at }}
                                 <br /> Created at: {{ player.created_at }}
@@ -35,85 +36,85 @@
                         <td>
                             Jump Shot:
 
-                            <a id="ctl00_cphContent_skillTable_sdJumpShot_linkDen" class="lev{{ skills.jump_shot.0 }}" title="{{ skills.jump_shot.0 }}">{{ skills.jump_shot.1 }}</a>
+                            <a id="ct0_cphContent_skillTable_sdJumpShot_linkDen" class="lev{{ skills.jump_shot }}" title="{{ skills.jump_shot }}">{{ skills.jump_shot|skill_name }}</a>
                         </td>
                         <td>
                             Jump Range:
 
-                            <a id="ctl00_cphContent_skillTable_sdJumpRange_linkDen" class="lev{{ skills.jump_range.0 }}" title="{{ skills.jump_range.0 }}">{{ skills.jump_range.1 }}</a>
+                            <a id="ct0_cphContent_skillTable_sdJumpRange_linkDen" class="lev{{ skills.jump_range }}" title="{{ skills.jump_range }}">{{ skills.jump_range|skill_name }}</a>
                         </td>
                     </tr>
                     <tr style="background: #EFEFEF;">
                         <td>
                             Outside Def.:
 
-                            <a id="ctl00_cphContent_skillTable_sdperimDef_linkDen" class="lev{{ skills.outside_def.0 }}" title="{{ skills.outside_def.0 }}">{{ skills.outside_def.1 }}</a>
+                            <a id="ct0_cphContent_skillTable_sdperimDef_linkDen" class="lev{{ skills.outside_def }}" title="{{ skills.outside_def }}">{{ skills.outside_def|skill_name }}</a>
                         </td>
                         <td>
                             Handling:
 
-                            <a id="ctl00_cphContent_skillTable_sdhandling_linkDen" class="lev{{ skills.handling.0 }}" title="{{ skills.handling.0 }}">{{ skills.handling.1 }}</a>
+                            <a id="ct0_cphContent_skillTable_sdhandling_linkDen" class="lev{{ skills.handling }}" title="{{ skills.handling }}">{{ skills.handling|skill_name }}</a>
                         </td>
                     </tr>
                     <tr style="background: #EFEFEF;">
                         <td>
                             Driving:
 
-                            <a id="ctl00_cphContent_skillTable_sddriving_linkDen" class="lev{{ skills.driving.0 }}" title="{{ skills.driving.0 }}">{{ skills.driving.1 }}</a>
+                            <a id="ct0_cphContent_skillTable_sddriving_linkDen" class="lev{{ skills.driving }}" title="{{ skills.driving }}">{{ skills.driving|skill_name }}</a>
                         </td>
                         <td>
                             Passing:
 
-                            <a id="ctl00_cphContent_skillTable_sdpassing_linkDen" class="lev{{ skills.passing.0 }}" title="{{ skills.passing.0 }}">{{ skills.passing.1 }}</a>
+                            <a id="ct0_cphContent_skillTable_sdpassing_linkDen" class="lev{{ skills.passing }}" title="{{ skills.passing }}">{{ skills.passing|skill_name }}</a>
                         </td>
                     </tr>
                     <tr style="background: #EFEFEF;">
                         <td>
                             Inside Shot:
 
-                            <a id="ctl00_cphContent_skillTable_sdinsideShot_linkDen" class="lev{{ skills.inside_shot.0 }}" title="{{ skills.inside_shot.0 }}">{{ skills.inside_shot.1 }}</a>
+                            <a id="ct0_cphContent_skillTable_sdinsideShot_linkDen" class="lev{{ skills.inside_shot }}" title="{{ skills.inside_shot }}">{{ skills.inside_shot|skill_name }}</a>
                         </td>
                         <td>
                             Inside Def.:
 
-                            <a id="ctl00_cphContent_skillTable_sdinsideDef_linkDen" class="lev{{ skills.inside_def.0 }}" title="{{ skills.inside_def.0 }}">{{ skills.inside_def.1 }}</a>
+                            <a id="ct0_cphContent_skillTable_sdinsideDef_linkDen" class="lev{{ skills.inside_def }}" title="{{ skills.inside_def }}">{{ skills.inside_def|skill_name }}</a>
                         </td>
                     </tr>
                     <tr style="background: #EFEFEF;">
                         <td>
                             Rebounding:
 
-                            <a id="ctl00_cphContent_skillTable_sdrebound_linkDen" class="lev{{ skills.rebounding.0 }}" title="{{ skills.rebounding.0 }}">{{ skills.rebounding.1 }}</a>
+                            <a id="ct0_cphContent_skillTable_sdrebound_linkDen" class="lev{{ skills.rebounding }}" title="{{ skills.rebounding }}">{{ skills.rebounding|skill_name }}</a>
                         </td>
                         <td>
                             Shot Blocking:
 
-                            <a id="ctl00_cphContent_skillTable_sdshotBlock_linkDen" class="lev{{ skills.shot_blocking.0 }}" title="{{ skills.shot_blocking.0 }}">{{ skills.shot_blocking.1 }}</a>
+                            <a id="ct0_cphContent_skillTable_sdshotBlock_linkDen" class="lev{{ skills.shot_blocking }}" title="{{ skills.shot_blocking }}">{{ skills.shot_blocking|skill_name }}</a>
                         </td>
                     </tr>
                     <tr style="background: #EFEFEF;">
                         <td>
                             Stamina:
 
-                            <a id="ctl00_cphContent_skillTable_sdstamina_linkDen" class="lev{{ skills.stamina.0 }}" title="{{ skills.stamina.0 }}">{{ skills.stamina.1 }}</a>
+                            <a id="ct0_cphContent_skillTable_sdstamina_linkDen" class="lev{{ skills.stamina }}" title="{{ skills.stamina }}">{{ skills.stamina|skill_name }}</a>
                         </td>
                         <td>
                             Free Throw:
 
-                            <a id="ctl00_cphContent_skillTable_sdfreeThrow_linkDen" class="lev{{ skills.free_throw.0 }}" title="{{ skills.free_throw.0 }}">{{ skills.free_throw.1 }}</a>
+                            <a id="ct0_cphContent_skillTable_sdfreeThrow_linkDen" class="lev{{ skills.free_throw }}" title="{{ skills.free_throw }}">{{ skills.free_throw|skill_name }}</a>
                         </td>
                     </tr>
                     <tr>
-                        <td style="width: 170px; background: #FFFFFF;">
+                        <td style="width:|skill_namepx; background: #FFFFFF;">
                             &nbsp;</td>
-                        <td style="width: 170px; background: #FFFFFF;">
+                        <td style="width:|skill_namepx; background: #FFFFFF;">
                             &nbsp;</td>
                     </tr>
-                    <tr id="ctl00_cphContent_skillTable_trExperience" style="background: #EFEFEF;">
+                    <tr id="ct0_cphContent_skillTable_trExperience" style="background: #EFEFEF;">
                         <td>
                             Experience:
 
-                            <a id="ctl00_cphContent_skillTable_sdexperience_linkDen" class="lev{{ skills.experience.0 }}" title="{{ skills.experience.0 }}">{{ skills.experience.1 }}</a>
+                            <a id="ct0_cphContent_skillTable_sdexperience_linkDen" class="lev{{ skills.experience }}" title="{{ skills.experience }}">{{ skills.experience|skill_name }}</a>
                         </td>
                         <td>
                             TSP:
