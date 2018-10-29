@@ -12,15 +12,14 @@ class PlayerSpider(scrapy.Spider):
     start_urls = (
         'http://www.buzzerbeater.com/default.aspx',
     )
-    urls = [
-        'http://www.buzzerbeater.com/player/43023368/overview.aspx',
-        'http://www.buzzerbeater.com/player/40653152/overview.aspx',
-        'http://www.buzzerbeater.com/player/438493178413/overview.aspx'
-    ]
+    urls = []
 
-    def __init__(self, player_id='', **kwargs):
-        if player_id != '':
-            self.urls = ['http://www.buzzerbeater.com/player/%s/overview.aspx' % player_id]
+    def __init__(self, player_ids='43023368', **kwargs):
+        player_ids = player_ids.split(',')
+        for player_id in player_ids:
+            self.urls.append(
+                'http://www.buzzerbeater.com/player/%s/overview.aspx' % player_id
+            )
         super().__init__(**kwargs)  # python3
                             
     def parse(self, response):

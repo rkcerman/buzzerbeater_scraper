@@ -235,18 +235,18 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
                     callback=self.parse_player
                 )
 
+                # Following the link to Play-By-Play page
+                if self.parse_pbps:
+                    pbp_link = 'http://www.buzzerbeater.com/match/' \
+                               + str(match_id) \
+                               + '/pbp.aspx'
+
+                    yield response.follow(
+                        url=pbp_link,
+                        callback=self.parse_pbp
+                    )
+
             yield boxscore_stats_item
-
-        # Following the link to Play-By-Play page
-        pbp_link = 'http://www.buzzerbeater.com/match/' \
-                   + str(match_id) \
-                   + '/pbp.aspx'
-
-        if self.parse_pbps:
-            yield response.follow(
-                url=pbp_link,
-                callback=self.parse_pbp
-            )
 
     # TODO Try to find a way to use scrapy's native parsing here
     # Parses the Play-by-Play page
