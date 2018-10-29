@@ -42,6 +42,8 @@ PLAY_TYPE_CATEGORIES = {
     'TIPBACK': ['inside', 'shot'],
     'TIPBACKDUNK': ['dunk', 'shot', 'inside'],
     'TOPKEY': ['mid', 'shot'],
+    'TRIPLE_DOUBLE': ['info'],
+    'QUADRUPLE_DOUBLE': ['info'],
     'TRAVEL': ['turnover'],
     'VERY_LONG': ['three', 'shot'],
     'WING': ['mid', 'shot'],

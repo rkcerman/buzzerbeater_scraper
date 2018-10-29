@@ -297,7 +297,7 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
                 item_event.select('a')[idx].string = player_href_id
 
             # Adding custom play_type_categories to the plays
-            play_tags = PLAY_TYPE_CATEGORIES.get(item_event_type)
+            play_tags = PLAY_TYPE_CATEGORIES[item_event_type]
 
             # Creating an Item to insert into the DB
             pbp_item = PlayByPlayItem(
