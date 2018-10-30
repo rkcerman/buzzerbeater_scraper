@@ -123,6 +123,14 @@
 
     </script>
     <style>
+	body {
+	    text-align: center;
+	    font-family: verdana;
+	}
+	div.perfHeader {
+		margin-top:5%;
+		text-align: center;
+	}
 	table.dataTable thead .sorting {
 		background-image: none !important;
 	}
@@ -147,7 +155,7 @@
             text-align: center;
         }
         tr {
-            font-size: 13px;
+            font-size: 11px;
         }
     </style>
     <title>{{ team.name }}</title>
@@ -165,6 +173,9 @@
         <table id="schedule" class="display stripe">            
         </table>
     </div>
+    {% triple_shot_type team.id season match_type 'team_stats' %}
+    {% double_defense_type team.id season match_type 'team_stats' %}
+    {% double_pass_type team.id season match_type 'team_stats' %}
 </body>
 {% endif %}
 

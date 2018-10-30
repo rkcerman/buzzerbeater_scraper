@@ -1,5 +1,6 @@
 from django import template
 from django.template.defaultfilters import stringfilter
+from django.urls import reverse
 
 register = template.Library()
 
@@ -128,6 +129,42 @@ def skill_name(skill):
             return skills_mapping[skill]
         else:
             return skills_mapping[20]
+
+
+# Includes the triple_shot_type table
+@register.inclusion_tag('bbstats/tables/triple_shot_type.html')
+def triple_shot_type(pk, season, match_type, url_name):
+    url = reverse(url_name, args=(
+        pk, season
+    ))
+    return {
+        'url': url,
+        'match_type': match_type,
+    }
+
+
+# Includes the double_defense_type table
+@register.inclusion_tag('bbstats/tables/double_defense_type.html')
+def double_defense_type(pk, season, match_type, url_name):
+    url = reverse(url_name, args=(
+        pk, season
+    ))
+    return {
+        'url': url,
+        'match_type': match_type,
+    }
+
+
+# Includes the double_pass_type table
+@register.inclusion_tag('bbstats/tables/double_pass_type.html')
+def double_pass_type(pk, season, match_type, url_name):
+    url = reverse(url_name, args=(
+        pk, season
+    ))
+    return {
+        'url': url,
+        'match_type': match_type,
+    }
 
 
 # Includes the player info table with skills

@@ -5,11 +5,11 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('players/<int:player_id>/', views.player_default_overview, name='player_default_overview'),
-    path('players/<int:player_id>/<int:season>/', views.player_season_overview, name='player_season_overview'),
-    path('players/<int:player_id>/<int:season>/<str:match_type>/', views.player_overview, name='player_overview'),
+    path('players/<int:player_id>/', views.player_overview, name='player_default_overview'),
+    path('players/<int:player_id>/season/<int:season>/', views.player_overview, name='player_season_overview'),
     path('teams/<int:team_id>/', views.team_overview, name='team_overview'),
-    path('match/<int:match_id>/', views.match_overview, name='match_overview'),
+    path('teams/<int:team_id>/season/<int:season>/', views.team_overview, name='team_season_overview'),
+    path('matches/<int:match_id>/', views.match_overview, name='match_overview'),
     url(r'^api/teams/$', views.TeamList.as_view()),
     url(r'^api/teams/(?P<pk>[0-9]+)/$', views.TeamDetail.as_view(), name='team_detail'),
     url(r'^api/teams/(?P<pk>[0-9]+)/stats/(?P<season>[0-9]+)/$', views.team_stats, name='team_stats'),

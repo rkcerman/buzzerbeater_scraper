@@ -12,10 +12,14 @@ from .processors.process import calculate_skill_points, get_skills_dict, \
 
 from .processors.query import get_schedule, get_all_teams
 from .models import Matches, Players, PlayerSkills, BoxscoreStats, Shots, \
-    Teams
+    Teams, Seasons
 from .serializers import *
 
-default_season = 43
+default_season = Seasons.objects.filter(
+    end_date=None
+).order_by(
+    '-end_date'
+)[0].id
 CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 
 
@@ -28,43 +32,35 @@ def index(request):
 
 
 # Returns team overview with the list of players and their skills
-def team_overview(request, team_id):
+def team_overview(request,
+                  team_id,
+                  season=default_season):
+    # GET params
+    match_type = request.GET.get('match_type', 'standard')
+
     team = Teams.objects.get(id=team_id)
     team_players = Players.objects.filter(team_id=team_id)
     team_players_skills = get_players_skills_info(team_players)
 
-    schedule = get_schedule(team, default_season)
+    schedule = get_schedule(team, season)
 
     context = {
         'team': team,
         'players_skills': team_players_skills,
         'schedule': schedule,
+        'season': season,
+        'match_type': match_type,
     }
     return render(request, 'bbstats/team_overview.html', context)
 
 
-# Returns player overview for the default season and league & cup matches
-def player_default_overview(request, player_id):
-    return player_overview(
-        request=request,
-        player_id=player_id,
-        season=default_season,
-        match_type='standard',
-    )
-
-
-# Returns player overview for the specified season and league & cup matches
-def player_season_overview(request, player_id, season):
-    return player_overview(
-        request=request,
-        player_id=player_id,
-        season=season,
-        match_type='standard',
-    )
-
-
 # Returns player overview
-def player_overview(request, player_id, season, match_type):
+def player_overview(request,
+                    player_id,
+                    season=default_season):
+    # GET params
+    match_type = request.GET.get('match_type', 'standard')
+
     # Defining and looking up key objects from the DB
     player = Players.objects.get(
         id=player_id
@@ -82,6 +78,10 @@ def player_overview(request, player_id, season, match_type):
         boxscore_stats = boxscore_stats.filter(
             Q(boxscore__match_type__contains='league')
             | Q(boxscore__match_type__contains='cup')
+        )
+    else:
+        boxscore_stats = boxscore_stats.filter(
+            boxscore__match_type__contains=match_type
         )
 
     # Returns styling class and nomenclature for skills
@@ -107,13 +107,13 @@ def player_overview(request, player_id, season, match_type):
         max_minute_value = max(max_minutes.values())
 
         boxscore = stat.boxscore
-        match_type = boxscore.match_type
+        stat_match_type = boxscore.match_type
 
         stats.append({
             'match': stat,
             'max_minute_key': max_minute_key,
             'max_minute_value': max_minute_value,
-            'match_type': match_type,
+            'match_type': stat_match_type,
             'strategies_preps': get_strategies_context(stat, stat.boxscore),
         }
         )
@@ -124,6 +124,7 @@ def player_overview(request, player_id, season, match_type):
         'skills': player_skills,
         'stats': stats,
         'season': season,
+        'match_type': match_type,
         **skill_points
     }
 
@@ -157,62 +158,14 @@ def player_stats(request, pk, season):
     filter - allows to aggregate only specific types of stats
             options: pass, shoot, guard
     """
-    data = {}
     players = [pk]
-    default_filter = ('shoot', 'guard', 'pass')
 
-    season_shots = Shots.objects.filter(
-        pbp__boxscore__match__season=season
-    )
-
-    # Able to add shots with 'fouled' outcome into calculations
-    if not request.GET.get('with_fouled', False):
-        season_shots = season_shots.exclude(outcome='fouled')
-    # Only aggregate from league and cup matches
-    if request.GET.get('match_type', None) == 'standard':
-        season_shots = season_shots.filter(
-            Q(pbp__boxscore__match_type__contains='league')
-            | Q(pbp__boxscore__match_type__contains='cup')
-        )
-
-    # Only aggregate specific types of stats
-    # To aggregate multiple types, separate by comma
-    data_filter = request.GET.get('filter', default_filter)
-    if 'shoot' in data_filter:
-        player_shots = season_shots.filter(
-            shooter__in=players,
-        )
-        shot_performances = get_player_shot_types(player_shots, 'shoot')
-        data['shoot'] = shot_performances
-    if 'guard' in data_filter:
-        player_defended_shots = season_shots.filter(
-            defender__in=players,
-        )
-        defense_performances = get_player_shot_types(player_defended_shots,
-                                                     'pass')
-        data['guard'] = defense_performances
-    if 'pass' in data_filter:
-        player_passed_shots = season_shots.filter(
-            passer__in=players,
-        )
-        passing_performances = get_player_shot_types(player_passed_shots,
-                                                     'guard')
-        data['pass'] = passing_performances
-
-    return Response(data)
-
-
-def get_stats(shots):
-    data = {}
-    default_filter = ('shoot', 'guard', 'pass')
-    pass
+    return get_stats(request, season, players)
 
 
 @api_view(['GET'])
 @permission_classes((permissions.AllowAny,))
 def team_stats(request, pk, season):
-    data = {}
-    default_filter = ('shoot', 'guard', 'pass')
     players = [
         BoxscoreStats.objects.filter(
             team_id=pk,
@@ -221,18 +174,35 @@ def team_stats(request, pk, season):
             'player_id'
         )
     ]
+
+    return get_stats(request, season, players)
+
+
+def get_stats(request, season, players):
+    data = {}
+    default_filter = ('shoot', 'guard', 'pass')
+
+    # GET params
+    with_fouled = request.GET.get('with_fouled', False)
+    match_type = request.GET.get('match_type', 'standard')
+
     season_shots = Shots.objects.filter(
-        pbp__boxscore__match__season=season,
+        pbp__boxscore__match__season=season
     )
 
     # Able to add shots with 'fouled' outcome into calculations
-    if not request.GET.get('with_fouled', False):
+    if not with_fouled:
         season_shots = season_shots.exclude(outcome='fouled')
-    # Only aggregate from league and cup matches
-    if request.GET.get('match_type', None) == 'standard':
+    # Only aggregate from league and cup matches if no match_type
+    # Else, filter
+    if match_type == 'standard':
         season_shots = season_shots.filter(
             Q(pbp__boxscore__match_type__contains='league')
             | Q(pbp__boxscore__match_type__contains='cup')
+        )
+    else:
+        season_shots = season_shots.filter(
+            pbp__boxscore__match_type__contains=match_type
         )
 
     # Only aggregate specific types of stats

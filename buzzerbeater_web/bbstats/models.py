@@ -227,7 +227,7 @@ class Seasons(models.Model):
         db_table = 'seasons'
 
     def __str__(self):
-        return self.id
+        return str(self.id)
 
 class ScoreTables(models.Model):
     match = models.ForeignKey(Matches, models.DO_NOTHING, primary_key=True)

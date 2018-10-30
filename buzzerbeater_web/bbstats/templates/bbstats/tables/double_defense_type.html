@@ -1,0 +1,136 @@
+<script>
+    // Table with defense performance
+    $(document).ready(function() {
+        $('#defensePerf').DataTable({
+	    ajax: {
+		url: "{{ url }}"
+		+ "?match_type={{ match_type }}"
+		+ "&filter=guard",
+		dataSrc: "guard",
+	    },
+            columns: [
+		{ title: 'Tags', data: "play_tags"},
+                { title: 'Shot type', data: "shot_type"},
+                { title: 'Made', data: "made_fg" },
+                { title: 'Att.', data: "attempted_fg" },
+                { title: '%', data: "fg_per" },
+            ],
+            "displayLength": 100,
+            "order": [
+                [3, 'desc']
+            ],
+            
+        // Creating a Totals row
+            "footerCallback": function(row, data, start, end, display) {
+                var api = this.api(),
+                    data;
+
+                // Remove the formatting to get integer data for summation
+                var intVal = function(i) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\$,]/g, '') * 1 :
+                        typeof i === 'number' ?
+                        i : 0;
+                };
+
+                // Total over all pages
+                total = function(col) {
+                    return api.column(col)
+                        .data()
+                        .reduce(function(a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+                }
+
+                // Total over this page
+                pageTotal = function(col) {
+                    return api
+                        .column(col, {
+                            page: 'current'
+                        })
+                        .data()
+                        .reduce(function(a, b) {
+                            return intVal(a) + intVal(b);
+                        }, 0);
+                }
+
+                // Update footer
+                // TODO make this into a loop pls
+                var i;
+                var dontAgg = [4]
+                                
+                for (i = 1; i < 4; i++) {
+                    // Filling the averages row with averages for columns that can be averaged
+                    if (dontAgg.indexOf(i) == -1) {
+                        $(api.column(i).footer()).html(
+                            Math.round(((api.table().column(i, {
+                                page: 'current'
+                            }).data().average()) + 0.00001) * 100) / 100
+                        );
+                    }
+
+                    // Filling the totals row with totals for columns that can be totaled
+                    if (dontAgg.indexOf(i) == -1) {
+                        $('tr:eq(1) td:eq(' + (i) + ')', api.table().footer()).html(
+                            pageTotal(i)
+                        );
+                    }
+                }
+
+                // Filling the percentages row with percentages
+                var i = 0;
+                for (i; i < 2; i++) {
+                    var made_cell = $('tr:eq(0) td:eq(' + (dontAgg[i] - 2) + ')', api.table().footer()).html()
+                    var attempt_cell = $('tr:eq(0) td:eq(' + (dontAgg[i] - 1) + ')', api.table().footer()).html()
+                    
+                    $('tr:eq(0) td:eq(' + (dontAgg[i]) + ')', api.table().footer()).html(
+                        '<strong>'
+                        + Math.round(((made_cell / attempt_cell) + 0.00001) * 100) / 100
+                        + '</strong>'
+                    );
+                }
+            }
+        });
+    });
+    
+</script>
+<div id="playerDefensePerf" class="widebox tableDiv">
+	<div class="perfHeader">
+		<h3>Defensive performance</h3>
+		<p>The lower % the better</p>
+	</div>
+    <div class="boxcontent">
+        <div>
+            <table id="defensePerf" class="cell-border stripe" style="width: 50%;">
+                <thead>
+                    <tr>
+                        <th rowspan="2">Tags</th>
+                        <th rowspan="2">Shot type</th>
+                        <th colspan="3">Matchup field goals</th>
+                    </tr>
+                    <tr>
+                        <th>Opp Made</th>
+                        <th>Opp Att.</th>
+                        <th>Opp %</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <td>AVERAGE</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>TOTAL</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
