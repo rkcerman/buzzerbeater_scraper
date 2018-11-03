@@ -273,7 +273,7 @@ class Teams(models.Model):
 
 
 class SeasonsLeaguesTeams(models.Model):
-    season = models.ForeignKey(Seasons, models.DO_NOTHING)
+    season = models.ForeignKey(Seasons, models.DO_NOTHING, primary_key=True)
     league = models.ForeignKey(Leagues, models.DO_NOTHING)
     team = models.ForeignKey(Teams, models.DO_NOTHING)
 
