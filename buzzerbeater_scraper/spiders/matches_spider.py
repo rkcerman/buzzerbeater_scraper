@@ -18,7 +18,7 @@ from buzzerbeater_scraper.formdata import BB_LOGIN, BB_API_LOGIN
 from buzzerbeater_scraper.boxscore_parser import BoxscoreParser
 from buzzerbeater_scraper.spiders.player_spider import PlayerSpider
 
-from bbstats.models import Boxscores
+from bbstats.models import Boxscores, SeasonsLeaguesTeams
 
 
 # Generates a list of dictionaries containing
@@ -33,6 +33,17 @@ def get_teams_seasons(team_ids, seasons):
             }
             teams_seasons.append(args)
     return teams_seasons
+
+
+# Pulls out list of teams for a league/season combination
+def get_standings(league_ids, seasons):
+    standings = SeasonsLeaguesTeams.objects.filter(
+        season__in=seasons,
+        league__in=league_ids,
+    )
+    team_ids = [team['team_id'] for team in
+                   standings.values('team_id')]
+    return team_ids
 
 
 # Pulls out already scraped matches from the DB into a list
@@ -66,6 +77,7 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
     # force_rescrape - if true, rescrapes already scraped matches
     def __init__(self,
                  team_ids='58420',
+                 league_ids='2274',
                  seasons='44',
                  parse_players=True,
                  parse_pbps=True,
@@ -73,7 +85,11 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
                  **kwargs):
 
         team_ids = team_ids.split(',')
+        league_ids = league_ids.split(',')
         seasons = seasons.split(',')
+
+        # Adds team_ids from leagues if supplied
+        team_ids += get_standings(league_ids, seasons)
 
         if not force_rescrape:
             self.scraped_boxscores = get_scraped_matches(team_ids, seasons)
@@ -133,7 +149,7 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
                 urllib.parse.urlencode(args)
             )
 
-            self.logger.debug("Current URL: {}".format(url))
+            self.logger.info("Current URL: {}".format(url))
             yield scrapy.Request(
                 url=url,
                 callback=self.parse_schedule,
@@ -147,11 +163,11 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
 
         for match in schedule_xml.xpath('match'):
             match_id = int(match.xpath('@id').extract_first())
-            type = match.xpath('@type').extract_first()
+            match_type = match.xpath('@type').extract_first()
 
             # Further scrape matches only if they haven't been scraped yet
             # Also excludes matches of type 'unknown' which are all-star
-            if match_id not in self.scraped_boxscores and type != 'unknown':
+            if match_id not in self.scraped_boxscores and match_type != 'unknown':
                 match_date = match.xpath('@start').extract_first()
                 match_date = datetime.datetime.strptime(
                     match_date,
@@ -235,18 +251,19 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
                     callback=self.parse_player
                 )
 
-                # Following the link to Play-By-Play page
-                if self.parse_pbps:
-                    pbp_link = 'http://www.buzzerbeater.com/match/' \
-                               + str(match_id) \
-                               + '/pbp.aspx'
-
-                    yield response.follow(
-                        url=pbp_link,
-                        callback=self.parse_pbp
-                    )
-
             yield boxscore_stats_item
+
+        # Following the link to Play-By-Play page
+        if self.parse_pbps:
+            pbp_link = 'http://www.buzzerbeater.com/match/' \
+                       + str(match_id) \
+                       + '/pbp.aspx'
+
+            yield response.follow(
+                url=pbp_link,
+                callback=self.parse_pbp
+            )
+
 
     # TODO Try to find a way to use scrapy's native parsing here
     # Parses the Play-by-Play page
