@@ -4,7 +4,6 @@ import buzzerbeater_scraper.config
 import psycopg2
 from psycopg2 import IntegrityError
 
-
 # Define your item pipelines here
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
@@ -18,7 +17,8 @@ class BuzzerbeaterScraperPipeline(object):
         username = buzzerbeater_scraper.config.DATABASE_CONFIG['username']
         password = buzzerbeater_scraper.config.DATABASE_CONFIG['password']
         database = buzzerbeater_scraper.config.DATABASE_CONFIG['database']
-        self.conn = psycopg2.connect(host=hostname, user=username, password=password, dbname=database)
+        self.conn = psycopg2.connect(host=hostname, user=username,
+                                     password=password, dbname=database)
         self.cur = self.conn.cursor()
 
     def close_spider(self, spider):
@@ -30,16 +30,17 @@ class BuzzerbeaterScraperPipeline(object):
     def process_item(self, item, spider):
         if isinstance(item, PlayByPlayItem):
             try:
-                self.cur.execute("INSERT INTO play_by_plays VALUES(%s, %s, %s, %s, %s, %s, %s, %s::play_tags[]) "
-                                 "ON CONFLICT DO NOTHING",
-                                 (item['id'],
-                                  item['event_type'],
-                                  item['quarter'],
-                                  item['clock'],
-                                  item['score'],
-                                  item['event'],
-                                  item['match_id'],
-                                  item['play_tags']))
+                self.cur.execute(
+                    "INSERT INTO play_by_plays VALUES(%s, %s, %s, %s, %s, %s, %s, %s::play_tags[]) "
+                    "ON CONFLICT DO NOTHING",
+                    (item['id'],
+                     item['event_type'],
+                     item['quarter'],
+                     item['clock'],
+                     item['score'],
+                     item['event'],
+                     item['match_id'],
+                     item['play_tags']))
                 self.conn.commit()
             except IntegrityError as e:
                 print("Duplicate primary key entry, skipping")
@@ -71,37 +72,40 @@ class BuzzerbeaterScraperPipeline(object):
             self.conn.commit()
             return item
         if isinstance(item, ShotsItem):
-            self.cur.execute("INSERT INTO shots VALUES(%s, %s, %s, %s, %s, %s) "
-                             "ON CONFLICT DO NOTHING",
-                             (item['pbp_id'],
-                              item['outcome'],
-                              item['defender'],
-                              item['defense_type'],
-                              item['passer'],
-                              item['shooter']))
+            self.cur.execute(
+                "INSERT INTO shots VALUES(%s, %s, %s, %s, %s, %s) "
+                "ON CONFLICT DO NOTHING",
+                (item['pbp_id'],
+                 item['outcome'],
+                 item['defender'],
+                 item['defense_type'],
+                 item['passer'],
+                 item['shooter']))
             self.conn.commit()
             return item
         if isinstance(item, MatchItem):
             try:
-                self.cur.execute("INSERT INTO matches VALUES(%s, %s, %s, %s, %s) "
-                                 "ON CONFLICT DO NOTHING",
-                                 (item['id'],
-                                  item['match_date'],
-                                  item['home_team_id'],
-                                  item['away_team_id'],
-                                  item['season']))
+                self.cur.execute(
+                    "INSERT INTO matches VALUES(%s, %s, %s, %s, %s) "
+                    "ON CONFLICT DO NOTHING",
+                    (item['id'],
+                     item['match_date'],
+                     item['home_team_id'],
+                     item['away_team_id'],
+                     item['season']))
                 self.conn.commit()
             except IntegrityError as e:
                 print("Duplicate primary key entry, skipping")
             return item
         if isinstance(item, ScoreTableItem):
             try:
-                self.cur.execute("INSERT INTO score_tables VALUES(%s, %s, %s, %s) "
-                                 "ON CONFLICT DO NOTHING",
-                                 (item['match_id'],
-                                  item['qtr'],
-                                  item['away_team_score'],
-                                  item['home_team_score']))
+                self.cur.execute(
+                    "INSERT INTO score_tables VALUES(%s, %s, %s, %s) "
+                    "ON CONFLICT DO NOTHING",
+                    (item['match_id'],
+                     item['qtr'],
+                     item['away_team_score'],
+                     item['home_team_score']))
                 self.conn.commit()
             except IntegrityError as e:
                 print("Duplicate primary key entry, skipping")
@@ -249,19 +253,52 @@ class BuzzerbeaterScraperPipeline(object):
             return item
         if isinstance(item, PlayerSkillsItem):
             try:
-                self.cur.execute("INSERT INTO player_skills ("
-                                 "player_id,"
+                self.cur.execute("INSERT INTO new_skills (player_id,"
                                  "date,"
-                                 "skill,"
-                                 "value) "
-                                 "VALUES(%s, current_timestamp, %s, %s) "
-                                 "ON CONFLICT DO NOTHING",
-                                 (item['player_id'],
-                                  item['skill'],
-                                  item['value']))
+                                 "game_shape,"
+                                 "experience,"
+                                 "jump_shot,"
+                                 "jump_range, "
+                                 "outside_def, "
+                                 "handling, "
+                                 "driving, "
+                                 "passing, "
+                                 "inside_shot, "
+                                 "inside_def, "
+                                 "rebounding, "
+                                 "shot_blocking, "
+                                 "stamina, "
+                                 "free_throw"
+                                 ") "
+                                 "VALUES("
+                                 "%s, current_timestamp, %s, %s,"
+                                 "%s, %s, %s, %s,"
+                                 "%s, %s, %s, %s,"
+                                 "%s, %s, %s, %s"
+                                 ") "
+                                 "ON CONFLICT DO NOTHING "
+                                 ,
+                                 (
+                                     item.get('player_id', None),
+                                     item.get('game_shape', None),
+                                     item.get('experience', None),
+                                     item.get('jump_shot', None),
+                                     item.get('jump_range', None),
+                                     item.get('outside_def', None),
+                                     item.get('handling', None),
+                                     item.get('driving', None),
+                                     item.get('passing', None),
+                                     item.get('inside_shot', None),
+                                     item.get('inside_def', None),
+                                     item.get('rebounding', None),
+                                     item.get('shot_blocking', None),
+                                     item.get('stamina', None),
+                                     item.get('free_throw', None),
+                                 ))
                 self.conn.commit()
             except IntegrityError as e:
-                print("Duplicate primary key entry in player_skills, skipping")
+                print(
+                    "Duplicate primary key entry in player_skills, skipping")
                 print(e)
             return item
         if isinstance(item, PlayerHistoryItem):
@@ -304,4 +341,3 @@ class BuzzerbeaterScraperPipeline(object):
                               item['team_id']))
             self.conn.commit()
             return item
-

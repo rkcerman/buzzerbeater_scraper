@@ -123,12 +123,11 @@ class BuzzerbeaterTransfersSpider(scrapy.Spider):
         if player is not None:
             player_item = player['player_item']
             team_item = player['team_item']
+            skill_item = player['player_skills_item']
 
             yield team_item
             yield player_item
-
-            for skill in player['player_skills_items']:
-                yield skill
+            yield skill_item
 
             player_history_link = player['player_history_link']
             yield response.follow(

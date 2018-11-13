@@ -42,7 +42,7 @@ def get_standings(league_ids, seasons):
         league__in=league_ids,
     )
     team_ids = [team['team_id'] for team in
-                   standings.values('team_id')]
+                standings.values('team_id')]
     return team_ids
 
 
@@ -264,7 +264,6 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
                 callback=self.parse_pbp
             )
 
-
     # TODO Try to find a way to use scrapy's native parsing here
     # Parses the Play-by-Play page
     def parse_pbp(self, response):
@@ -352,6 +351,7 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
         if player is not None:
             player_item = player['player_item']
             team_item = player['team_item']
+            skill_item = player['player_skills_item']
 
             self.logger.info('Team: '
                              + team_item['id']
@@ -360,9 +360,7 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
 
             yield team_item
             yield player_item
-
-            for skill in player['player_skills_items']:
-                yield skill
+            yield skill_item
 
             player_history_link = player['player_history_link']
             yield response.follow(
