@@ -1,11 +1,39 @@
-# This is an auto-generated Django model module.
-# You'll have to do the following manually to clean this up:
-#   * Rearrange models' order
-#   * Make sure each model has one field with primary_key=True
-#   * Make sure each ForeignKey has `on_delete` set to the desired behavior.
-#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
-# Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
+
+
+class PlayerSkillsManager(models.Manager):
+
+    # Returns latest skills formatted as a dict
+    def latest_skills(self, pk):
+        _skills = (
+            'game_shape',
+            'experience',
+            'jump_shot',
+            'jump_range',
+            'outside_def',
+            'handling',
+            'driving',
+            'passing',
+            'inside_shot',
+            'inside_def',
+            'rebounding',
+            'shot_blocking',
+            'stamina',
+            'free_throw',
+        )
+        data = {}
+
+        ps = self.filter(pk=pk).order_by('-date')
+
+        for skill in _skills:
+            try:
+                skill_set = ps.filter(**{skill + '__isnull': False})[0]
+            except IndexError:
+                skill_set = None
+            else:
+                data[skill] = getattr(skill_set, skill, default=None)
+
+        return data
 
 
 class BoxscoreStats(models.Model):
@@ -199,6 +227,7 @@ class PlayerSkills(models.Model):
     stamina = models.SmallIntegerField()
     free_throw = models.SmallIntegerField()
 
+    objects = PlayerSkillsManager()
     class Meta:
         managed = False
         db_table = 'new_skills'
