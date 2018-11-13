@@ -6,7 +6,7 @@ from bbstats.models import BoxscoreStats, Boxscores, PlayerSkills, \
 from django.db.models import Sum
 from collections import Counter
 
-from .query import get_player_skills
+from .query import get_player_skills, get_latest_player_skills
 
 
 # Calculates GSP, FSP and TSP from the skills model
@@ -84,19 +84,12 @@ def get_strategies_context(player_stats, boxscore):
 def get_players_skills_info(players):
     team_players_skills = []
     for player in players:
-        try:
-            player_skills = get_player_skills(player_id=player.id)
-        except AttributeError as e:
-            logging.error(e)
-            logging.error('Only accepting Players as a model')
-        else:
-            player_skills = player_skills.distinct('skill').order_by('-skill')
-            player_skills = get_skills_dict(player_skills)
-            player_dict = {
-                'info': player,
-                'skills': player_skills,
-            }
-            team_players_skills.append(player_dict)
+        player_skills = get_latest_player_skills(player.id)
+        player_dict = {
+            'info': player,
+            'skills': player_skills,
+        }
+        team_players_skills.append(player_dict)
     return team_players_skills
 
 

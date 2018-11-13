@@ -7,9 +7,7 @@ from rest_framework import generics, permissions
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
-from .processors.process import calculate_skill_points, get_skills_dict, \
-    get_strategies_context, get_players_skills_info, get_player_shot_types
-
+from .processors.process import *
 from .processors.query import get_schedule, get_all_teams
 from .models import Matches, Players, PlayerSkills, BoxscoreStats, Shots, \
     Teams, Seasons
@@ -65,9 +63,7 @@ def player_overview(request,
     player = Players.objects.get(
         id=player_id
     )
-    skills = PlayerSkills.objects.filter(
-        player=player_id
-    ).distinct('skill').order_by('-skill', '-date')
+    player_skills = get_latest_player_skills(player_id)
     boxscore_stats = BoxscoreStats.objects.filter(
         player_id=player_id,
         boxscore__match__season=season
@@ -83,9 +79,6 @@ def player_overview(request,
         boxscore_stats = boxscore_stats.filter(
             boxscore__match_type__contains=match_type
         )
-
-    # Returns styling class and nomenclature for skills
-    player_skills = get_skills_dict(skills)
 
     try:
         skill_points = calculate_skill_points(player_skills)

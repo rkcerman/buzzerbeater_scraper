@@ -31,7 +31,7 @@ class PlayerSkillsManager(models.Manager):
             except IndexError:
                 skill_set = None
             else:
-                data[skill] = getattr(skill_set, skill, default=None)
+                data[skill] = getattr(skill_set, skill)
 
         return data
 
@@ -230,7 +230,7 @@ class PlayerSkills(models.Model):
     objects = PlayerSkillsManager()
     class Meta:
         managed = False
-        db_table = 'new_skills'
+        db_table = 'player_skills'
         unique_together = (('player', 'date'),)
 
     def __str__(self):

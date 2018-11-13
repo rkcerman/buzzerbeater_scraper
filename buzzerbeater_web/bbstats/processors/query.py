@@ -20,13 +20,14 @@ def get_schedule(team, season):
         .order_by('match_date')
 
     # Append boxscore to each match and tuple them together
+    boxscore = None
+    end_score = ''
     for match in schedule:
         try:
             boxscore = get_boxscore(match.id)
             end_score = match_end_score(match.id)
         except Boxscores.DoesNotExist:
-            boxscore = None
-            end_score = ''
+            pass
         finally:
             match_bs = (match, boxscore, end_score)
             schedule_with_bs.append(match_bs)
@@ -90,8 +91,14 @@ def get_match_scores(match_id):
 
 def get_player_skills(player_id):
     return PlayerSkills.objects.filter(
-        player=player_id
-    ).distinct('skill').order_by('-skill', '-date')
+        pk=player_id
+    )
+
+
+def get_latest_player_skills(player_id):
+    return PlayerSkills.objects.latest_skills(
+        pk=player_id
+    )
 
 
 def redis_get_all_fields(key, model, model_id):
