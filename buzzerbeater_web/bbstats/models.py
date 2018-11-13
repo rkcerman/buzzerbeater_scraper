@@ -184,12 +184,25 @@ class PlayerSkills(models.Model):
     player = models.ForeignKey('Players', models.DO_NOTHING,
                                primary_key=True)
     date = models.DateTimeField()
-    skill = models.TextField()  # This field type is a guess.
-    value = models.SmallIntegerField()
+    game_shape = models.SmallIntegerField()
+    experience = models.SmallIntegerField()
+    jump_shot = models.SmallIntegerField()
+    jump_range = models.SmallIntegerField()
+    outside_def = models.SmallIntegerField()
+    handling = models.SmallIntegerField()
+    driving = models.SmallIntegerField()
+    passing = models.SmallIntegerField()
+    inside_shot = models.SmallIntegerField()
+    inside_def = models.SmallIntegerField()
+    rebounding = models.SmallIntegerField()
+    shot_blocking = models.SmallIntegerField()
+    stamina = models.SmallIntegerField()
+    free_throw = models.SmallIntegerField()
 
     class Meta:
         managed = False
-        db_table = 'player_skills'
+        db_table = 'new_skills'
+        unique_together = (('player', 'date'),)
 
     def __str__(self):
         return self.player.name
@@ -228,6 +241,7 @@ class Seasons(models.Model):
 
     def __str__(self):
         return str(self.id)
+
 
 class ScoreTables(models.Model):
     match = models.ForeignKey(Matches, models.DO_NOTHING, primary_key=True)
