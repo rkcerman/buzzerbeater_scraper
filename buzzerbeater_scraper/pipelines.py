@@ -253,7 +253,7 @@ class BuzzerbeaterScraperPipeline(object):
             return item
         if isinstance(item, PlayerSkillsItem):
             try:
-                self.cur.execute("INSERT INTO new_skills (player_id,"
+                self.cur.execute("INSERT INTO player_skills (player_id,"
                                  "date,"
                                  "game_shape,"
                                  "experience,"
