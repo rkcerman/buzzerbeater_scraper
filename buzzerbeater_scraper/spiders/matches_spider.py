@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import logging
 import datetime
 import logging
 import urllib.parse
@@ -316,7 +317,12 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
                 item_event.select('a')[idx].string = player_href_id
 
             # Adding custom play_type_categories to the plays
-            play_tags = PLAY_TYPE_CATEGORIES[item_event_type]
+            # If doesn't exist, use default 'info'
+            play_tags = ['info']
+            try:
+                play_tags = PLAY_TYPE_CATEGORIES[item_event_type]
+            except KeyError:
+                self.logger.error('Unknown play tag ' + item_event_type)
 
             # Creating an Item to insert into the DB
             pbp_item = PlayByPlayItem(
