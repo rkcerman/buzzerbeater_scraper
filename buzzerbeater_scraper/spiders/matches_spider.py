@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import datetime
+import logging
 import urllib.parse
 from collections import Counter
 
@@ -57,6 +58,8 @@ def get_scraped_matches(team_ids, seasons):
 
 
 class BuzzerbeaterMatchesSpider(scrapy.Spider):
+    logger = logging.getLogger(__name__)
+
     name = "matches_spider"
     allowed_domains = ["buzzerbeater.com"]
     start_urls = (
@@ -378,10 +381,8 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
             yield item
 
     def closed(self, reason):
-        print(reason)
-        print(self.matches_pbp_counter)
+        self.logger.info(reason)
         for k, v in self.matches_pbp_counter.items():
-            print(k)
-            print(v)
+            self.logger.info(('%s %s', str(k), str(v)))
             if v['total_pbps'] != v['scraped_pbps']:
-                print(' <- ATTENTION!')
+                self.logger.error('Scraped PBPs lower than total.')
