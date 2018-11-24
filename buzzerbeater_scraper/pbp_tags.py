@@ -9,6 +9,7 @@ PLAY_TYPE_CATEGORIES = {
     'DRIVING_LAYUP': ['inside', 'shot'],
     'DUNK': ['dunk', 'shot', 'inside'],
     'DUNK_MISSED': ['dunk', 'shot', 'inside'],
+    'EJECTED': ['info'],
     'ELBOW': ['mid', 'shot'],
     'FALL_AWAY': ['mid', 'shot'],
     'FREE_THROW_MADE': ['ft'],
