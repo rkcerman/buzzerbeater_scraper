@@ -70,6 +70,9 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
     base_login_url = base_url + '/login.aspx'
     base_schedule_url = base_url + '/schedule.aspx'
     base_boxscore_url = base_url + '/boxscore.aspx'
+    API_URL = base_login_url + '?{}'.format(
+        urllib.parse.urlencode(BB_API_LOGIN)
+    )
 
     matches_pbp_counter = {}
 
@@ -133,11 +136,8 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
             self.logger.info('Already scraped boxscores: '
                              + str(self.scraped_boxscores)
                              )
-            api_url = self.base_login_url + '?{}'.format(
-                urllib.parse.urlencode(BB_API_LOGIN)
-            )
             yield scrapy.Request(
-                url=api_url,
+                url=self.API_URL,
                 callback=self.after_api_login
             )
 
@@ -225,48 +225,59 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
         boxscore_xml = response.xpath('//bbapi/match')
         match_id = response.meta['match_id']
 
-        bs_all_items = BoxscoreParser.parse(
-            self=BoxscoreParser,
-            boxscore_xml=boxscore_xml
-        )
-
-        score_table_items = bs_all_items[0]
-        boxscore_item = bs_all_items[1]
-        boxscore_stats_items = bs_all_items[2]
-        team_items = bs_all_items[3]
-
-        for team_item in team_items:
-            yield team_item
-
-        for score_table_item in score_table_items:
-            yield score_table_items[score_table_item]
-
-        yield boxscore_item
-
-        for boxscore_stats_item in boxscore_stats_items:
-
-            if self.parse_players:
-                player_id = boxscore_stats_item['player_id']
-                url = 'http://www.buzzerbeater.com/player/' \
-                      + str(player_id) \
-                      + '/overview.aspx'
-                yield response.follow(
-                    url=url,
-                    callback=self.parse_player
-                )
-
-            yield boxscore_stats_item
-
-        # Following the link to Play-By-Play page
-        if self.parse_pbps:
-            pbp_link = 'http://www.buzzerbeater.com/match/' \
-                       + str(match_id) \
-                       + '/pbp.aspx'
-
-            yield response.follow(
-                url=pbp_link,
-                callback=self.parse_pbp
+        try:
+            bs_all_items = BoxscoreParser.parse(
+                self=BoxscoreParser,
+                boxscore_xml=boxscore_xml
             )
+        except TypeError:
+            self.logger.error(f'Re-login for match {match_id}.')
+            scrapy.Request(
+                url=self.API_URL
+            )
+            yield response.follow(
+                url=response.url,
+                callback=self.parse_boxscore,
+                meta={'match_id': match_id}
+            )
+        else:
+            score_table_items = bs_all_items[0]
+            boxscore_item = bs_all_items[1]
+            boxscore_stats_items = bs_all_items[2]
+            team_items = bs_all_items[3]
+
+            for team_item in team_items:
+                yield team_item
+
+            for score_table_item in score_table_items:
+                yield score_table_items[score_table_item]
+
+            yield boxscore_item
+
+            for boxscore_stats_item in boxscore_stats_items:
+
+                if self.parse_players:
+                    player_id = boxscore_stats_item['player_id']
+                    url = 'http://www.buzzerbeater.com/player/' \
+                          + str(player_id) \
+                          + '/overview.aspx'
+                    yield response.follow(
+                        url=url,
+                        callback=self.parse_player
+                    )
+
+                yield boxscore_stats_item
+
+            # Following the link to Play-By-Play page
+            if self.parse_pbps:
+                pbp_link = 'http://www.buzzerbeater.com/match/' \
+                           + str(match_id) \
+                           + '/pbp.aspx'
+
+                yield response.follow(
+                    url=pbp_link,
+                    callback=self.parse_pbp
+                )
 
     # TODO Try to find a way to use scrapy's native parsing here
     # Parses the Play-by-Play page
@@ -299,6 +310,7 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
                               + ' --- play no. '
                               + str(i))
             row = play_by_play.select('tr')[i]
+            self.logger.debug(row)
             item_match_id = int(match_id)
             item_event_type = row['class'][0]
             item_quarter = row.select('td')[0].get_text()
