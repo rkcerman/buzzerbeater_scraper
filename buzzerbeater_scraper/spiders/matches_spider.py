@@ -231,7 +231,7 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
                 boxscore_xml=boxscore_xml
             )
         except TypeError:
-            self.logger.error(f'Re-login for match {match_id}.')
+            self.logger.error('Re-login for match ' + str(match_id))
             scrapy.Request(
                 url=self.API_URL
             )
