@@ -179,8 +179,9 @@ def get_stats(request, season, players):
     with_fouled = request.GET.get('with_fouled', False)
     match_type = request.GET.get('match_type', 'standard')
 
+    season_matches = Matches.objects.filter(season=season)
     season_shots = Shots.objects.filter(
-        pbp__boxscore__match__season=season
+        pbp__boxscore_id__in=season_matches.values_list('id', flat=True)
     )
 
     # Able to add shots with 'fouled' outcome into calculations
