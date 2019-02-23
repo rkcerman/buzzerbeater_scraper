@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 
 import os
 import sentry_sdk
-from decouple import config
+from decouple import config, Csv
 
 sentry_sdk.init("https://03cc67f99ee34cbe9e316f103ccfed4f@sentry.io/1284684")
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -28,7 +28,7 @@ SECRET_KEY = 'm*3x9h@44$*5ku63m5(e0+_2ux8dn8cr#klepj@9e&7(4$j2&p'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default=[])
 
 
 # Application definition
@@ -83,11 +83,11 @@ WSGI_APPLICATION = 'buzzerbeater_web.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'testpython',
-        'USER': 'rkcerman',
-        'PASSWORD': 'konzolka.23',
-        'HOST': '127.0.0.1',
-        'PORT': '5432'
+        'NAME': config('DB_NAME'),
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT')
     }
 }
 
