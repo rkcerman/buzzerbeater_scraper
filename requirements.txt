@@ -16,7 +16,6 @@ cryptography==2.2.2
 cssselect==1.0.3
 Django==2.1.2
 django-filter==2.0.0
-django-redis==4.9.0
 django-test-without-migrations==0.6
 djangorestframework==3.8.2
 Flask==0.12.1
@@ -46,14 +45,14 @@ PyDispatcher==2.0.5
 PyMySQL==0.7.11
 pyOpenSSL==18.0.0
 python-dateutil==2.6.0
+python-decouple==3.1
 pytz==2017.2
 queuelib==1.5.0
-redis==2.10.6
 requests==2.13.0
-sentry-sdk==0.5.5
 schedule==0.5.0
-Scrapy==1.5.1
+Scrapy==1.5.0
 scrapyd==1.2.0
+sentry-sdk==0.5.5
 service-identity==17.0.0
 six==1.10.0
 SQLAlchemy==1.1.9
