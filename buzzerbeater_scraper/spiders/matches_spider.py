@@ -85,7 +85,7 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
     # force_rescrape - if true, rescrapes already scraped matches
     def __init__(self,
                  team_ids='58420',
-                 league_ids='2274',
+                 league_ids=None,
                  seasons=str(DEFAULT_SEASON),
                  parse_players=True,
                  parse_pbps=True,
@@ -93,11 +93,12 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
                  **kwargs):
 
         team_ids = team_ids.split(',')
-        league_ids = league_ids.split(',')
         seasons = seasons.split(',')
 
         # Adds team_ids from leagues if supplied
-        team_ids += get_standings(league_ids, seasons)
+        if league_ids:
+            league_ids = league_ids.split(',')
+            team_ids += get_standings(league_ids, seasons)
 
         if not force_rescrape:
             self.scraped_boxscores = get_scraped_matches(team_ids, seasons)
