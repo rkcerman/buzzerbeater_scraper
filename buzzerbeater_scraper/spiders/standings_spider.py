@@ -4,6 +4,7 @@ import urllib.parse
 from buzzerbeater_scraper.formdata import BB_API_LOGIN
 from buzzerbeater_scraper.items import SeasonLeagueTeamItem, TeamItem
 from bbstats.models import Leagues, Seasons
+from buzzerbeater_scraper.config import DEFAULT_SEASON
 
 
 # Generates a list of dictionaries containing
@@ -39,7 +40,7 @@ class SeasonsSpider(scrapy.Spider):
     # all_seasons - disregards the seasons param and scrapes every season
     def __init__(self,
                  league_ids='2274',
-                 seasons='44',
+                 seasons=str(DEFAULT_SEASON),
                  all_leagues=False,
                  all_seasons=False,
                  **kwargs):
