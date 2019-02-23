@@ -19,6 +19,7 @@ from buzzerbeater_scraper.pbp_parser import PlayByPlayParser
 from buzzerbeater_scraper.formdata import BB_LOGIN, BB_API_LOGIN
 from buzzerbeater_scraper.boxscore_parser import BoxscoreParser
 from buzzerbeater_scraper.spiders.player_spider import PlayerSpider
+from buzzerbeater_scraper.config import DEFAULT_SEASON
 
 from bbstats.models import Boxscores, SeasonsLeaguesTeams
 
@@ -85,7 +86,7 @@ class BuzzerbeaterMatchesSpider(scrapy.Spider):
     def __init__(self,
                  team_ids='58420',
                  league_ids='2274',
-                 seasons='44',
+                 seasons=str(DEFAULT_SEASON),
                  parse_players=True,
                  parse_pbps=True,
                  force_rescrape=False,
