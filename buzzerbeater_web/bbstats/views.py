@@ -154,7 +154,9 @@ def player_stats(request, pk, season):
     players = [pk]
     default_filter = ('shoot', 'guard', 'pass', 'per36')
 
-    match_type = request.GET.get('match_type', 'league')
+    # TODO implement match_type properly
+    # match_type = request.GET.get('match_type', 'league')
+    match_type = 'league'
     data_filter = request.GET.get('filter', default_filter)
 
     data = {}
