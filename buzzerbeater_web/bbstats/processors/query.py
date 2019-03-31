@@ -1,8 +1,7 @@
-import logging
 from django.db.models import Q, Avg
 
 from bbstats.models import Matches, Boxscores, Teams, PlayerSkills, \
-    ScoreTables, BoxscoreStats
+    ScoreTables, BoxscoreStats, Players
 from collections import Counter
 
 
@@ -75,49 +74,55 @@ def get_latest_player_skills(player_id):
     )
 
 
-def get_player_36m_stats(player_id, match_type='league'):
-    """
-    Aggregates player's stats per 36m, grouped by season
-
-    :param player_id:
-    :param match_type:
-    :return:
-    """
-
-    # Let's combine the player's minutes on all positions
-    total_avg_min = (
-            Avg('pg_min') +
-            Avg('sg_min') +
-            Avg('sf_min') +
-            Avg('pf_min') +
-            Avg('c_min')
-    )
-    player_stats = BoxscoreStats.objects.filter(
-        player_id=player_id,
-        boxscore__match_type__contains=match_type
-    ).order_by('-boxscore__match__season')
-
-    agg_stats = player_stats.values('boxscore__match__season') \
-        .annotate(
-        pts=adjusted_stat_per_36m('pts', total_avg_min),
-        ast=adjusted_stat_per_36m('ast', total_avg_min),
-        oreb=adjusted_stat_per_36m('oreb', total_avg_min),
-        reb=adjusted_stat_per_36m('reb', total_avg_min),
-        stl=adjusted_stat_per_36m('stl', total_avg_min),
-        blk=adjusted_stat_per_36m('blk', total_avg_min),
-        t_o=adjusted_stat_per_36m('t_o', total_avg_min),
-        pf=adjusted_stat_per_36m('pf', total_avg_min),
-        fgm=adjusted_stat_per_36m('fgm', total_avg_min),
-        fga=adjusted_stat_per_36m('fga', total_avg_min),
-        tpm=adjusted_stat_per_36m('tpm', total_avg_min),
-        tpa=adjusted_stat_per_36m('tpa', total_avg_min),
-        ftm=adjusted_stat_per_36m('ftm', total_avg_min),
-        fta=adjusted_stat_per_36m('fta', total_avg_min),
-        min=total_avg_min
-    )
-
-    return agg_stats
-
-
 def adjusted_stat_per_36m(avg_field, total_avg_min):
     return (Avg(avg_field) / total_avg_min) * 36
+
+
+class PlayerStats:
+
+    def __init__(self, player_id):
+        self.player = Players.objects.get(pk=player_id)
+        self.player_stats = BoxscoreStats.objects.filter(
+            player_id=player_id)
+
+    def get_player_36m_stats(self, match_type='league'):
+        """
+        Aggregates player's stats per 36m, grouped by season
+
+        :param player_id:
+        :param match_type:
+        :return:
+        """
+
+        # Let's combine the player's minutes on all positions
+        total_avg_min = (
+                Avg('pg_min') +
+                Avg('sg_min') +
+                Avg('sf_min') +
+                Avg('pf_min') +
+                Avg('c_min')
+        )
+        player_stats = self.player_stats.filter(
+            boxscore__match_type__contains=match_type
+        ).order_by('-boxscore__match__season')
+
+        agg_stats = player_stats.values('boxscore__match__season') \
+            .annotate(
+            pts=adjusted_stat_per_36m('pts', total_avg_min),
+            ast=adjusted_stat_per_36m('ast', total_avg_min),
+            oreb=adjusted_stat_per_36m('oreb', total_avg_min),
+            reb=adjusted_stat_per_36m('reb', total_avg_min),
+            stl=adjusted_stat_per_36m('stl', total_avg_min),
+            blk=adjusted_stat_per_36m('blk', total_avg_min),
+            t_o=adjusted_stat_per_36m('t_o', total_avg_min),
+            pf=adjusted_stat_per_36m('pf', total_avg_min),
+            fgm=adjusted_stat_per_36m('fgm', total_avg_min),
+            fga=adjusted_stat_per_36m('fga', total_avg_min),
+            tpm=adjusted_stat_per_36m('tpm', total_avg_min),
+            tpa=adjusted_stat_per_36m('tpa', total_avg_min),
+            ftm=adjusted_stat_per_36m('ftm', total_avg_min),
+            fta=adjusted_stat_per_36m('fta', total_avg_min),
+            min=total_avg_min
+        )
+
+        return agg_stats

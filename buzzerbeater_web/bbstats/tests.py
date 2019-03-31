@@ -6,7 +6,7 @@ from . import views
 
 from .models import *
 from .processors.process import *
-from .processors.query import get_player_36m_stats
+from .processors.query import PlayerStats
 
 
 class TestViews(TestCase):
@@ -236,7 +236,7 @@ class TestApi(TestCase):
         )
 
     def test_player_36m_stats(self):
-        stats = get_player_36m_stats(123)
+        stats = PlayerStats(123).get_player_36m_stats()
         season_44 = stats[0]
         self.assertEqual(
             44,
