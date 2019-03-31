@@ -167,6 +167,18 @@ def double_pass_type(pk, season, match_type, url_name):
     }
 
 
+# Includes the per 36 minute stats table
+@register.inclusion_tag('bbstats/tables/per36m_stats.html')
+def per36m_stats(pk, season, match_type, url_name):
+    url = reverse(url_name, args=(
+        pk, season
+    ))
+    return {
+        'url': url,
+        'match_type': match_type,
+    }
+
+
 # Includes the player info table with skills
 @register.inclusion_tag('bbstats/player_info.html', takes_context=True)
 def player_info(context):

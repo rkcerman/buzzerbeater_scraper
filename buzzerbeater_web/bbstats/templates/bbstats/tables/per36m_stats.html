@@ -1,0 +1,47 @@
+<script>
+    // Table with defense performance
+    $(document).ready(function() {
+        $('#per36m').DataTable({
+	    ajax: {
+		url: "{{ url }}"
+		+ "?match_type={{ match_type }}"
+		+ "&filter=per36",
+		dataSrc: "per36"
+	    },
+            columns: [
+                { title: 'Season', data: "boxscore__match__season"},
+                { title: 'Games', data: "games" },
+                { title: 'FGM', data: "fgm" },
+                { title: 'FGA', data: "fga" },
+                { title: 'TPM', data: "tpm" },
+                { title: 'TPA', data: "tpa" },
+                { title: 'FTM', data: "ftm" },
+                { title: 'FTA', data: "fta" },
+                { title: 'PTS', data: "pts"},
+                { title: 'AST', data: "ast" },
+                { title: 'OREB.', data: "oreb" },
+                { title: 'REB', data: "reb" },
+                { title: 'STL', data: "stl" },
+                { title: 'BLK', data: "blk" },
+                { title: 'TO', data: "t_o" },
+                { title: 'PF', data: "pf" }
+            ],
+            "order": [
+                [0, 'desc']
+            ]
+
+        });
+    });
+    
+</script>
+<div id="playerPer36m" class="widebox tableDiv">
+	<div class="perfHeader">
+		<h3>Per 36 minute averages</h3>
+	</div>
+    <div class="boxcontent">
+        <div>
+            <table id="per36m" class="cell-border stripe" style="width: 50%;">
+            </table>
+        </div>
+    </div>
+</div>
