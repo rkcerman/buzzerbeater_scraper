@@ -1,4 +1,5 @@
-from django.db.models import Q, Avg
+from abc import ABC
+from django.db.models import Q, Avg, Func
 
 from bbstats.models import Matches, Boxscores, Teams, PlayerSkills, \
     ScoreTables, BoxscoreStats, Players
@@ -75,7 +76,12 @@ def get_latest_player_skills(player_id):
 
 
 def adjusted_stat_per_36m(avg_field, total_avg_min):
-    return (Avg(avg_field) / total_avg_min) * 36
+    return Round((Avg(avg_field) / total_avg_min) * 36)
+
+
+class Round(Func, ABC):
+    function = 'ROUND'
+    template = '%(function)s(%(expressions)s, 2)'
 
 
 class PlayerStats:
@@ -122,7 +128,7 @@ class PlayerStats:
             tpa=adjusted_stat_per_36m('tpa', total_avg_min),
             ftm=adjusted_stat_per_36m('ftm', total_avg_min),
             fta=adjusted_stat_per_36m('fta', total_avg_min),
-            min=total_avg_min
+            # min=Round(total_avg_min)
         )
 
         return agg_stats
