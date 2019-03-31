@@ -1,5 +1,5 @@
 from abc import ABC
-from django.db.models import Q, Avg, Func
+from django.db.models import Q, Avg, Func, Count
 
 from bbstats.models import Matches, Boxscores, Teams, PlayerSkills, \
     ScoreTables, BoxscoreStats, Players
@@ -114,6 +114,7 @@ class PlayerStats:
 
         agg_stats = player_stats.values('boxscore__match__season') \
             .annotate(
+            games=Count('boxscore'),
             pts=adjusted_stat_per_36m('pts', total_avg_min),
             ast=adjusted_stat_per_36m('ast', total_avg_min),
             oreb=adjusted_stat_per_36m('oreb', total_avg_min),
