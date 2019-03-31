@@ -8,7 +8,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 
 from .processors.process import *
-from .processors.query import get_schedule, get_all_teams
+from .processors.query import get_schedule, get_all_teams, PlayerStats
 from .models import Matches, Players, PlayerSkills, BoxscoreStats, Shots, \
     Teams, Seasons
 from .serializers import *
@@ -152,8 +152,17 @@ def player_stats(request, pk, season):
             options: pass, shoot, guard
     """
     players = [pk]
+    default_filter = ('shoot', 'guard', 'pass', 'per36')
 
-    return get_stats(request, season, players)
+    match_type = request.GET.get('match_type', 'league')
+    data_filter = request.GET.get('filter', default_filter)
+
+    data = {}
+    if 'per36' in data_filter:
+        per36m_stats = PlayerStats(pk).get_player_36m_stats(match_type)
+        data['per36'] = per36m_stats
+
+    return get_stats(request, season, players, data)
 
 
 @api_view(['GET'])
@@ -171,13 +180,15 @@ def team_stats(request, pk, season):
     return get_stats(request, season, players)
 
 
-def get_stats(request, season, players):
-    data = {}
-    default_filter = ('shoot', 'guard', 'pass')
+def get_stats(request, season, players, data=None):
+    if data is None:
+        data = {}
+    default_filter = ('shoot', 'guard', 'pass', 'per36')
 
     # GET params
     with_fouled = request.GET.get('with_fouled', False)
     match_type = request.GET.get('match_type', 'standard')
+    data_filter = request.GET.get('filter', default_filter)
 
     season_matches = Matches.objects.filter(season=season)
     season_shots = Shots.objects.filter(
@@ -201,7 +212,6 @@ def get_stats(request, season, players):
 
     # Only aggregate specific types of stats
     # To aggregate multiple types, separate by comma
-    data_filter = request.GET.get('filter', default_filter)
     if 'shoot' in data_filter:
         player_shots = season_shots.filter(
             shooter__in=players,
