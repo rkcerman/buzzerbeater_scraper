@@ -17,7 +17,7 @@ cssselect==1.0.3
 Django==2.1.2
 django-filter==2.0.0
 django-test-without-migrations==0.6
-djangorestframework==3.8.2
+djangorestframework==3.11.2
 Flask==0.12.1
 Flask-BasicAuth==0.2.0
 Flask-RESTful==0.3.5
