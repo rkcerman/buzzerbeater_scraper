@@ -14,7 +14,7 @@ constantly==15.1.0
 cookiecutter==1.6.0
 cryptography==2.2.2
 cssselect==1.0.3
-Django==2.1.2
+Django==2.2.24
 django-filter==2.0.0
 django-test-without-migrations==0.6
 djangorestframework==3.8.2
