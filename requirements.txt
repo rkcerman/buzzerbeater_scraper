@@ -30,7 +30,7 @@ incremental==17.5.0
 itsdangerous==0.24
 Jinja2==2.9.6
 jinja2-time==0.2.0
-lxml==4.2.1
+lxml==4.6.5
 Markdown==2.6.11
 MarkupSafe==1.0
 MechanicalSoup==0.10.0
